@@ -255,5 +255,30 @@
 
 {% block scripts %}
     <script src="{% static 'js/pinchzoom.min.js' %}"></script>
-    <script src="{% static 'js/index.js' %}"></script>
+    <script>
+    function currentUpcomingChange(checked, unchecked) {
+      if ($$('#' + checked + '').is(":checked")) {
+         $$('.' + checked + '').css('display', '');
+         $$('.' + unchecked + '').css('display', 'none');
+      }
+      else {
+         $$('.' + checked + '').css('display', 'none');
+         $$('.' + unchecked + '').css('display', '');
+      }
+   }
+   currentUpcomingChange('upcoming', 'current');
+   currentUpcomingChange('upcoming2', 'current2');
+   $$('#current').on('change', function () {
+      currentUpcomingChange('current', 'upcoming');
+   });
+   $$('#upcoming').on('change', function () {
+      currentUpcomingChange('upcoming', 'current');
+   });
+   $$('#current2').on('change', function () {
+      currentUpcomingChange('current2', 'upcoming2');
+   });
+   $$('#upcoming2').on('change', function () {
+      currentUpcomingChange('upcoming2', 'current2');
+   });
+    </script>
 {% endblock %}
