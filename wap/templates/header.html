@@ -3,7 +3,8 @@
         <tbody>
         <tr>
             <td class="left">
-                <a href="{{ left_lnk }}" class="nav-c__button {{ left_cls }}"></a>
+                <a {% if left_lnk %} href="{% url left_lnk %}"{% endif %}
+                                     class="nav-c__button {{ left_cls }}"></a>
             </td>
             <td class="center">
                 <div class="nav-c__Text">
@@ -11,7 +12,8 @@
                 </div>
             </td>
             <td class="right">
-                <a href="{{ right_lnk }}" class="nav-c__button  {{ right_cls }}"></a>
+                <a {% if right_lnk %} href="{% url right_lnk %}"{% endif %}
+                                      class="nav-c__button  {{ right_cls }}"></a>
             </td>
         </tr>
         </tbody>

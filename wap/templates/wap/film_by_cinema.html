@@ -4,7 +4,7 @@
 {% block content %}
     <div class="page">
         <div class="page__show page__show--showed">
-            {% include "header.html" with title="Mua vé xem phim" left="link nav-c__button--back" %}
+            {% include "header.html" with title=cinema_name left_lnk="index" left_cls="link nav-c__button--back external" %}
             <!-- Scrollable page content -->
             <div class="page-content">
                 <div class="content__wrap content__wrap--list-fly film-wrap no-padding">
@@ -16,7 +16,7 @@
                                     <td class="width-50">
                                         <label>
                                             <input type="radio" name="chose-tab-2" class="hidden chose-tab__radio"
-                                                   checked="" id="current2">
+                                                   checked="checked" id="showing_tab_header">
                                             <div class="chose-tab__inner">
                                                 <b>Đang chiếu</b>
                                             </div>
@@ -25,7 +25,7 @@
                                     <td class="width-50" ac="">
                                         <label>
                                             <input type="radio" name="chose-tab-2" class="hidden chose-tab__radio"
-                                                   id="upcoming2">
+                                                   id="coming_tab_header">
                                             <div class="chose-tab__inner">
                                                 <b>Sắp chiếu</b>
                                             </div>
@@ -36,217 +36,8 @@
                             </table>
                         </div>
                     </div>
-                    <div class="box-list--int-1 flex-column flim-list--list" id="flim-list">
-                        <div class="block no-margin">
-                            <div class="film-vert">
-                                <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                                    <div class="box-c__content no-padding">
-                                        <div class="film-vert__item">
-                                            <div class="film-vert__poster"
-                                                 style="background-image: url(img/img_poster2@2x.jpg)"></div>
-                                            <a class="link box-c-link" href="/2-2-1-dat-ve/"></a>
-                                            <div class="film-vert__title label-main">
-                                                <b>
-                                                    Alita: Thiên thần chiến binh
-                                                </b>
-                                            </div>
-                                            <div class="film-vert__title font-xs clrgrey">
-                                                Hành động, Khoa học viễn tưởng
-                                            </div>
-                                            <div class="film-vert__time margin-b-xs">
-                                                <div class="inline-middle">
-                                                    <div class="dot dot-blue"></div>
-                                                </div>
-                                                <div class="inline-middle">2 giờ 10 phút</div>
-                                            </div>
-                                            <div class="table table-100">
-                                                <div class="td">
-                                                    <div class="pills table">
-                                                        <div class="pills-left ic-imdb td"></div>
-                                                        <div class="pills-right td font-xs">9.8</div>
-                                                    </div>
-                                                </div>
-                                                <div class="td right v-middle">
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link button-c-xs box-c-link-inside current2">
-                                                        Đặt vé
-                                                    </a>
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                                        <div class="color-black">19/07/2019</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                                    <div class="box-c__content no-padding">
-                                        <div class="film-vert__item">
-                                            <div class="film-vert__poster"
-                                                 style="background-image: url(img/img_poster1@2x.jpg)"></div>
-                                            <a class="link box-c-link" href="/2-2-1-dat-ve/"></a>
-                                            <div class="film-vert__title label-main">
-                                                <b>
-                                                    Sinh nhật chết chóc 2
-                                                </b>
-                                            </div>
-                                            <div class="film-vert__title font-xs clrgrey">
-                                                Hành động, Khoa học viễn tưởng
-                                            </div>
-                                            <div class="film-vert__time margin-b-xs">
-                                                <div class="inline-middle">
-                                                    <div class="dot dot-blue"></div>
-                                                </div>
-                                                <div class="inline-middle">2 giờ 10 phút</div>
-                                            </div>
-                                            <div class="table table-100">
-                                                <div class="td">
-                                                    <div class="pills table">
-                                                        <div class="pills-left ic-imdb td"></div>
-                                                        <div class="pills-right td font-xs">9.8</div>
-                                                    </div>
-                                                </div>
-                                                <div class="td right v-middle">
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link button-c-xs box-c-link-inside current2">
-                                                        Đặt vé
-                                                    </a>
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                                        <div class="color-black">19/07/2019</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                                    <div class="box-c__content no-padding">
-                                        <div class="film-vert__item">
-                                            <div class="film-vert__poster"
-                                                 style="background-image: url(img/img_poster3@2x.jpg)"></div>
-                                            <a class="link box-c-link" href="/2-2-1-dat-ve/"></a>
-                                            <div class="film-vert__title label-main">
-                                                <b>
-                                                    How to train your dragon
-                                                </b>
-                                            </div>
-                                            <div class="film-vert__title font-xs clrgrey">
-                                                Hành động, Khoa học viễn tưởng
-                                            </div>
-                                            <div class="film-vert__time margin-b-xs">
-                                                <div class="inline-middle">
-                                                    <div class="dot dot-blue"></div>
-                                                </div>
-                                                <div class="inline-middle">2 giờ 10 phút</div>
-                                            </div>
-                                            <div class="table table-100">
-                                                <div class="td">
-                                                    <div class="pills table">
-                                                        <div class="pills-left ic-imdb td"></div>
-                                                        <div class="pills-right td font-xs">9.8</div>
-                                                    </div>
-                                                </div>
-                                                <div class="td right v-middle">
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link button-c-xs box-c-link-inside current2">
-                                                        Đặt vé
-                                                    </a>
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                                        <div class="color-black">19/07/2019</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                                    <div class="box-c__content no-padding">
-                                        <div class="film-vert__item">
-                                            <div class="film-vert__poster"
-                                                 style="background-image: url(img/img_poster4@2x.jpg)"></div>
-                                            <a class="link box-c-link" href="/2-2-1-dat-ve/"></a>
-                                            <div class="film-vert__title label-main">
-                                                <b>
-                                                    Hai Phượng
-                                                </b>
-                                            </div>
-                                            <div class="film-vert__title font-xs clrgrey">
-                                                Hành động, Khoa học viễn tưởng
-                                            </div>
-                                            <div class="film-vert__time margin-b-xs">
-                                                <div class="inline-middle">
-                                                    <div class="dot dot-blue"></div>
-                                                </div>
-                                                <div class="inline-middle">2 giờ 10 phút</div>
-                                            </div>
-                                            <div class="table table-100">
-                                                <div class="td">
-                                                    <div class="pills table">
-                                                        <div class="pills-left ic-imdb td"></div>
-                                                        <div class="pills-right td font-xs">9.8</div>
-                                                    </div>
-                                                </div>
-                                                <div class="td right v-middle">
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link button-c-xs box-c-link-inside current2">
-                                                        Đặt vé
-                                                    </a>
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                                        <div class="color-black">19/07/2019</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                                    <div class="box-c__content no-padding">
-                                        <div class="film-vert__item">
-                                            <div class="film-vert__poster"
-                                                 style="background-image: url(img/img_poster5@2x.jpg)"></div>
-                                            <a class="link box-c-link" href="/2-2-1-dat-ve/"></a>
-                                            <div class="film-vert__title label-main">
-                                                <b>
-                                                    Hai Phượng
-                                                </b>
-                                            </div>
-                                            <div class="film-vert__title font-xs clrgrey">
-                                                Hành động, Khoa học viễn tưởng
-                                            </div>
-                                            <div class="film-vert__time margin-b-xs">
-                                                <div class="inline-middle">
-                                                    <div class="dot dot-blue"></div>
-                                                </div>
-                                                <div class="inline-middle">2 giờ 10 phút</div>
-                                            </div>
-                                            <div class="table table-100">
-                                                <div class="td">
-                                                    <div class="pills table">
-                                                        <div class="pills-left ic-imdb td"></div>
-                                                        <div class="pills-right td font-xs">9.8</div>
-                                                    </div>
-                                                </div>
-                                                <div class="td right v-middle">
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link button-c-xs box-c-link-inside current2">
-                                                        Đặt vé
-                                                    </a>
-                                                    <a href="/2-2-1-dat-ve/tab-booking/"
-                                                       class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                                        <div class="color-black">19/07/2019</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_showing id="film-showing" %}
+                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_coming id="film-coming"  %}
                 </div>
             </div>
         </div>
@@ -256,29 +47,24 @@
 {% block scripts %}
     <script src="{% static 'js/pinchzoom.min.js' %}"></script>
     <script>
-    function currentUpcomingChange(checked, unchecked) {
-      if ($$('#' + checked + '').is(":checked")) {
-         $$('.' + checked + '').css('display', '');
-         $$('.' + unchecked + '').css('display', 'none');
-      }
-      else {
-         $$('.' + checked + '').css('display', 'none');
-         $$('.' + unchecked + '').css('display', '');
-      }
-   }
-   currentUpcomingChange('upcoming', 'current');
-   currentUpcomingChange('upcoming2', 'current2');
-   $$('#current').on('change', function () {
-      currentUpcomingChange('current', 'upcoming');
-   });
-   $$('#upcoming').on('change', function () {
-      currentUpcomingChange('upcoming', 'current');
-   });
-   $$('#current2').on('change', function () {
-      currentUpcomingChange('current2', 'upcoming2');
-   });
-   $$('#upcoming2').on('change', function () {
-      currentUpcomingChange('upcoming2', 'current2');
-   });
+        function currentUpcomingChange(is_checked, checked, unchecked) {
+            if (is_checked) {
+                $$('#' + checked + '').css('display', '');
+                $$('#' + unchecked + '').css('display', 'none');
+            }
+            else {
+                $$('#' + checked + '').css('display', 'none');
+                $$('#' + unchecked + '').css('display', '');
+            }
+        }
+
+        currentUpcomingChange(true, 'film-showing', 'film-coming');
+
+        $$('#showing_tab_header').on('change', function (e) {
+            currentUpcomingChange(e.target.checked, 'film-showing', 'film-coming');
+        });
+        $$('#coming_tab_header').on('change', function (e) {
+            currentUpcomingChange(e.target.checked, 'film-coming', 'film-showing');
+        });
     </script>
 {% endblock %}
