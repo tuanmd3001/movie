@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="115.076" viewBox="0 0 375 115.076">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0.3" stop-color="#2483c5" stop-opacity="0"/>
+      <stop offset="0.575" stop-color="#2483c5" stop-opacity="0.008"/>
+      <stop offset="0.674" stop-color="#2483c5" stop-opacity="0.043"/>
+      <stop offset="0.744" stop-color="#2483c5" stop-opacity="0.106"/>
+      <stop offset="0.801" stop-color="#2483c5" stop-opacity="0.188"/>
+      <stop offset="0.85" stop-color="#2483c5" stop-opacity="0.302"/>
+      <stop offset="0.893" stop-color="#2483c5" stop-opacity="0.439"/>
+      <stop offset="0.933" stop-color="#2483c5" stop-opacity="0.604"/>
+      <stop offset="0.967" stop-color="#2483c5" stop-opacity="0.788"/>
+      <stop offset="1" stop-color="#2483c5"/>
+    </linearGradient>
+  </defs>
+  <g id="img_screen" transform="translate(-2366 3816.89)">
+    <path id="Path_3474" data-name="Path 3474" d="M5574.188,223.867c-146.483-34.862-292.175,0-292.175,0L5241,232.326v89.046h375V235.12Z" transform="translate(-2874.998 -4023.186)" fill="url(#linear-gradient)"/>
+    <path id="Path_3475" data-name="Path 3475" d="M5320,224.383c-.93-.087,140.434-32.165,296,.966" transform="translate(-2914.498 -4024.175)" fill="none" stroke="#2bbfe2" stroke-linecap="round" stroke-miterlimit="10" stroke-width="6"/>
+  </g>
+</svg>

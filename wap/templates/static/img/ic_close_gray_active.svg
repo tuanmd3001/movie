@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="5672 -1010 14 14">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #969ba3;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1.6px;
+      }
+    </style>
+  </defs>
+  <g id="ic_close_gray_active" transform="translate(5340 -1689)">
+    <circle id="Ellipse_5" data-name="Ellipse 5" class="cls-1" cx="7" cy="7" r="7" transform="translate(332 679)"/>
+    <g id="Group_484" data-name="Group 484" transform="translate(2 647)">
+      <line id="Line_51" data-name="Line 51" class="cls-2" x2="6.391" y2="6.391" transform="translate(334 36)"/>
+      <line id="Line_52" data-name="Line 52" class="cls-2" x1="6.391" y2="6.391" transform="translate(334 36)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg id="ic_tick_orange" xmlns="http://www.w3.org/2000/svg" viewBox="73 1590 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #f58220;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_175" data-name="Rectangle 175" class="cls-1" width="20" height="20" transform="translate(73 1590)"/>
+  <path id="_1" data-name="1" class="cls-2" d="M58.863,88.5,55,84.5,56.449,83l2.414,2.5,6.76-7L67.071,80Z" transform="translate(22 1516.5)"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.7" height="18.075" viewBox="0 0 23.7 18.075">
+  <g id="ic_ticket_active" transform="translate(0.6 0.6)">
+    <path id="Path_9" data-name="Path 9" d="M632.853,1327.766H613.171a1.411,1.411,0,0,1-1.409-1.41v-4.215l.469-.469a2.344,2.344,0,0,0,0-4.687l-.469-.469V1312.3a1.41,1.41,0,0,1,1.409-1.409h19.682a1.41,1.41,0,0,1,1.409,1.409v4.216l-.469.469a2.344,2.344,0,1,0,0,4.688l.469.469v4.215A1.411,1.411,0,0,1,632.853,1327.766Zm.471-1.41" transform="translate(-611.762 -1310.891)" fill="none" stroke="#ffb100" stroke-miterlimit="10" stroke-width="1.2"/>
+    <g id="Group_23" data-name="Group 23" transform="translate(14.933 2.009)">
+      <g id="Group_22" data-name="Group 22">
+        <rect id="Rectangle_11" data-name="Rectangle 11" width="1.071" height="1.837" fill="#ffb100"/>
+        <rect id="Rectangle_12" data-name="Rectangle 12" width="1.071" height="1.837" transform="translate(0 11.02)" fill="#ffb100"/>
+        <rect id="Rectangle_13" data-name="Rectangle 13" width="1.071" height="1.837" transform="translate(0 7.347)" fill="#ffb100"/>
+        <rect id="Rectangle_14" data-name="Rectangle 14" width="1.071" height="1.837" transform="translate(0 3.674)" fill="#ffb100"/>
+      </g>
+    </g>
+  </g>
+</svg>

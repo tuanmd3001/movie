@@ -1,0 +1,54 @@
+<div class="popup my-popup my-popup--custom" id="location_select_popup">
+    <div class="view">
+        <div class="page">
+            {% include "header.html" with title="Chọn địa điểm" right_cls="link nav-c__button--close popup-close" right_lnk="#" %}
+            <div class="searchbar-backdrop"></div>
+            <div class="page-content">
+                <div class="content__wrap content__wrap--list-fly">
+                    <div class="form-search-wrap no-padding">
+                        <form class="searchbar searchbar--custom searchbar-init no-margin-top" data-backdrop="false">
+                            <div class="searchbar-inner">
+                                <div class="searchbar-input-wrap">
+                                    <input type="search" placeholder="Tìm kiếm" autofocus>
+                                    <i class="searchbar-icon"></i>
+                                    <span class="input-clear-button"></span>
+                                </div>
+                                <span class="searchbar-disable-button">Hủy</span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-list--int-1 flex-column" style="margin-bottom: 20px">
+                        <div class="block searchbar-not-found">
+                            <div class="block-inner">Không tìm thấy kết quả</div>
+                        </div>
+                        <div class="box-c" style="margin-bottom: 0">
+                            <div class="no-padding">
+                                <div class="list list list-box" style="color: black">
+                                    <div class="accordion-item accordion-item-opened">
+                                        <div class="accordion-item-content">
+                                            <div class="box-c__content no-padding list searchbar-found">
+                                                <ul>
+                                                    {% for location in locations %}
+                                                        <li>
+                                                            <label class="popup-close item-radio item-radio-location item-content">
+                                                                <input type="radio" name="location"
+                                                                       onclick="selectLocation('{{ location.location_id }}', '{{ location.city_name }}')"/>
+                                                                <div class="item-inner item-inner-custom">
+                                                                    <div class="item-title">{{ location.city_name }}</div>
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

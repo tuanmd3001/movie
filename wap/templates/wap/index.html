@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div data-name="home" class="page">
+        {% include "header.html" with title="Mua vé xem phim" left="link nav-c__button--back" %}
+        <!-- Scrollable page content -->
+        <div class="page-content">
+            <div class="content__wrap content__wrap--list-fly film-wrap no-padding">
+                <div class="box-list--int-1">
+                    <div class="tabs-animated-wrap">
+                        <div class="tabs">
+                            {% include 'wap/index/tab-theater.html' %}
+                            {% include 'wap/index/tab-film.html' %}
+                            {% include 'wap/index/tab-ticket.html' %}
+                        </div>
+                    </div>
+                </div>
+                {% include 'wap/index/tabs_header.html' %}
+            </div>
+            {% include 'wap/index/location_selector.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/pinchzoom.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock %}

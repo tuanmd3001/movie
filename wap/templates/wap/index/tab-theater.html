@@ -1,0 +1,21 @@
+{% load static %}
+<div id="tab-theater" class="page-content tab tab-active">
+    <div class="block no-margin content__wrap--list-fly">
+        <div class="box-c box-c-margin-sm box-c__input link popup-open orange-ripple"
+             data-popup="#location_select_popup">
+            <div class="box-c__content">
+                <div class="table table-100">
+                    <div class="td ic">
+                        <img src="{% static 'img/ic_location.svg' %}" width="12px" alt="">
+                    </div>
+                    <div class="td">
+                        <div class="margin-v-xs color-black">Bạn muốn xem phim tại:</div>
+                        <div class="margin-v-xs label-main clrblue"><span id="selected_location">Chọn địa điểm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-list--int-1 flex-column" id="cinema_list"></div>
+    </div>
+</div>
