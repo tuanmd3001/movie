@@ -7,7 +7,7 @@
                         <div class="film-vert__item">
                             <div class="film-vert__poster lazy lazy-fade-in" data-background="{{ film.poster }}"></div>
                             <a class="link box-c-link external"
-                               href="{% url 'get_film_detail' movie_id=film.filmId cinema_id=cinema_id %}"></a>
+                               href="{% url 'get_film_detail' film_id=film.filmId cinema_id=cinema_id %}"></a>
                             <div class="film-vert__title label-main">
                                 <b>
                                     {{ film.nameVn }}
@@ -35,7 +35,7 @@
                                             <div class="color-black">{{ film.publishDate }}</div>
                                         </a>
                                     {% elif film.statusId == 2 %}
-                                        <a href="{% url 'get_film_detail' movie_id=film.filmId cinema_id=cinema_id %}"
+                                        <a href="{% url 'get_film_detail' film_id=film.filmId cinema_id=cinema_id %}"
                                            class="external link button-c-xs box-c-link-inside current2">
                                             Đặt vé
                                         </a>
