@@ -1,0 +1,51 @@
+<div class="box-list--int-1 flex-column flim-list--list" id="{{ id }}">
+    <div class="block no-margin">
+        <div class="film-vert">
+            {% for film in films %}
+                <div class="box-c box-c-margin-sm film-vert__item-wrap">
+                    <div class="box-c__content no-padding">
+                        <div class="film-vert__item">
+                            <div class="film-vert__poster lazy lazy-fade-in" data-background="{{ film.poster }}"></div>
+                            <a class="link box-c-link external"
+                               href="{% url 'get_film_detail' movie_id=film.filmId cinema_id=cinema_id %}"></a>
+                            <div class="film-vert__title label-main">
+                                <b>
+                                    {{ film.nameVn }}
+                                </b>
+                            </div>
+                            <div class="film-vert__title font-xs clrgrey">
+                                {{ film.category }}
+                            </div>
+                            <div class="film-vert__time margin-b-xs">
+                                <div class="inline-middle">
+                                    <div class="dot dot-blue"></div>
+                                </div>
+                                <div class="inline-middle">{{ film.duration }}</div>
+                            </div>
+                            <div class="table table-100">
+                                <div class="td">
+                                    <div class="pills table">
+                                        <div class="pills-left ic-imdb td"></div>
+                                        <div class="pills-right td font-xs">{{ film.imdbPoint }}</div>
+                                    </div>
+                                </div>
+                                <div class="td right v-middle">
+                                    {% if film.statusId == 1 %}
+                                        <a href="" class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
+                                            <div class="color-black">{{ film.publishDate }}</div>
+                                        </a>
+                                    {% elif film.statusId == 2 %}
+                                        <a href="{% url 'get_film_detail' movie_id=film.filmId cinema_id=cinema_id %}"
+                                           class="external link button-c-xs box-c-link-inside current2">
+                                            Đặt vé
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -16,7 +16,7 @@ def get_film_by_cinema(request, cinema_id):
     film_coming = []
     cinema_name = "Chọn phim"
     for film in film_list:
-        if film['cinemaName'] and film['cinemaName'] != "":
+        if cinema_name == "Chọn phim" and film['cinemaName'] and film['cinemaName'] != "":
             cinema_name = film['cinemaName']
         film['publishDate'] = datetime.strptime(film['publishDate'], "%d/%m/%Y %H:%M:%S").strftime("%d/%m/%Y")
         duration = str(timedelta(minutes=film['duration']))[:-3].split(":")
