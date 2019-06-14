@@ -1,3 +1,4 @@
+{% load common %}
 <div class="box-list--int-1 flex-column flim-list--list" id="{{ id }}">
     <div class="block no-margin">
         <div class="film-vert">
@@ -32,7 +33,7 @@
                                 <div class="td right v-middle">
                                     {% if film.statusId == 1 %}
                                         <a href="" class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                            <div class="color-black">{{ film.publishDate }}</div>
+                                            <div class="color-black">{{ film.publishDate | string_to_datetime | date:"d/m/Y"  }}</div>
                                         </a>
                                     {% elif film.statusId == 2 %}
                                         <a href="{% url 'get_film_detail' film_id=film.filmId cinema_id=cinema_id %}"
