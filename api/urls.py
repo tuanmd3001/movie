@@ -8,7 +8,6 @@ urlpatterns = [
     path('get_seats', views.get_seats_request, name='get_seats_request'),
     path('get_seats_vista', views.get_seats_vista_request, name='get_seats_vista_request'),
     path('create_order', views.create_order_request, name='create_order_request'),
-    path('cancel_order', views.confirm_order_request, name='confirm_order_request'),
 
 
 ]
