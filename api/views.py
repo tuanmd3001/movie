@@ -3,7 +3,7 @@ from django.http import JsonResponse
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
-from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista
+from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order
 import json
 
 
@@ -32,4 +32,25 @@ def get_seats_request(request):
 def get_seats_vista_request(request):
     post_data = json.loads(request.body)
     return JsonResponse(get_seats_vista.call(post_data))
+
+
+# {
+# "app_id":1,
+# "queryId": {{query_id}},
+# "customerName":"Nguyen Van A",
+# "customeEmail":"hienht@vnpay.vn",
+# "customerPhone":"0987654321",
+# "seats":
+# 	[
+#         {
+#             "seatId": {{seat_id}},
+#             "code": "{{seat_code}}"
+#         }
+#     ],
+# "language": "VN"
+# }
+@csrf_exempt
+def create_order_request(request):
+    post_data = json.loads(request.body)
+    return JsonResponse(create_order.call(post_data))
 

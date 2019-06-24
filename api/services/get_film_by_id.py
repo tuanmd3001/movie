@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import requests
-from api.services.config import SERVICE_URLS, APP_ID, get_request_date, get_checksum
+from api.services.config import SERVICE_URLS, APP_ID, get_request_date, get_checksum, VERSION
 from datetime import datetime, timedelta
 
 
 def call(cinema_id, film_id):
     params = {
         'app_id': APP_ID,
+        'version': VERSION,
         'request_date': get_request_date(),
         'check_sum': get_checksum(),
         'cinema_id': cinema_id,
