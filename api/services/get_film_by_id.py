@@ -4,7 +4,7 @@ from api.services.config import SERVICE_URLS, APP_ID, get_request_date, get_chec
 from datetime import datetime, timedelta
 
 
-def call(cinema_id, film_id):
+def call(cinema_id, film_id, from_date, to_date):
     params = {
         'app_id': APP_ID,
         'version': VERSION,
@@ -12,8 +12,8 @@ def call(cinema_id, film_id):
         'check_sum': get_checksum(),
         'cinema_id': cinema_id,
         'film_id': film_id,
-        'from_date': datetime.now().strftime("%Y%m%d"),
-        'to_date': (datetime.now()+ timedelta(days=7)).strftime("%Y%m%d")
+        'from_date': from_date.strftime("%Y%m%d"),
+        'to_date': to_date.strftime("%Y%m%d")
     }
     r = requests.get(SERVICE_URLS['get_film_by_id'], params=params)
     result = r.json()

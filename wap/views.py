@@ -5,6 +5,14 @@ from datetime import datetime, timedelta
 from api.services import get_location, get_film, get_film_by_id
 
 
+def string_to_datetime(string, date_format="%d/%m/%Y %H:%M:%S"):
+    try:
+        date = datetime.strptime(string, date_format)
+        return date
+    except:
+        return None
+
+
 def index(request):
     location_list = get_location.call()
     return render(request, 'wap/index.html', {'locations': location_list})
@@ -18,7 +26,6 @@ def get_film_by_cinema(request, cinema_id):
     for film in film_list:
         if cinema_name == "Chọn phim" and film['cinemaName'] and film['cinemaName'] != "":
             cinema_name = film['cinemaName']
-        film['publishDate'] = datetime.strptime(film['publishDate'], "%d/%m/%Y %H:%M:%S").strftime("%d/%m/%Y")
         duration = str(timedelta(minutes=film['duration']))[:-3].split(":")
         film['duration'] = duration[0] + " giờ " + duration[1] + " phút"
         if film['statusId'] == 1:
@@ -34,10 +41,26 @@ def get_film_by_cinema(request, cinema_id):
 
 
 def get_film_detail(request, cinema_id, film_id):
-    film_detail = get_film_by_id.call(cinema_id, film_id)
-    film_detail['film']['publishDate'] = datetime.strptime(film_detail['film']['publishDate'], "%d/%m/%Y %H:%M:%S").strftime("%d/%m")
+    from_date = datetime.now()
+    date_range = 7
+    to_date = from_date + timedelta(days=date_range)
+    film_detail = get_film_by_id.call(cinema_id, film_id, from_date, to_date)
+    sessions = {}
+    dates = [single_date for single_date in (from_date + timedelta(n) for n in range(date_range))]
+    for date in dates:
+        date_str = date.strftime("%d%m%Y")
+        sessions[date_str] = {}
+    if film_detail['listSession']:
+        for s in film_detail['listSession']:
+            if s["sessionTime"] and s["sessionTime"] != "":
+                session_date = string_to_datetime(s["sessionTime"]).strftime("%d%m%Y")
+                if session_date and session_date in sessions:
+                    if s['versionId'] not in sessions[session_date]:
+                        sessions[session_date][s['versionId']] = []
+                    sessions[session_date][s['versionId']].append(s)
     return render(request, 'wap/film_detail.html', {
         'film': film_detail['film'],
-        'session': film_detail['listSession'],
-        'cinema_id': cinema_id
+        'sessions': sessions,
+        'cinema_id': cinema_id,
+        'dates': dates
     })

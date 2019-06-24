@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load common %}
 
 {% block content %}
     <div class="page">
@@ -53,8 +54,7 @@
                                     <div class="block no-margin height-100 content__wrap--list-fly flex-column">
                                         <div class="box-list--int-1 flex-column">
                                             <div class="box-c box-c-margin-sm">
-                                                <div class="detail-banner"
-                                                     style="background-image: url({{ film.filmBanner }})">
+                                                <div class="detail-banner  lazy lazy-fade-in" data-background="{{ film.filmBanner }}">
                                                 </div>
                                             </div>
                                             <div class="box-c box-c-margin-sm">
@@ -76,7 +76,7 @@
                                                         {{ film.category }}
                                                     </div>
                                                     <div class="margin-v-xs">
-                                                        <div class="tags">{{ film.publishDate }}</div>
+                                                        <div class="tags">{{ film.publishDate | string_to_datetime | date:"d/m" }}</div>
                                                         <div class="tags">{{ film.duration }} phút</div>
                                                         <div class="tags">{{ film.version }}</div>
                                                     </div>
@@ -92,7 +92,9 @@
                                                         <div class="color-black margin-v-xs">
                                                             <span class="clrblue"><b>Diễn viên:</b></span>
                                                         </div>
-                                                        <div class="color-black margin-v-xs"></div>
+                                                        <div class="color-black margin-v-xs">
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,173 +110,78 @@
                                             <div class="box-c__content no-padding">
                                                 <div class="swiper-container swiper-container-date">
                                                     <div class="swiper-wrapper">
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden" checked>
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>21</b>
+                                                        {% for date in dates %}
+                                                            <div class="swiper-slide booking-date">
+                                                                <label class="link orange-ripple tab-link session-tab-link"
+                                                                       data-tab="#session_{{ date | date:"dmY" }}">
+                                                                    <input type="radio" name="date"
+                                                                           class="booking-date-radio hidden">
+                                                                    <div class="booking-date__inner">
+                                                                        <div class="label-main">
+                                                                            <b>{{ date | date:"d" }}</b>
+                                                                        </div>
+                                                                        <div class="font-xs">{{ date | get_day_in_week }}</div>
                                                                     </div>
-                                                                    <div class="font-xs">Hôm nay</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>22</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Thứ 3</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>23</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Thứ 4</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>24</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Thứ 5</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>25</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Thứ 6</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>26</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Thứ 7</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="swiper-slide booking-date">
-                                                            <label class="link orange-ripple">
-                                                                <input type="radio" name="date"
-                                                                       class="booking-date-radio hidden">
-                                                                <div class="booking-date__inner">
-                                                                    <div class="label-main">
-                                                                        <b>27</b>
-                                                                    </div>
-                                                                    <div class="font-xs">Chủ nhật</div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="box-list--int-1 flex-column"></div>
                                         </div>
                                         <div class="box-list--int-1 flex-column">
-                                            <div class="box-c box-c-margin-sm">
-                                                <div class="box-c__content no-padding-bottom">
-                                                    <div class="margin-v-sm">
-                                                        <div class="margin-v-xs">
-                                                            <div class="label-main margin-v-xxs">
-                                                                <span class="clrblue"><b>How to train your dragon</b></span>
+                                            <div class="box-c">
+                                                <div class="box-c-margin-sm">
+                                                    <div class="box-c__content no-padding-bottom">
+                                                        <div class="tabs-animated-wrap">
+                                                            <div class="tabs">
+                                                                {% for date in dates %}
+                                                                    <div class="tab session-tab"
+                                                                         id="session_{{ date | date:"dmY" }}">
+                                                                        {% if sessions|get_session_by_date:date %}
+                                                                            <div class="margin-v-sm">
+                                                                                <div class="margin-v-xs">
+                                                                                    <div class="label-main margin-v-xxs">
+                                                                                        <span class="clrblue"><b>{{ film.nameVn }}</b></span>
+                                                                                    </div>
+                                                                                    <div class="font-xs clrgrey">{{ film.cinemaName }}</div>
+                                                                                </div>
+                                                                                {% for version in sessions|get_session_by_date:date %}
+                                                                                    <div class="margin-v-xs">
+                                                                                        <div class="table booking-time-wrap">
+                                                                                            <div class="td">
+                                                                                                <div class="label-main booking-time__item">
+                                                                                                    <b>{{ version|get_version_name }}</b>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="td">
+                                                                                                {% for session in sessions|get_session_by_date:date|get_dict_value:version %}
+                                                                                                    <div class="booking-time__item">
+                                                                                                        <a href="{% url 'get_ticket_type' session_id=session.ss_id %}"
+                                                                                                           class="link external">
+                                                                                                            {{ session|get_session_time }}
+                                                                                                        </a>
+                                                                                                    </div>
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div class="box-c__item center">
+                                                                                <img src="{% static 'img/history-blank.svg' %}"
+                                                                                     alt="">
+                                                                                <div class="p-plank__text">
+                                                                                    Hiện chúng tôi chưa có lịch
+                                                                                    chiếu
+                                                                                    nào vào ngày này
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                {% endfor %}
                                                             </div>
-                                                            <div class="font-xs clrgrey">BHD Vincom Quang Trung</div>
-                                                        </div>
-                                                        <div class="margin-v-xs">
-                                                            <div class="table booking-time-wrap">
-                                                                <div class="td">
-                                                                    <div class="label-main booking-time__item"><b>2D</b>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="td">
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/" class="link">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/" class="link">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/" class="link">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="margin-v-xs">
-                                                            <div class="table booking-time-wrap">
-                                                                <div class="td">
-                                                                    <div class="label-main booking-time__item"><b>3D</b>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="td">
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/"
-                                                                           class="link orange-ripple">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/"
-                                                                           class="link orange-ripple">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/"
-                                                                           class="link orange-ripple">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="booking-time__item">
-                                                                        <a href="/2-3-1-dat-ve-info/"
-                                                                           class="link orange-ripple">
-                                                                            11:45
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="box-c p-blank p-blank--history">
-                                                <div class="box-c__content">
-                                                    <div class="box-c__item center">
-                                                        <img src="img/history-blank.svg" alt="">
-                                                        <div class="p-plank__text">Hiện chúng tôi chưa có lịch chiếu nào
-                                                            vào ngày này
                                                         </div>
                                                     </div>
                                                 </div>
@@ -283,13 +190,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sheet-modal sheet-modal--price-detail" id="detail1">
-                    <div class="sheet-modal-inner">
-                        <div class="margin-v-sm center">
-                            <a href="/2-2-1-chon-ghe/" class="link button-c" id="one-way-link">Tiếp tục</a>
                         </div>
                     </div>
                 </div>
@@ -308,9 +208,12 @@
             touchMoveStopPropagation: false,
             loop: false
         });
+        $$('#session_{{ dates|get_list_value:0|date:"dmY" }}').addClass("tab-active");
+        $$('[data-tab="#session_{{ dates|get_list_value:0|date:"dmY" }}"] input').prop('checked', true);
         $$('.tab').on('tab:show', function () {
             var tabId = $$(this).prop('id');
             $$('[href="#' + tabId + '"]').addClass('tab-link-active');
+            $$('[data-tab="#' + tabId + '"] input').prop('checked', true);
         });
     </script>
 {% endblock %}
