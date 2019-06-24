@@ -15,5 +15,5 @@ def call(cinema_id, location_id=0, status_id=0):
     }
     r = requests.get(SERVICE_URLS['get_film'], params=params)
     result = r.json()
-    return result['data']
+    return result
 
