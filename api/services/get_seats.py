@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
 from api.services.config import SERVICE_URLS, APP_ID, get_request_date, get_checksum, VERSION
-import json
 
 
 def call(app_mobile, ss_id, book_service_id, request_id=0, language='VN'):
