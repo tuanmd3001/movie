@@ -19,4 +19,4 @@ def call(app_mobile, ss_id, book_service_id, request_id=0, language='VN'):
     }
     r = requests.post(SERVICE_URLS['get_seats'], json=params)
     result = r.json()
-    return result['data']
+    return result

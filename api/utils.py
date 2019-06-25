@@ -12,9 +12,10 @@ def check_param(dic, key):
 
 def response_error(code, message):
     r = {
-        'app_id' : APP_ID,
-        'code' : code,
-        'message': message
+        'app_id': APP_ID,
+        'code': code,
+        'message': message,
+        'data': None
     }
     return JsonResponse(r)
 

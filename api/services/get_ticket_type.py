@@ -18,4 +18,4 @@ def call(app_mobile, ss_id, request_id=0, language='VN'):
     }
     r = requests.post(SERVICE_URLS['get_ticket_type'], json=params)
     result = r.json()
-    return result['data']
+    return result

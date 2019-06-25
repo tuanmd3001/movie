@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 SERVICE_DOMAIN = "http://localhost:8688/"
 APP_ID = "123"
 VERSION = 2
@@ -14,8 +16,10 @@ SERVICE_URLS = {
 
 }
 
+
 def get_checksum():
     return "123201906109834999037620190610171730123456"
 
+
 def get_request_date():
-    return '20190610171730'
+    return datetime.now().strftime('%Y%m%d%H%M%S')

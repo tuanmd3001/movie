@@ -1,13 +1,32 @@
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
-from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order, get_film
+from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order, get_film, \
+    get_film_by_id, get_location
 import json
 
 from api.services.error_code import ERROR_MISSING_PARAM, error_message, ERROR_INVALID_PARAM
 from api.utils import check_param, response_error, int_or_0
+
+
+def get_location_request(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    return JsonResponse(get_location.call())
+
+
+def get_cinema(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    location_id = check_param(request.GET, 'location_id')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not location_id:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'location_id')
+    return JsonResponse(get_cinema_by_location.call(location_id))
 
 
 def get_film_request(request):
@@ -29,14 +48,20 @@ def get_film_request(request):
     return JsonResponse(get_film.call(cinema_id, location_id, status_id))
 
 
-def get_cinema(request):
+def get_film_detail_request(request):
     app_mobile = check_param(request.GET, 'app_mobile')
-    location_id = check_param(request.GET, 'location_id')
+    cinema_id = check_param(request.GET, 'cinema_id')
+    film_id = check_param(request.GET, 'film_id')
     if not app_mobile:
         return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
-    if not location_id:
-        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'location_id')
-    return JsonResponse(get_cinema_by_location.call(location_id))
+    if not film_id:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'film_id')
+    if not cinema_id:
+        cinema_id = 0
+    from_date = datetime.now()
+    date_range = 7
+    to_date = from_date + timedelta(days=date_range)
+    return JsonResponse(get_film_by_id.call(cinema_id, film_id, from_date, to_date))
 
 
 def get_ticket_type_request(request):
