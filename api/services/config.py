@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-SERVICE_DOMAIN = "http://localhost:8688/"
+SERVICE_DOMAIN = "http://10.22.7.187:8688/"
 APP_ID = "123"
 VERSION = 2
 
