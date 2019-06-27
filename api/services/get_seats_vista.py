@@ -13,4 +13,5 @@ def call(post_data):
     post_data['channel_book'] = 'SCB|' + language
     r = requests.post(SERVICE_URLS['get_seats'], json=post_data)
     result = r.json()
+    result['ticket_types'] = post_data['ticketTypes']
     return result

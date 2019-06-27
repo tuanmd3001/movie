@@ -12,5 +12,5 @@ def call():
     }
     r = requests.get(SERVICE_URLS['get_location'], params=params)
     result = r.json()
-    return result['data']
+    return result
 
