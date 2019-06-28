@@ -11,7 +11,7 @@ SERVICE_URLS = {
     'get_film' : SERVICE_DOMAIN + 'get_film',
     'get_film_by_id' : SERVICE_DOMAIN + 'get_film_by_id',
     'get_ticket_type' : SERVICE_DOMAIN + 'get_ticket_type',
-    'get_seats' : SERVICE_DOMAIN + 'get_seats',
+    'get_seats' : SERVICE_DOMAIN + 'get_seats_v2',
     'create_order' : SERVICE_DOMAIN + 'create_order',
 
 }
