@@ -1,8 +1,6 @@
 from django import template
-from datetime import datetime
-
+from datetime import datetime, timedelta
 from wap.constances import DAY_NAME, VERSION_NAME
-
 register = template.Library()
 
 @register.filter
@@ -48,6 +46,21 @@ def get_session_time(session):
     return ""
 
 @register.filter
+def film_duration(minutes):
+    duration = ''
+    if minutes:
+        parsed = str(timedelta(minutes=minutes))[:-3].split(":")
+        if int(parsed[0]) > 0:
+            duration += parsed[0] + " giờ "
+        if int(parsed[1]) > 0:
+            duration += parsed[1] + " phút"
+    return duration
+
+@register.filter
+def get_items(dict):
+    return dict.items()
+
+@register.filter
 def get_dict_value(dict, key):
     return dict.get(key)
 
@@ -84,3 +97,8 @@ def set_var(parser, token):
         raise template.TemplateSyntaxError("'set' tag must be of the form: {% set <var_name> = <var_value> %}")
 
     return SetVarNode(parts[1], parts[3])
+
+@register.filter
+def in_list(value, the_list):
+    value = str(value)
+    return value in the_list.split(',')

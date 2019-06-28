@@ -31,7 +31,7 @@
                                                     {% for location in locations %}
                                                         <li>
                                                             <label class="popup-close item-radio item-radio-location item-content">
-                                                                <input type="radio" name="location"
+                                                                <input type="radio" name="location" data-location="{{ location.location_id }}"
                                                                        onclick="selectLocation('{{ location.location_id }}', '{{ location.city_name }}')"/>
                                                                 <div class="item-inner item-inner-custom">
                                                                     <div class="item-title">{{ location.city_name }}</div>

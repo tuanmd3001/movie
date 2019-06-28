@@ -4,7 +4,23 @@
 {% block content %}
     <div class="page">
         <div class="page__show page__show--showed">
-            {% include "header.html" with title=cinema_name left_lnk="index" left_cls="link nav-c__button--back external" %}
+            <div class="nav-c">
+                <table>
+                    <tr>
+                        <td class="left">
+                            <a href="{% url 'index' %}?app_mobile={{ app_mobile }}&location={{ location_id }}" class="link nav-c__button nav-c__button--back external"></a>
+                        </td>
+                        <td class="center">
+                            <div class="nav-c__Text">
+                                {{ cinema_name }}
+                            </div>
+                        </td>
+                        <td class="right">
+                            <a href="" class="nav-c__button"></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <!-- Scrollable page content -->
             <div class="page-content">
                 <div class="content__wrap content__wrap--list-fly film-wrap no-padding">
@@ -15,17 +31,16 @@
                                     <tr>
                                         <td class="width-50">
                                             <label>
-                                                <input type="radio" name="chose-tab-2" class="hidden chose-tab__radio"
-                                                       checked="checked" id="showing_tab_header">
+                                                <input type="radio" name="chose-tab" class="hidden chose-tab__radio" checked=""
+                                                       id="showing_tab_header">
                                                 <div class="chose-tab__inner">
                                                     <b>Đang chiếu</b>
                                                 </div>
                                             </label>
                                         </td>
-                                        <td class="width-50">
+                                        <td class="width-50" ac="">
                                             <label>
-                                                <input type="radio" name="chose-tab-2" class="hidden chose-tab__radio"
-                                                       id="coming_tab_header">
+                                                <input type="radio" name="chose-tab" class="hidden chose-tab__radio" id="coming_tab_header">
                                                 <div class="chose-tab__inner">
                                                     <b>Sắp chiếu</b>
                                                 </div>
@@ -37,7 +52,7 @@
                         </div>
                     </div>
                     {% include "wap/film_list.html" with cinema_id=cinema_id films=film_showing id="film-showing" %}
-                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_coming id="film-coming"  %}
+                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_coming id="film-coming" %}
                 </div>
             </div>
         </div>

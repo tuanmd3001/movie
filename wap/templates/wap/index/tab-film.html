@@ -11,7 +11,7 @@
                         <td class="width-50">
                             <label>
                                 <input type="radio" name="chose-tab" class="hidden chose-tab__radio" checked=""
-                                       id="current">
+                                       id="showing_tab_header">
                                 <div class="chose-tab__inner">
                                     <b>Đang chiếu</b>
                                 </div>
@@ -19,7 +19,8 @@
                         </td>
                         <td class="width-50" ac="">
                             <label>
-                                <input type="radio" name="chose-tab" class="hidden chose-tab__radio" id="upcoming">
+                                <input type="radio" name="chose-tab" class="hidden chose-tab__radio"
+                                       id="coming_tab_header">
                                 <div class="chose-tab__inner">
                                     <b>Sắp chiếu</b>
                                 </div>
@@ -31,332 +32,22 @@
             </div>
         </div>
         <div class="box-list--int-1 flex-column flim-list--list" id="flim-list">
-            <div class="block no-margin">
-                <div class="film-vert">
-                    <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                        <div class="box-c__content no-padding">
-                            <div class="film-vert__item">
-                                <div class="film-vert__poster"
-                                     style="background-image: url({% static 'img/img_poster2@2x.jpg' %})"></div>
-                                <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                <div class="film-vert__title label-main">
-                                    <b>
-                                        Alita: Thiên thần chiến binh
-                                    </b>
-                                </div>
-                                <div class="film-vert__title font-xs clrgrey">
-                                    Hành động, Khoa học viễn tưởng
-                                </div>
-                                <div class="film-vert__time margin-b-xs">
-                                    <div class="inline-middle">
-                                        <div class="dot dot-blue"></div>
-                                    </div>
-                                    <div class="inline-middle">2 giờ 10 phút</div>
-                                </div>
-                                <div class="table table-100">
-                                    <div class="td">
-                                        <div class="pills table">
-                                            <div class="pills-left ic-imdb td"></div>
-                                            <div class="pills-right td font-xs">9.8</div>
-                                        </div>
-                                    </div>
-                                    <div class="td right v-middle">
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link button-c-xs box-c-link-inside current">
-                                            Đặt vé
-                                        </a>
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link btn-sm btn-border-blue box-c-link-inside upcoming">
-                                            <div class="color-black">19/07/2019</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                        <div class="box-c__content no-padding">
-                            <div class="film-vert__item">
-                                <div class="film-vert__poster"
-                                     style="background-image: url({% static 'img/img_poster1@2x.jpg' %})"></div>
-                                <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                <div class="film-vert__title label-main">
-                                    <b>
-                                        Sinh nhật chết chóc 2
-                                    </b>
-                                </div>
-                                <div class="film-vert__title font-xs clrgrey">
-                                    Hành động, Khoa học viễn tưởng
-                                </div>
-                                <div class="film-vert__time margin-b-xs">
-                                    <div class="inline-middle">
-                                        <div class="dot dot-blue"></div>
-                                    </div>
-                                    <div class="inline-middle">2 giờ 10 phút</div>
-                                </div>
-                                <div class="table table-100">
-                                    <div class="td">
-                                        <div class="pills table">
-                                            <div class="pills-left ic-imdb td"></div>
-                                            <div class="pills-right td font-xs">9.8</div>
-                                        </div>
-                                    </div>
-                                    <div class="td right v-middle">
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link button-c-xs box-c-link-inside current">
-                                            Đặt vé
-                                        </a>
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link btn-sm btn-border-blue box-c-link-inside upcoming">
-                                            <div class="color-black">19/07/2019</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                        <div class="box-c__content no-padding">
-                            <div class="film-vert__item">
-                                <div class="film-vert__poster"
-                                     style="background-image: url({% static 'img/img_poster3@2x.jpg' %})"></div>
-                                <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                <div class="film-vert__title label-main">
-                                    <b>
-                                        How to train your dragon
-                                    </b>
-                                </div>
-                                <div class="film-vert__title font-xs clrgrey">
-                                    Hành động, Khoa học viễn tưởng
-                                </div>
-                                <div class="film-vert__time margin-b-xs">
-                                    <div class="inline-middle">
-                                        <div class="dot dot-blue"></div>
-                                    </div>
-                                    <div class="inline-middle">2 giờ 10 phút</div>
-                                </div>
-                                <div class="table table-100">
-                                    <div class="td">
-                                        <div class="pills table">
-                                            <div class="pills-left ic-imdb td"></div>
-                                            <div class="pills-right td font-xs">9.8</div>
-                                        </div>
-                                    </div>
-                                    <div class="td right v-middle">
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link button-c-xs box-c-link-inside current">
-                                            Đặt vé
-                                        </a>
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link btn-sm btn-border-blue box-c-link-inside upcoming">
-                                            <div class="color-black">19/07/2019</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                        <div class="box-c__content no-padding">
-                            <div class="film-vert__item">
-                                <div class="film-vert__poster"
-                                     style="background-image: url({% static 'img/img_poster4@2x.jpg' %})"></div>
-                                <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                <div class="film-vert__title label-main">
-                                    <b>
-                                        Hai Phượng
-                                    </b>
-                                </div>
-                                <div class="film-vert__title font-xs clrgrey">
-                                    Hành động, Khoa học viễn tưởng
-                                </div>
-                                <div class="film-vert__time margin-b-xs">
-                                    <div class="inline-middle">
-                                        <div class="dot dot-blue"></div>
-                                    </div>
-                                    <div class="inline-middle">2 giờ 10 phút</div>
-                                </div>
-                                <div class="table table-100">
-                                    <div class="td">
-                                        <div class="pills table">
-                                            <div class="pills-left ic-imdb td"></div>
-                                            <div class="pills-right td font-xs">9.8</div>
-                                        </div>
-                                    </div>
-                                    <div class="td right v-middle">
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link button-c-xs box-c-link-inside current">
-                                            Đặt vé
-                                        </a>
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link btn-sm btn-border-blue box-c-link-inside upcoming">
-                                            <div class="color-black">19/07/2019</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-c box-c-margin-sm film-vert__item-wrap">
-                        <div class="box-c__content no-padding">
-                            <div class="film-vert__item">
-                                <div class="film-vert__poster"
-                                     style="background-image: url({% static 'img/img_poster5@2x.jpg' %})"></div>
-                                <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                <div class="film-vert__title label-main">
-                                    <b>
-                                        Hai Phượng
-                                    </b>
-                                </div>
-                                <div class="film-vert__title font-xs clrgrey">
-                                    Hành động, Khoa học viễn tưởng
-                                </div>
-                                <div class="film-vert__time margin-b-xs">
-                                    <div class="inline-middle">
-                                        <div class="dot dot-blue"></div>
-                                    </div>
-                                    <div class="inline-middle">2 giờ 10 phút</div>
-                                </div>
-                                <div class="table table-100">
-                                    <div class="td">
-                                        <div class="pills table">
-                                            <div class="pills-left ic-imdb td"></div>
-                                            <div class="pills-right td font-xs">9.8</div>
-                                        </div>
-                                    </div>
-                                    <div class="td right v-middle">
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link button-c-xs box-c-link-inside current">
-                                            Đặt vé
-                                        </a>
-                                        <a href="/1-1-1-dat-ve-rap/tab-booking-1/"
-                                           class="link btn-sm btn-border-blue box-c-link-inside upcoming">
-                                            <div class="color-black">19/07/2019</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="block no-margin" id="film-showing">
+                <div class="film-vert"></div>
+            </div>
+            <div class="block no-margin" id="film-coming">
+                <div class="film-vert"></div>
             </div>
         </div>
         <div class="box-list--int-1 flex-column" id="flim-slide" style="display:none">
             <div class="content__wrap--list-fly">
                 <div class="box-list--int-1">
-                    <div class="swiper-container swiper-container-film film-list ">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="content__wrap--list-fly flex-column">
-                                    <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                    <div class="box-list--int-1">
-                                        <div class="film-poster"
-                                             style="background-image: url({% static 'img/img_poster2@2x.jpg' %})"></div>
-                                    </div>
-                                    <div class="film-ìnfo center">
-                                        <div class="film-title">
-                                            Alita: Thiên thần chiến binh
-                                        </div>
-                                        <div class="film-gerne font-sm">
-                                            Hành động, Khoa học viễn tưởng
-                                        </div>
-                                        <div class="film-time font-sm">
-                                            2 giờ 10 phút
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="content__wrap--list-fly flex-column">
-                                    <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                    <div class="box-list--int-1">
-                                        <div class="film-poster"
-                                             style="background-image: url({% static 'img/img_poster1@2x.jpg' %})"></div>
-                                    </div>
-                                    <div class="film-ìnfo center">
-                                        <div class="film-title">
-                                            Sinh nhật chết chóc 2
-                                        </div>
-                                        <div class="film-gerne font-sm">
-                                            Hành động, Khoa học viễn tưởng
-                                        </div>
-                                        <div class="film-time font-sm">
-                                            2 giờ 10 phút
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="content__wrap--list-fly flex-column">
-                                    <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                    <div class="box-list--int-1">
-                                        <div class="film-poster"
-                                             style="background-image: url({% static 'img/img_poster3@2x.jpg' %})"></div>
-                                    </div>
-                                    <div class="film-ìnfo center">
-                                        <div class="film-title">
-                                            How to train your dragon
-                                        </div>
-                                        <div class="film-gerne font-sm">
-                                            Hành động, Khoa học viễn tưởng
-                                        </div>
-                                        <div class="film-time font-sm">
-                                            2 giờ 10 phút
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="content__wrap--list-fly flex-column">
-                                    <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                    <div class="box-list--int-1">
-                                        <div class="film-poster"
-                                             style="background-image: url({% static 'img/img_poster4@2x.jpg' %})"></div>
-                                    </div>
-                                    <div class="film-ìnfo center">
-                                        <div class="film-title">
-                                            Hai Phượng
-                                        </div>
-                                        <div class="film-gerne font-sm">
-                                            Hành động, Khoa học viễn tưởng
-                                        </div>
-                                        <div class="film-time font-sm">
-                                            2 giờ 10 phút
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="content__wrap--list-fly flex-column">
-                                    <a class="link box-c-link" href="/1-1-1-dat-ve-rap/"></a>
-                                    <div class="box-list--int-1">
-                                        <div class="film-poster"
-                                             style="background-image: url({% static 'img/img_poster5@2x.jpg' %})"></div>
-                                    </div>
-                                    <div class="film-ìnfo center">
-                                        <div class="film-title">
-                                            Hai Phượng
-                                        </div>
-                                        <div class="film-gerne font-sm">
-                                            Hành động, Khoa học viễn tưởng
-                                        </div>
-                                        <div class="film-time font-sm">
-                                            2 giờ 10 phút
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="swiper-container swiper-container-film film-list" id="film-slide-showing">
+                        <div class="swiper-wrapper"></div>
                     </div>
-                </div>
-                <div class="margin-b-sm">
-                    <a href="/1-1-1-dat-ve-rap/tab-booking-1/" class="link button-c current">Đặt vé</a>
-                    <a href="/1-1-1-dat-ve-rap/tab-booking-1/" class="link btn-border-white table table-100 upcoming">
-                        <div class="td">
-                            <div class="font-xs">Khởi chiếu</div>
-                            <div class="label-main"><b><span class="white">19/07/2019</span></b></div>
-                        </div>
-                    </a>
+                    <div class="swiper-container swiper-container-film film-list" id="film-slide-coming">
+                        <div class="swiper-wrapper"></div>
+                    </div>
                 </div>
             </div>
         </div>
