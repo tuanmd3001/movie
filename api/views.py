@@ -19,6 +19,19 @@ def get_location_request(request):
     return JsonResponse(get_location.call())
 
 
+def get_current_location_request(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    long = check_param(request.GET, 'long')
+    lat = check_param(request.GET, 'lat')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not long:
+        long = 106.69992
+    if not lat:
+        lat = 10.779466
+    return JsonResponse(get_location.call(long, lat))
+
+
 def get_cinema(request):
     app_mobile = check_param(request.GET, 'app_mobile')
     location_id = check_param(request.GET, 'location_id')
@@ -61,7 +74,7 @@ def get_film_detail_request(request):
     from_date = datetime.now()
     date_range = 7
     to_date = from_date + timedelta(days=date_range)
-    return JsonResponse(get_film_by_id.call(cinema_id, film_id, from_date, to_date))
+    return JsonResponse(get_film_by_id.call(film_id, from_date, to_date, cinema_id))
 
 
 def get_ticket_type_request(request):

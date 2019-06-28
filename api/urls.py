@@ -5,7 +5,8 @@ from django.views.generic import RedirectView
 from api import views
 
 urlpatterns = [
-    path('get_location', views.get_location_request, name='get_location'),
+    path('get_location', views.get_location_request, name='get_current_location_request'),
+    path('get_current_location', views.get_current_location_request, name='get_location'),
     path('get_loc', RedirectView.as_view(url='/api/get_location', permanent=True)),
     path('get_cinema_by_location', views.get_cinema, name='get_cinema'),
     path('get_film', views.get_film_request, name='get_film'),
