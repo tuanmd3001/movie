@@ -46,17 +46,6 @@
         <!-- Initial Page, "data-name" contains page name -->
         {% block content %} {% endblock %}
     </div>
-{#    <div class="dialog-backdrop">#}
-{#        <div class="dialog dialog-buttons-1 modal-in dialog-custom">#}
-{#            <div class="dialog-title dialog-title-custom">Thông báo</div>#}
-{#            <div class="dialog-inner dialog-inner-custom">#}
-{#                {{ message }}#}
-{#            </div>#}
-{#            <a class="link dialog-button dialog-button-bold dialog-button-custom">#}
-{#                Đồng ý#}
-{#            </a>#}
-{#        </div>#}
-{#    </div>#}
 </div>
 </body>
 <script type="text/javascript" src="{% static 'fw7/js/framework7.bundle.min.js' %}"></script>
@@ -67,7 +56,7 @@
 {% if messages  %}
     <script>
         {% for message in messages %}
-            showDialog("{{ message }}");
+            showDialog("{{ message }}", {{ message.level }});
         {% endfor %}
     </script>
 {% endif %}

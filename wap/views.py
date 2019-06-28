@@ -91,6 +91,7 @@ def get_film_by_cinema(request, *args, **kwargs):
         'film_showing': film_showing,
         'film_coming': film_coming,
         'cinema_name': cinema_name,
+        'location_id': location_id,
         **kwargs
     })
 
@@ -230,11 +231,11 @@ def get_seats(request, *args, **kwargs):
             back_url = reverse('get_film_detail_by_cinema', kwargs={
                 'cinema_id': kwargs['cinema_id'],
                 'film_id': kwargs['film_id']
-            })
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
         else:
             back_url = reverse('get_film_detail', kwargs={
                 'film_id': kwargs['film_id']
-            })
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
     return render(request, 'wap/seats.html', {
         **kwargs,
         "back_url": back_url,

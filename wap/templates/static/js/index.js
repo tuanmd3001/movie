@@ -8,24 +8,24 @@ $$('#location_select_opener').on("click", function () {
     app.popup.open($$("#location_select_popup"), true)
 });
 
-function selectLocation(id, name) {
+function onLocationSelect(id, name) {
     $$('#selected_location').text(name).css('font-weight', 'bold');
     get_cinema(id).then(function (response) {
         if (response['code'] && response['code'] === "00") {
-            console.log(response)
             renderCinema(groupCinema(response['data']))
         }
         else {
+            $$('#cinema_list').empty();
             showDialog(response['message']);
         }
     }).catch(function (err) {
         showDialog('Kết nối máy chủ thất bại (00)');
-        console.log(err)
+        $$('#cinema_list').empty()
     })
 }
 
 function get_cinema(location_id) {
-    return app.request.promise.json(api_domain + "get_cinema_by_location", {
+    return app.request.promise.json(api_url + "get_cinema_by_location", {
         location_id: location_id,
         app_mobile: app_mobile
     })
@@ -64,7 +64,7 @@ function renderCinema(data) {
         htmlArr.push(
             '<div class="box-c box-c-radius box-c-margin-sm">\n' +
             '    <div class="no-padding">\n' +
-            '        <div class="list list-box" style="color: black">\n' +
+            '        <div class="list list-box accordion-list" style="color: black">\n' +
             '            <ul>\n' +
             '                <li class="accordion-item">\n' +
             '                    <a href="#" class="item-content item-link box-c__header">\n' +
@@ -209,7 +209,7 @@ function renderListFilm(data) {
 }
 
 function getListFilm() {
-    return app.request.promise.json(api_domain + "get_film", {
+    return app.request.promise.json(api_url + "get_film", {
         app_mobile: app_mobile
     })
 }

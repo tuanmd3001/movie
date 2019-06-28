@@ -17,14 +17,14 @@
             <table>
                 <tr>
                     <td class="left">
-                        <a href="{{ back_url }}?app_mobile={{ app_mobile }}" class="link nav-c__button nav-c__button--back external"></a>
+                        <a href="{{ back_url }}" class="link nav-c__button nav-c__button--back external"></a>
                     </td>
                     <td class="center">
                         <div class="nav-c__Text">
-                            {{ seats.cinemaName }}
+                            {{ seats.sessionInfo.cinemaName }}
                             <br>
                         </div>
-                        <div><span class="font-sm">{{ seats.roomName }} - {{ seats.sessionTime }}</span></div>
+                        <div><span class="font-sm">{{ seats.sessionInfo.room_name }} - {{ seats.sessionInfo.sessionTime | film_time:seats.sessionInfo.duration }}</span></div>
                     </td>
                     <td class="right">
                         <div class="nav-c__button"></div>
@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <div class="box-c margin-v-xs">
-                    <div class="block no-margin">{{ seats.nameVn }}</div>
+                    <div class="block no-margin">{{ seats.sessionInfo.filmNameVi }} - {{ seats.sessionInfo.versionId | get_version_name }}</div>
                 </div>
                 <div class="box-c tabs-wrap no-margin">
                     <div class="block no-margin height-100">

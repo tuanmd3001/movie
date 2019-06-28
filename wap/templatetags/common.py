@@ -56,6 +56,19 @@ def film_duration(minutes):
             duration += parsed[1] + " phút"
     return duration
 
+
+@register.filter
+def film_time(session_time, duration):
+    time = ''
+    if session_time and duration:
+        date = string_to_datetime(session_time)
+        if date:
+            time = date.strftime('%I:%M%p').lstrip('0').lower()
+            end_time = date + timedelta(minutes=duration)
+            if end_time:
+                time += ' ~ ' + end_time.strftime('%I:%M%p').lstrip('0').lower()
+    return time
+
 @register.filter
 def get_items(dict):
     return dict.items()
@@ -70,7 +83,7 @@ def get_list_value(list, index):
 
 @register.filter
 def get_version_name(version_id):
-    return VERSION_NAME.get(version_id)
+    return VERSION_NAME.get(version_id, "")
 
 class SetVarNode(template.Node):
 

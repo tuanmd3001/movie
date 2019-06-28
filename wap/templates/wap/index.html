@@ -38,18 +38,6 @@
                 {% include 'wap/index/tabs_header.html' %}
             </div>
             {% include 'wap/index/location_selector.html' %}
-            {#            <div class="dialog dialog-buttons-1 custom-dialog-phone modal-in" id="phone-dialog">#}
-            {#                <div class="dialog-inner">#}
-            {#                    <div class="dialog-title">Thông báo</div>#}
-            {#                    <div class="dialog-text">Hệ thống đặt vé xem phim cung cấp bởi VNPAY. Thông tin đặt vé vui#}
-            {#                        lòng liên hệ <a onclick="introDialog.close();phoneSupport.open();">1900555520</a></div>#}
-            {#                </div>#}
-            {#                <a>#}
-            {#                    <div class="dialog-buttons">#}
-            {#                        <span class="dialog-button">Đồng ý</span>#}
-            {#                    </div>#}
-            {#                </a>#}
-            {#            </div>#}
         </div>
     </div>
 {% endblock %}
@@ -70,6 +58,31 @@
 
         {% if location %}
             $$('[data-location="{{ location }}"]').trigger("click");
+        {% else %}
+            function selectLocation(location_id) {
+                if (location_id === undefined) {
+                    location_id = 93;
+                }
+                $$('[data-location="' + location_id + '"]').trigger("click");
+            }
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        app.request.promise.json("{% url 'get_location' %}", {
+                            app_mobile: current_app_mobile,
+                            lat: position.coords.latitude,
+                            long: position.coords.longitude
+                        }).then(function (response) {
+                            if (response['code'] === "00") {
+                                selectLocation(response['data']['location_id'])
+                            }
+                        }).catch(selectLocation)
+                    }, selectLocation);
+                } else {
+                    selectLocation();
+                }
+            }
+            getLocation();
         {% endif %}
         {% if not request.META.HTTP_REFERER and not messages %}
             phoneSupport = app.dialog.create({
