@@ -8,7 +8,7 @@
                         <div class="film-vert__item">
                             <div class="film-vert__poster lazy lazy-fade-in" data-background="{{ film.poster }}"></div>
                             <a class="link box-c-link external"
-                               href="{% url 'get_film_detail' film_id=film.filmId cinema_id=cinema_id %}"></a>
+                               href="{% url 'get_film_detail_by_cinema' film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"></a>
                             <div class="film-vert__title label-main">
                                 <b>
                                     {{ film.nameVn }}
@@ -21,7 +21,7 @@
                                 <div class="inline-middle">
                                     <div class="dot dot-blue"></div>
                                 </div>
-                                <div class="inline-middle">{{ film.duration }}</div>
+                                <div class="inline-middle">{{ film.duration | film_duration }}</div>
                             </div>
                             <div class="table table-100">
                                 <div class="td">
@@ -36,7 +36,7 @@
                                             <div class="color-black">{{ film.publishDate | string_to_datetime | date:"d/m/Y"  }}</div>
                                         </a>
                                     {% elif film.statusId == 2 %}
-                                        <a href="{% url 'get_film_detail' film_id=film.filmId cinema_id=cinema_id %}"
+                                        <a href="{% url 'get_film_detail_by_cinema' film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
                                            class="external link button-c-xs box-c-link-inside current2">
                                             Đặt vé
                                         </a>

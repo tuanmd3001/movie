@@ -31,6 +31,10 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    {% block style %} {% endblock %}
 </head>
 <body>
 <div id="app" class="ios-page-trans">
@@ -42,9 +46,30 @@
         <!-- Initial Page, "data-name" contains page name -->
         {% block content %} {% endblock %}
     </div>
+{#    <div class="dialog-backdrop">#}
+{#        <div class="dialog dialog-buttons-1 modal-in dialog-custom">#}
+{#            <div class="dialog-title dialog-title-custom">Thông báo</div>#}
+{#            <div class="dialog-inner dialog-inner-custom">#}
+{#                {{ message }}#}
+{#            </div>#}
+{#            <a class="link dialog-button dialog-button-bold dialog-button-custom">#}
+{#                Đồng ý#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
 </div>
 </body>
 <script type="text/javascript" src="{% static 'fw7/js/framework7.bundle.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/movie.js' %}"></script>
-{% block scripts %} {% endblock %}
+<script>
+    app_mobile = "{{ app_mobile }}";
+</script>
+{% if messages  %}
+    <script>
+        {% for message in messages %}
+            showDialog("{{ message }}");
+        {% endfor %}
+    </script>
+{% endif %}
+{% block scripts %}{% endblock %}
 </html>

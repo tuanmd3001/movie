@@ -4938,3 +4938,41 @@ td {
 .o-hidden{
    overflow: hidden;
 }
+
+.md .dialog-text {
+  text-align: center;
+}
+
+.custom-dialog, .custom-dialog-phone{
+   top: 35%
+}
+
+.custom-dialog-phone .dialog-title {
+  color: #161c21;
+  background: #fff;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.md .dialog-buttons {
+  border-top: 1px solid #e4ebf0;
+}
+
+.md .dialog-buttons {
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.md .dialog-buttons span {
+  color: #015ca5;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.film-vert__title b {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}

@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% load static %}
+{% load common %}
+{% load humanize %}
+
+{% block style %}
+    <style>
+        .box-c__content {
+            background-color: white
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="page page-dark">
+        <div class="nav-c">
+            <table>
+                <tr>
+                    <td class="left">
+                        <a href="{{ back_url }}?app_mobile={{ app_mobile }}" class="link nav-c__button nav-c__button--back external"></a>
+                    </td>
+                    <td class="center">
+                        <div class="nav-c__Text">
+                            {{ seats.cinemaName }}
+                            <br>
+                        </div>
+                        <div><span class="font-sm">{{ seats.roomName }} - {{ seats.sessionTime }}</span></div>
+                    </td>
+                    <td class="right">
+                        <div class="nav-c__button"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="page-content">
+            <div class="content__wrap content__wrap--list-fly no-padding">
+                <div class="minimap" id="minimap"></div>
+                <div class="box-list--int-1 flex-column height-100" style="overflow: hidden">
+                    <div class="content__wrap--list-fly theater theater-screen">
+                        <div class="theater-screen-text">MÀN HÌNH</div>
+                        <div id="zoom-theater">
+                            <div class="theater-map">
+                                <div class="theater-map__inner">
+                                    {% for row in seats.seats %}
+                                        {% set couple_code = '' %}
+                                        {% set couple_id = '' %}
+                                        <div class="theater-row">
+                                            {% for seat in row %}
+                                                {% if seat.status != 0 %}
+                                                    <div class="theater-row-item">
+                                                        <label class="theater-label">
+                                                            {% if seat.type == 3 and not couple_code %}
+                                                                {% set couple_id = seat.seatId %}
+                                                                {% set couple_code = seat.code %}
+                                                            {% elif seat.type == 3 and couple_code %}
+                                                                <div class="seats-ic seats-ic-booked"></div>
+                                                                <div class="seats-ic seats-ic-booked"></div>
+                                                                {% set couple_code = '' %}
+                                                            {% else %}
+                                                                <div class="seats-ic seats-ic-booked"></div>
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                {% else %}
+                                                    {% if seat.type == 0 %}
+                                                        <div class="theater-row-item">
+                                                            <label class="theater-label">
+                                                                <input type="checkbox" name="theater"
+                                                                       class="hidden theater-checkbox">
+                                                                <div class="seats-ic seats-ic-standard"
+                                                                     data-seatId={{ seat.seatId }}
+                                                                     data-code="{{ seat.code }}"></div>
+                                                            </label>
+                                                        </div>
+                                                    {% elif seat.type == 1 %}
+                                                        <div class="theater-row-item">
+                                                            <label class="theater-label">
+                                                                <input type="checkbox" name="theater"
+                                                                       class="hidden theater-checkbox">
+                                                                <div class="seats-ic seats-ic-vip"
+                                                                     data-seatId={{ seat.seatId }}
+                                                                     data-code="{{ seat.code }}"></div>
+                                                            </label>
+                                                        </div>
+                                                    {% elif seat.type == 2 %}
+                                                        <div class="theater-row-item">
+                                                            <label class="theater-label">
+                                                                <input type="checkbox" name="theater"
+                                                                       class="hidden theater-checkbox">
+                                                                <div class="seats-ic seats-ic-couple"
+                                                                     data-seatId={{ seat.seatId }}
+                                                                     data-code="{{ seat.code }}"></div>
+                                                            </label>
+                                                        </div>
+                                                    {% elif seat.type == 3 %}
+                                                        {% if couple_code %}
+                                                            <div class="theater-row-item">
+                                                                <label class="theater-label">
+                                                                    <input type="checkbox" name="theater"
+                                                                           class="hidden theater-checkbox">
+                                                                    <div class="seats-ic seats-ic-couple"
+                                                                         data-seatId="{{ couple_id }}"
+                                                                         data-code="{{ couple_code }}"></div>
+                                                                    <div class="seats-ic seats-ic-couple"
+                                                                         data-seatId={{ seat.seatId }}
+                                                                         data-code="{{ seat.code }}"></div>
+                                                                </label>
+                                                            </div>
+                                                            {% set couple_id = '' %}
+                                                            {% set couple_code = '' %}
+                                                        {% else %}
+                                                            <div class="theater-row-item">
+                                                                <label class="theater-label">
+                                                                </label>
+                                                            </div>
+                                                            {% set couple_id = seat.seatId %}
+                                                            {% set couple_code = seat.code %}
+                                                        {% endif %}
+                                                    {% elif seat.type == 5 %}
+                                                        <div class="theater-row-item">
+                                                            <label class="theater-label">
+                                                                <input type="checkbox" name="theater"
+                                                                       class="hidden theater-checkbox">
+                                                                <div class="seats-ic seats-ic-deluxe"
+                                                                     data-seatId={{ seat.seatId }}
+                                                                     data-code="{{ seat.code }}"></div>
+                                                            </label>
+                                                        </div>
+                                                    {% else %}
+                                                        {% if seat.code %}
+                                                            <div class="theater-name">{{ seat.code }}</div>
+                                                            <div class="theater-name-right">{{ seat.code }}</div>
+                                                        {% else %}
+                                                            <div class="theater-row-item">
+                                                                <label class="theater-label">
+                                                                    <div class="seats-ic seats-ic-blank"></div>
+                                                                </label>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-c margin-v-md">
+                    <div class="block no-margin">
+                        <div class="table table-100 ic-s-map">
+                            <div class="td">
+                                <div class="ic-s ic-s-booked"></div>
+                                <div class="label-sub font-xs center">Đã đặt</div>
+                            </div>
+                            <div class="td">
+                                <div class="ic-s ic-s-chosing"></div>
+                                <div class="label-sub font-xs center">Đang chọn</div>
+                            </div>
+                            <div class="td">
+                                <div class="ic-s ic-s-standard"></div>
+                                <div class="label-sub font-xs center">Standand</div>
+                            </div>
+                            <div class="td">
+                                <div class="ic-s ic-s-delux"></div>
+                                <div class="label-sub font-xs center">Deluxe</div>
+                            </div>
+                            <div class="td">
+                                <div class="ic-s ic-s-vip"></div>
+                                <div class="label-sub font-xs center">VIP</div>
+                            </div>
+                            <div class="td">
+                                <div class="ic-s ic-s-couple"></div>
+                                <div class="label-sub font-xs center">Couple</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-c margin-v-xs">
+                    <div class="block no-margin">{{ seats.nameVn }}</div>
+                </div>
+                <div class="box-c tabs-wrap no-margin">
+                    <div class="block no-margin height-100">
+                        <div class="table table-100 height-100">
+                            <div class="td left line-height-1-2">
+                                <div class="label-sub" id="total_seat">0 ghế</div>
+                                <div class="label-main"><b id="total_price">0 VND</b></div>
+                            </div>
+                            <div class="td right">
+                                <a href="" class="link button-c button-c-md">Thanh toán</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/pinchzoom.min.js' %}"></script>
+    <script>
+        var myElement = document.getElementById("zoom-theater");
+        var pz = new PinchZoom.default(myElement, {
+            minZoom: 1,
+            maxZoom: 10,
+            tapZoomFactor: 1,
+            zoomOutFactor: 1,
+            onZoomStart: function (object, event) {
+                $$('.theater-label').attr('for', 'none');
+            },
+            onZoomEnd: function (object, event) {
+                setTimeout(function () {
+                    $$('.theater-label').removeAttr('for', '');
+                }, 2);
+            },
+            onDragStart: function (object, event) {
+                $$('.theater-label').attr('for', 'none');
+            },
+            onDragEnd: function (object, event) {
+                setTimeout(function () {
+                    $$('.theater-label').removeAttr('for', '');
+                }, 2);
+            }
+        });
+        pz.handleDoubleTap = function () {
+        };
+        var seats = [];
+        var selectedSeats = [];
+        {% for row in seats.seats %}{% for seat in row %}{% if seat.status == 0 and seat.type|in_list:'0,1,2,3,5' %}
+        seats.push({{ seat.data | safe }});
+        {% endif %}{% endfor %}{% endfor %}
+        $$("input[type='checkbox'][name='theater']").on('change', function () {
+            var input = this;
+            $$(this).closest('label').find('.seats-ic').each(function () {
+                var seatId = $$(this).data('seatId');
+                var seatCode = $$(this).data('code');
+                if (input.checked) {
+                    var seatInfo = seats.find(x => x['seatDataId'] === parseInt(seatId));
+                    if (seatInfo){
+                        selectedSeats[seatCode] = seatInfo
+                    }
+                }
+                else {
+                    delete selectedSeats[seatCode]
+                }
+            });
+            totalChecked();
+        });
+        function totalChecked() {
+            var total_price = 0;
+            var total_seat = 0;
+            for (var code in selectedSeats){
+                if (selectedSeats.hasOwnProperty(code)){
+                    total_price += selectedSeats[code]['price'];
+                    total_seat ++;
+                }
+            }
+            $$("#total_seat").text(total_seat + " ghế");
+            $$("#total_price").text(total_price + " VND");
+        }
+    </script>
+{% endblock %}

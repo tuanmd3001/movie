@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div data-name="error" class="page">
+        <div class="page-content" style="height: 100%">
+            <div class="dialog-backdrop backdrop-in">
+                <div class="dialog dialog-buttons-1 modal-in dialog-custom">
+                    <div class="dialog-title dialog-title-custom">Thông báo</div>
+                    <div class="dialog-inner dialog-inner-custom">
+                        {{ message }}
+                    </div>
+                    <a class="link dialog-button dialog-button-bold dialog-button-custom">
+                        Đồng ý
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
