@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 
 from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order, get_film, \
-    get_film_by_id, get_location
+    get_film_by_id, get_location, get_my_ticket, get_ticket_detail
 import json
 
 from api.services.error_code import ERROR_MISSING_PARAM, error_message, ERROR_INVALID_PARAM
@@ -110,6 +110,32 @@ def get_seats_request(request):
     if not language:
         language = 'VN'
     return JsonResponse(get_seats.call(app_mobile, ss_id, book_service_id, request_id, language))
+
+
+def get_my_ticket_request(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    language = check_param(request.GET, 'language')
+    source_book = check_param(request.GET, 'source_book')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not language:
+        language = 'VN'
+    if not source_book or source_book == '':
+        return JsonResponse(get_my_ticket.call(app_mobile))
+    return JsonResponse(get_my_ticket.call(app_mobile, source_book))
+
+
+def get_ticket_detail_request(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    language = check_param(request.GET, 'language')
+    query_id = check_param(request.GET, 'query_id')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not query_id:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'query_id')
+    if not language:
+        language = 'VN'
+    return JsonResponse(get_ticket_detail.call(query_id))
 
 
 # {
