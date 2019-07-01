@@ -2,17 +2,55 @@ app.searchbar.create({
     el: '#location_select_popup .searchbar',
     searchContainer: '#location_select_popup .list',
     searchIn: '#location_select_popup .item-title'
-})
-
+});
 $$('#location_select_opener').on("click", function () {
     app.popup.open($$("#location_select_popup"), true)
 });
 
-function onLocationSelect(id, name) {
+app.searchbar.create({
+    el: '#film-search .searchbar',
+    searchContainer: '#film-search .list',
+    searchIn: '#film-search .item-title'
+});
+$$('#search-film-btn').on("click", function () {
+    app.popup.open($$("#film-search"), true)
+});
+
+function selectLocation(location_id) {
+    if (location_id === undefined) {
+        location_id = 93;
+    }
+    $$('[data-location="' + location_id + '"]').prop('checked', true).trigger("click");
+}
+
+function getLocation(lat, lon) {
+    app.request.promise.json(api_url + 'get_current_location', {
+        app_mobile: current_app_mobile,
+        lat: lat,
+        long: lon
+    }).then(function (response) {
+        if (response['code'] === "00") {
+            selectLocation(response['data']['location_id'])
+        }
+    }).catch(selectLocation)
+}
+
+function getPosition() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            getLocation(position.coords.latitude, position.coords.longitude)
+        }, getLocation);
+    }
+    else {
+        getLocation()
+    }
+}
+
+function onLocationSelect(location_id, name) {
     $$('#selected_location').text(name).css('font-weight', 'bold');
-    get_cinema(id).then(function (response) {
+    get_cinema(location_id).then(function (response) {
         if (response['code'] && response['code'] === "00") {
-            renderCinema(groupCinema(response['data']))
+            renderCinema(groupCinema(response['data']), location_id)
         }
         else {
             $$('#cinema_list').empty();
@@ -27,7 +65,7 @@ function onLocationSelect(id, name) {
 function get_cinema(location_id) {
     return app.request.promise.json(api_url + "get_cinema_by_location", {
         location_id: location_id,
-        app_mobile: app_mobile
+        app_mobile: current_app_mobile
     })
 }
 
@@ -42,7 +80,7 @@ function groupCinema(data) {
     return dataArr;
 }
 
-function renderCinema(data) {
+function renderCinema(data, location_id) {
     var htmlArr = [];
     for (var groupName in data) {
         var groupCinemaArr = [];
@@ -53,7 +91,7 @@ function renderCinema(data) {
             }
             groupCinemaArr.push(
                 '<li>\n' +
-                '  <a href="' + cinema_url + cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '" class="item-content link external">\n' +
+                '  <a href="' + cinema_url + cinema['location_id'] + '/' +cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '" class="item-content link external">\n' +
                 '      <div class="item-inner item-inner-custom no-padding-left">\n' +
                 '      <div class="item-title color-black">' + cinema['cinema_name'] + '</div>\n' +
                 '      </div>\n' +
@@ -184,15 +222,28 @@ function renderFilmSlideItem(film, is_showing) {
     return html
 }
 
+function renderFilmSearchItem(film) {
+    return '<li>\n' +
+        '    <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '" class="link item-radio item-radio-location item-content external">\n' +
+        '        <div class="item-inner item-inner-custom d-block">\n' +
+        '            <div class="item-title color-black">' + film['nameVn'] + '</div>\n' +
+        '            <div class="font-xs clrgrey">' + film['category'] + '</div>\n' +
+        '        </div>\n' +
+        '    </a>\n' +
+        '</li>'
+}
+
 function renderListFilm(data) {
     var showing_films = [];
     var coming_films = [];
     var showing_films_slide = [];
     var coming_films_slide = [];
+    var showing_films_search = [];
     data.forEach(function (film) {
         if (film['statusId'] === 2) {
             showing_films.push(renderFilmListItem(film, true));
             showing_films_slide.push(renderFilmSlideItem(film, true));
+            showing_films_search.push(renderFilmSearchItem(film))
         }
         else if (film['statusId'] === 1) {
             coming_films.push(renderFilmListItem(film, false));
@@ -202,20 +253,24 @@ function renderListFilm(data) {
             console.log(film)
         }
     });
+    // list film vertical
     $$("#film-showing .film-vert").html("").append(showing_films.join("\n"));
     $$("#film-coming .film-vert").html("").append(coming_films.join("\n"));
+    // list film slide
     $$("#film-slide-showing .swiper-wrapper").html("").append(showing_films_slide.join("\n"));
     $$("#film-slide-coming .swiper-wrapper").html("").append(coming_films_slide.join("\n"));
+    // list film in search
+    $$("#list-film-search").html("").append(showing_films_search.join("\n"));
 }
 
 function getListFilm() {
     return app.request.promise.json(api_url + "get_film", {
-        app_mobile: app_mobile
+        app_mobile: current_app_mobile
     })
 }
 
 $$("#tab-film").on('tab:show', function (event, ui) {
-    $$('#search-film').css('display', '');
+    $$('#search-film-btn').css('display', '');
     $$('#search-blank').css('display', 'none');
     $$('.film-toggle--list').trigger("click");
     getListFilm().then(function (response) {
@@ -233,7 +288,7 @@ $$("#tab-film").on('tab:show', function (event, ui) {
 });
 
 $$("#tab-film").on('tab:hide', function (event, ui) {
-    $$('#search-film').css('display', 'none');
+    $$('#search-film-btn').css('display', 'none');
     $$('#search-blank').css('display', '');
 });
 

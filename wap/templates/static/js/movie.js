@@ -10,7 +10,7 @@ var app = new Framework7({
 });
 const api_url = '/api/';
 var $$ = Dom7;
-var app_mobile = "";
+var current_app_mobile = "";
 app.lazy.create('.page');
 
 function showDialog(message, level) {

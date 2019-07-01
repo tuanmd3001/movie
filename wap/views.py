@@ -75,7 +75,6 @@ def get_film_by_cinema(request, *args, **kwargs):
     cinema_name = "Chọn phim"
     film_showing = []
     film_coming = []
-    location_id = None
     film_list = call_service(request, get_film, kwargs['cinema_id'])
     if film_list:
         for film in film_list:
@@ -85,13 +84,10 @@ def get_film_by_cinema(request, *args, **kwargs):
                 film_coming.append(film)
             elif film['statusId'] == 2:
                 film_showing.append(film)
-            if not location_id and 'locationId' in film and film['locationId']:
-                location_id = film['locationId']
     return render(request, 'wap/film_by_cinema.html', {
         'film_showing': film_showing,
         'film_coming': film_coming,
         'cinema_name': cinema_name,
-        'location_id': location_id,
         **kwargs
     })
 
