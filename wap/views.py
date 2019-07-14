@@ -34,7 +34,7 @@ def has_valid_token(function):
         else:
             code, message = verify_token(token=params['token'])
             if code != '00':
-                return HttpResponseRedirect(URL_BACK_TO_APP + "&code=%s&message=%s" % (code, message))
+                return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % (code, message))
             else:
                 return function(request, *args, **kwargs)
     return wrap
@@ -312,6 +312,7 @@ def ticket_detail(request, *args, **kwargs):
         })
     else:
         return custom_redirect('index', app_mobile=kwargs['app_mobile'], tab='ticket')
+
 
 @has_app_mobile
 def order(request, *args, **kwargs):

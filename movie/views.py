@@ -1,32 +1,35 @@
 
 
 import json
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.urls import reverse
 
-from api.services.config import PASSWORD
+from api.services.config import PASSWORD, URL_BACK_TO_APP
 from movie.AESCipher import AESCipher
 
 
 def index(request, *args, **kwargs):
     if request.method == "GET":
         params = request.GET
-        password = '12345678'
+        password = PASSWORD
         aes_cipher = AESCipher(password)
         if 'data' in params:
             raw_data = aes_cipher.decrypt(params['data'])
             result = get_data_from_raw(raw_data)
             return custom_redirect('index', *(), **(result['data']))
         else:
-            return HttpResponseRedirect('')
+            return HttpResponseRedirect(URL_BACK_TO_APP +
+                                        "&reason=error&code=%s&message=%s" %
+                                        ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
     else:
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(URL_BACK_TO_APP +
+                                    "&reason=error&code=%s&message=%s" %
+                                    ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
 
 
 def custom_redirect(url_name, *args, **kwargs):
