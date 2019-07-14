@@ -51,9 +51,12 @@ def verify_token(token):
         app_mobile = list_data[4]
         timestamp = list_data[5]
         now = datetime.now().timestamp()
-        if isinstance(timestamp, numbers.Integral) and now < timestamp + 1800:
-            return '00', 'Token hợp lệ.'
-        else:
+        try:
+            if now < float(timestamp) + 1800:
+                return '00', 'Token hợp lệ.'
+            else:
+                return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+        except:
             return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
     else:
         return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
