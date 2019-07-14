@@ -324,7 +324,7 @@ def order(request, *args, **kwargs):
         kwargs['language'] = 'VN'
         order = call_service(request, create_order, kwargs)
         if order is not None:
-            return redirect('https://google.com.vn')
+            return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=payment&paycode=%s&queryid=%s" % (order['payCode'], order['queryId']))
         else:
             if 'cinema_id' in kwargs and 'location_id' in kwargs and 'film_id' in kwargs:
                 return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'],
