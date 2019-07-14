@@ -13,4 +13,4 @@ def call(post_data):
     post_data['channel_book'] = 'SCB|' + language
     r = requests.post(SERVICE_URLS['create_order'], json=post_data)
     result = r.json()
-    return result['data']
+    return result

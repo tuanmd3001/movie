@@ -46,6 +46,7 @@
     <script>
         var cinema_url = "{% url 'get_film_by_cinema' location_id=0 cinema_id=0 %}".replace('0/0/', '');
         var movie_url = "{% url 'get_film_detail' film_id=0 %}".replace('0/', '');
+        var ticket_url = "{% url 'get_ticket_detail' ticket_id=0 %}".replace('0/', '');
         current_app_mobile = '{{ app_mobile }}'
     </script>
     <script src="{% static 'js/index.js' %}"></script>
@@ -62,21 +63,7 @@
             getPosition();
         {% endif %}
         {% if not request.META.HTTP_REFERER and not messages %}
-            phoneSupport = app.dialog.create({
-                title: "Thông báo",
-                text: 'Bạn có muốn thực hiện cuộc gọi tới số 1900555520 để được hỗ trợ không?',
-                buttons: [
-                    {text: 'Hủy'},
-                    {text: '<a href="tel:1900555520" class="external">Gọi</a>'}
-                ],
-                cssClass: "custom-dialog"
-            });
-            introDialog = app.dialog.create({
-                title: "Thông báo",
-                text: 'Hệ thống đặt vé xem phim cung cấp bởi VNPAY. Thông tin đặt vé vui lòng liên hệ <a onclick="introDialog.close();phoneSupport.open();">1900555520</a>',
-                buttons: [{text: 'Đồng ý'}],
-                cssClass: "custom-dialog-phone"
-            }).open();
+            introDialog.open();
         {% endif %}
     </script>
 {% endblock %}

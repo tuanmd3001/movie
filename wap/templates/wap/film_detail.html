@@ -10,7 +10,7 @@
                     <tr>
                         <td class="left">
                             {% if cinema_id %}
-                                <a href="{% url 'get_film_by_cinema' cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"
+                                <a href="{% url 'get_film_by_cinema' location_id=location_id cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"
                                    class="link nav-c__button nav-c__button--back external"></a>
                             {% else %}
                                 <a href="{% url 'index' %}?app_mobile={{ app_mobile }}&tab=film"
@@ -18,35 +18,42 @@
                             {% endif %}
                         </td>
                         <td class="center">
-                            <div class="chose-floor chose-tab">
-                                <table class="">
-                                    <tbody>
-                                    <tr>
-                                        <td class="width-50">
-                                            <a href="#tab-detail"
-                                               class="tab-link {% if not is_booking %}tab-link-active{% endif %}">
-                                                <label>
-                                                    <div class="chose-tab__inner white">
-                                                        <b>Thông tin</b>
-                                                    </div>
-                                                </label>
-                                            </a>
-                                        </td>
-                                        <td class="width-50">
-                                            <a href="#tab-booking"
-                                               class="tab-link {% if is_booking %}tab-link-active{% endif %}">
-                                                <label>
-                                                    <div class="chose-tab__inner white">
-                                                        <b>Lịch chiếu</b>
-                                                    </div>
-                                                </label>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            {% if film.statusId == 2 %}
+                                <div class="chose-floor chose-tab">
+                                    <table class="">
+                                        <tbody>
+                                        <tr>
+                                            <td class="width-50">
+                                                <a href="#tab-detail"
+                                                   class="tab-link {% if not is_booking %}tab-link-active{% endif %}">
+                                                    <label>
+                                                        <div class="chose-tab__inner white">
+                                                            <b>Thông tin</b>
+                                                        </div>
+                                                    </label>
+                                                </a>
+                                            </td>
+                                            <td class="width-50">
+                                                <a href="#tab-booking"
+                                                   class="tab-link {% if is_booking %}tab-link-active{% endif %}">
+                                                    <label>
+                                                        <div class="chose-tab__inner white">
+                                                            <b>Lịch chiếu</b>
+                                                        </div>
+                                                    </label>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="nav-c__Text">
+                                    Thông tin
+                                </div>
+                            {% endif %}
                         </td>
+
                         <td class="right">
                             <a href="" class="nav-c__button"></a>
                         </td>
@@ -69,32 +76,32 @@
                                             <div class="box-c box-c-margin-sm">
                                                 <div class="box-c__header">
                                                     <div class="table table-100">
-                                                        <div class="td">
-                                                            {{ film.nameVn }}
+                                                        <div class="td two-line">
+                                                            {% if film.nameVn %}{{ film.nameVn }}{% else %}Đang cập nhật{% endif %}
                                                         </div>
                                                         <div class="td right">
-                                                            <div class="pills table pills--2">
+                                                            <div class="pills table pills--2" style="width: 50px">
                                                                 <div class="pills-left ic-imdb td"></div>
-                                                                <div class="pills-right td font-xs">{{ film.imdbPoint }}</div>
+                                                                <div class="pills-right td font-xs">{{ film.imdbPoint | imdb }}</div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="box-c__content no-padding-bottom">
                                                     <div class="font-xs clrgrey margin-v-sms">
-                                                        {{ film.category }}
+                                                        {% if film.category %}{{ film.category }}{% else %}Đang cập nhật{% endif %}
                                                     </div>
                                                     <div class="margin-v-xs">
-                                                        <div class="tags">{{ film.publishDate | string_to_datetime | date:"d/m" }}</div>
-                                                        <div class="tags">{{ film.duration }} phút</div>
-                                                        <div class="tags">{{ film.version }}</div>
+                                                        <div class="tags">{% if film.publishDate %}{{ film.publishDate | string_to_datetime | date:"d/m" }}{% else %}Đang cập nhật{% endif %}</div>
+                                                        <div class="tags">{{ film.duration | film_duration }}</div>
+                                                        <div class="tags">{% if film.version %}{{ film.version }}{% else %}Đang cập nhật{% endif %}</div>
                                                     </div>
                                                     <div class="margin-v-sms">
                                                         <div class="color-black margin-v-xs">
                                                             <span class="clrblue"><b>Nội dung:</b></span>
                                                         </div>
                                                         <div class="color-black margin-v-xs">
-                                                            {{ film.description }}
+                                                            {% if film.description %}{{ film.description }}{% else %}Đang cập nhật{% endif %}
                                                         </div>
                                                     </div>
                                                     <div class="margin-v-sms">
@@ -102,205 +109,217 @@
                                                             <span class="clrblue"><b>Diễn viên:</b></span>
                                                         </div>
                                                         <div class="color-black margin-v-xs">
-                                                            {{ film.listActors }}
+                                                            {% if film.listActors %}{{ film.listActors }}{% else %}Đang cập nhật{% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="margin-v-sms">
+                                                        <div class="color-black margin-v-xs">
+                                                            <span class="clrblue"><b>Đạo diễn:</b></span>
+                                                        </div>
+                                                        <div class="color-black margin-v-xs">
+                                                            {% if film.director %}{{ film.director }}{% else %}Đang cập nhật{% endif %}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="margin-v-sm">
-                                            <a href="#tab-booking" class="tab-link button-c current o-hidden">Đặt vé</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="tab-booking" class="page-content tab ">
-                                    <div class="block no-margin height-100 content__wrap--list-fly flex-column">
-                                        <div class="box-c box-c-margin-sm margin-v-sm">
-                                            <div class="box-c__content no-padding">
-                                                <div class="swiper-container swiper-container-date">
-                                                    <div class="swiper-wrapper">
-                                                        {% for date in dates %}
-                                                            <div class="swiper-slide booking-date">
-                                                                <label class="link orange-ripple tab-link session-tab-link"
-                                                                       data-tab="#session_{{ date | date:"dmY" }}">
-                                                                    <input type="radio" name="date"
-                                                                           class="booking-date-radio hidden">
-                                                                    <div class="booking-date__inner">
-                                                                        <div class="label-main">
-                                                                            <b>{{ date | date:"d" }}</b>
-                                                                        </div>
-                                                                        <div class="font-xs">{{ date | get_day_in_week }}</div>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="box-list--int-1 flex-column">
-                                            {% if cinema_id %}
-                                                <div class="box-c">
-                                                    <div class="box-c-margin-sm">
-                                                        <div class="box-c__content no-padding-bottom">
-                                                            <div class="tabs-animated-wrap">
-                                                                <div class="tabs">
-                                                                    {% for date in dates %}
-                                                                        <div class="tab session-tab"
-                                                                             id="session_{{ date | date:"dmY" }}">
-                                                                            {% if sessions|get_session_by_date:date %}
-                                                                                <div class="margin-v-sm">
-                                                                                    <div class="margin-v-xs">
-                                                                                        <div class="label-main margin-v-xxs">
-                                                                                            <span class="clrblue"><b>{{ film.nameVn }}</b></span>
-                                                                                        </div>
-                                                                                        <div class="font-xs clrgrey">{{ film.cinemaName }}</div>
-                                                                                    </div>
-                                                                                    {% for version in sessions|get_session_by_date:date %}
-                                                                                        <div class="margin-v-xs">
-                                                                                            <div class="table booking-time-wrap">
-                                                                                                <div class="td">
-                                                                                                    <div class="label-main booking-time__item">
-                                                                                                        <b>{{ version|get_version_name }}</b>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="td">
-                                                                                                    {% for session in sessions|get_session_by_date:date|get_dict_value:version %}
-                                                                                                        <div class="booking-time__item">
-                                                                                                            {% if session.book_service_id != 4 %}
-                                                                                                                <a href="{% url 'get_ticket_type_by_cinema' cinema_id=cinema_id film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
-                                                                                                                   class="link external">
-                                                                                                                    {{ session|get_session_time }}
-                                                                                                                </a>
-                                                                                                            {% else %}
-                                                                                                                <a href="{% url 'get_seats_by_cinema' cinema_id=cinema_id film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
-                                                                                                                   class="link external">
-                                                                                                                    {{ session|get_session_time }}
-                                                                                                                </a>
-                                                                                                            {% endif %}
-                                                                                                        </div>
-                                                                                                    {% endfor %}
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    {% endfor %}
-                                                                                </div>
-                                                                            {% else %}
-                                                                                <div class="box-c__item center">
-                                                                                    <img src="{% static 'img/history-blank.svg' %}"
-                                                                                         alt="">
-                                                                                    <div class="p-plank__text">
-                                                                                        Hiện chúng tôi chưa có lịch
-                                                                                        chiếu
-                                                                                        nào vào ngày này
-                                                                                    </div>
-                                                                                </div>
-                                                                            {% endif %}
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% else %}
-                                                <div class="tabs">
-                                                    {% for date in dates %}
-                                                        <div class="tab session-tab"
-                                                             id="session_{{ date | date:"dmY" }}">
-                                                            {% if sessions|get_session_by_date:date %}
-                                                                <div class="accordion-list">
-                                                                    <div class="list list-box accordion-list"
-                                                                         style="color: black">
-                                                                        <ul>
-                                                                            {% for key1, cinema_group in sessions|get_session_by_date:date|get_items %}
-                                                                                <li class="accordion-item box-c box-c-margin-sm box-c-radius">
-                                                                                    <a href="#"
-                                                                                       class="item-content item-link box-c__header">
-                                                                                        <div>
-                                                                                            <img src="{{ cinema_group.info.cinemaLogo }}"
-                                                                                                 alt=""
-                                                                                                 width="24"
-                                                                                                 class="v-middle margin-r-xs">
-                                                                                            <div class="inline-middle">
-                                                                                                {{ cinema_group.info.cinemaGroupName }}
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <img class="dropdown-ic"
-                                                                                             src="{% static 'img/ic_dropdown.svg' %}"
-                                                                                             alt="">
-                                                                                    </a>
-                                                                                    <div class="accordion-item-content">
-                                                                                        <div class="box-c__content no-padding-bottom">
-                                                                                            {% for key2, cinema in cinema_group.cinemas|get_items %}
-                                                                                                <div class="box-c__item">
-                                                                                                    <div class="margin-v-xs">
-                                                                                                        <div class="label-main margin-v-xxs">
-                                                                                                            <b>{{ cinema.info.cinemaName }}</b>
-                                                                                                        </div>
-                                                                                                        <div class="font-xs clrgrey">
-                                                                                                            {{ cinema.info.cinemaAddress }}
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    {% for version, sessions in cinema.sessions|get_items %}
-                                                                                                        <div class="margin-v-xs">
-                                                                                                            <div class="table booking-time-wrap">
-                                                                                                                <div class="td">
-                                                                                                                    <div class="label-main booking-time__item">
-                                                                                                                        <b>{{ version|get_version_name }}</b>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="td">
-                                                                                                                    {% for session in sessions %}
-                                                                                                                        <div class="booking-time__item">
-                                                                                                                            {% if session.book_service_id != 4 %}
-                                                                                                                                <a href="{% url 'get_ticket_type' film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
-                                                                                                                                   class="link external">
-                                                                                                                                    {{ session|get_session_time }}
-                                                                                                                                </a>
-                                                                                                                            {% else %}
-                                                                                                                                <a href="{% url 'get_seats' film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
-                                                                                                                                   class="link external">
-                                                                                                                                    {{ session|get_session_time }}
-                                                                                                                                </a>
-                                                                                                                            {% endif %}
-                                                                                                                        </div>
-                                                                                                                    {% endfor %}
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    {% endfor %}
-                                                                                                </div>
-                                                                                            {% endfor %}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                            {% endfor %}
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            {% else %}
-                                                                <div class="box-c-margin-sm">
-                                                                    <div class="box-c__content no-padding-bottom">
-                                                                        <div class="box-c__item center">
-                                                                            <img src="{% static 'img/history-blank.svg' %}"
-                                                                                 alt="">
-                                                                            <div class="p-plank__text">
-                                                                                Hiện chúng tôi chưa có lịch
-                                                                                chiếu
-                                                                                nào vào ngày này
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
+                                            {% if film.statusId == 2 %}
+                                                <a href="#tab-booking" class="tab-link button-c current o-hidden">Đặt vé</a>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
+                                {% if film.statusId == 2 %}
+                                    <div id="tab-booking" class="page-content tab ">
+                                        <div class="block no-margin height-100 content__wrap--list-fly flex-column">
+                                            <div class="box-c box-c-margin-sm margin-v-sm">
+                                                <div class="box-c__content no-padding">
+                                                    <div class="swiper-container swiper-container-date">
+                                                        <div class="swiper-wrapper">
+                                                            {% for date in dates %}
+                                                                <div class="swiper-slide booking-date">
+                                                                    <label class="link orange-ripple tab-link session-tab-link"
+                                                                           data-tab="#session_{{ date | date:"dmY" }}">
+                                                                        <input type="radio" name="date"
+                                                                               class="booking-date-radio hidden">
+                                                                        <div class="booking-date__inner">
+                                                                            <div class="label-main">
+                                                                                <b>{{ date | date:"j/n" }}</b>
+                                                                            </div>
+                                                                            <div class="font-xs">{{ date | get_day_in_week }}</div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-list--int-1 flex-column">
+                                                {% if cinema_id %}
+                                                    <div class="box-c">
+                                                        <div class="box-c-margin-sm">
+                                                            <div class="box-c__content no-padding-bottom">
+                                                                <div class="tabs-animated-wrap">
+                                                                    <div class="tabs">
+                                                                        {% for date in dates %}
+                                                                            <div class="tab session-tab"
+                                                                                 id="session_{{ date | date:"dmY" }}">
+                                                                                {% if sessions|get_session_by_date:date %}
+                                                                                    <div class="margin-v-sm">
+                                                                                        <div class="margin-v-xs">
+                                                                                            <div class="label-main margin-v-xxs">
+                                                                                                <span class="clrblue two-line"><b>{{ film.nameVn }}</b></span>
+                                                                                            </div>
+                                                                                            <div class="font-xs clrgrey">{{ film.cinemaName }}</div>
+                                                                                        </div>
+                                                                                        {% for version in sessions|get_session_by_date:date %}
+                                                                                            <div class="margin-v-xs">
+                                                                                                <div class="table booking-time-wrap">
+                                                                                                    <div class="td">
+                                                                                                        <div class="label-main booking-time__item">
+                                                                                                            <b>{{ version|get_version_name }}</b>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="td">
+                                                                                                        {% for session in sessions|get_session_by_date:date|get_dict_value:version %}
+                                                                                                            <div class="booking-time__item">
+                                                                                                                {% if session.book_service_id != 4 %}
+                                                                                                                    <a href="{% url 'get_ticket_type_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                       class="link external">
+                                                                                                                        {{ session|get_session_time }}
+                                                                                                                    </a>
+                                                                                                                {% else %}
+                                                                                                                    <a href="{% url 'get_seats_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                       class="link external">
+                                                                                                                        {{ session|get_session_time }}
+                                                                                                                    </a>
+                                                                                                                {% endif %}
+                                                                                                            </div>
+                                                                                                        {% endfor %}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                {% else %}
+                                                                                    <div class="box-c__item center">
+                                                                                        <img src="{% static 'img/history-blank.svg' %}"
+                                                                                             alt="">
+                                                                                        <div class="p-plank__text">
+                                                                                            Hiện chúng tôi chưa có lịch
+                                                                                            chiếu
+                                                                                            nào vào ngày này
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endif %}
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="tabs">
+                                                        {% for date in dates %}
+                                                            <div class="tab session-tab"
+                                                                 id="session_{{ date | date:"dmY" }}">
+                                                                {% if sessions|get_session_by_date:date %}
+                                                                    <div class="accordion-list">
+                                                                        <div class="list list-box accordion-list"
+                                                                             style="color: black">
+                                                                            <ul>
+                                                                                {% for key1, cinema_group in sessions|get_session_by_date:date|get_items %}
+                                                                                    <li class="accordion-item box-c box-c-margin-sm box-c-radius">
+                                                                                        <a href="#"
+                                                                                           class="item-content item-link box-c__header">
+                                                                                            <div>
+                                                                                                <img src="{{ cinema_group.info.cinemaLogo }}"
+                                                                                                     alt=""
+                                                                                                     width="24"
+                                                                                                     class="v-middle margin-r-xs">
+                                                                                                <div class="inline-middle">
+                                                                                                    {{ cinema_group.info.cinemaGroupName }}
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <img class="dropdown-ic"
+                                                                                                 src="{% static 'img/ic_dropdown.svg' %}"
+                                                                                                 alt="">
+                                                                                        </a>
+                                                                                        <div class="accordion-item-content">
+                                                                                            <div class="box-c__content no-padding-bottom">
+                                                                                                {% for key2, cinema in cinema_group.cinemas|get_items %}
+                                                                                                    <div class="box-c__item">
+                                                                                                        <div class="margin-v-xs">
+                                                                                                            <div class="label-main margin-v-xxs">
+                                                                                                                <b>{{ cinema.info.cinemaName }}</b>
+                                                                                                            </div>
+                                                                                                            <div class="font-xs clrgrey">
+                                                                                                                {{ cinema.info.cinemaAddress }}
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        {% for version, sessions in cinema.sessions|get_items %}
+                                                                                                            <div class="margin-v-xs">
+                                                                                                                <div class="table booking-time-wrap">
+                                                                                                                    <div class="td">
+                                                                                                                        <div class="label-main booking-time__item">
+                                                                                                                            <b>{{ version|get_version_name }}</b>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="td">
+                                                                                                                        {% for session in sessions %}
+                                                                                                                            <div class="booking-time__item">
+                                                                                                                                {% if session.book_service_id != 4 %}
+                                                                                                                                    <a href="{% url 'get_ticket_type' film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                                       class="link external">
+                                                                                                                                        {{ session|get_session_time }}
+                                                                                                                                    </a>
+                                                                                                                                {% else %}
+                                                                                                                                    <a href="{% url 'get_seats' film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                                       class="link external">
+                                                                                                                                        {{ session|get_session_time }}
+                                                                                                                                    </a>
+                                                                                                                                {% endif %}
+                                                                                                                            </div>
+                                                                                                                        {% endfor %}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        {% endfor %}
+                                                                                                    </div>
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="box-c-margin-sm">
+                                                                        <div class="box-c__content no-padding-bottom">
+                                                                            <div class="box-c__item center">
+                                                                                <img src="{% static 'img/history-blank.svg' %}"
+                                                                                     alt="">
+                                                                                <div class="p-plank__text">
+                                                                                    Hiện chúng tôi chưa có lịch
+                                                                                    chiếu
+                                                                                    nào vào ngày này
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

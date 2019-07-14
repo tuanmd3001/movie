@@ -3236,6 +3236,9 @@ textarea.input-material,
    box-sizing: border-box;
    -webkit-box-sizing: border-box;
 }
+.item-input-error-message {
+   top: -5px !important;
+}
 
 textarea.input-material {
    padding-top: 32px;
@@ -3261,7 +3264,16 @@ textarea.input-material {
 .input-material~.input-ic {
    text-align: right;
 }
-
+.input-ic {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    top: 0;
+    line-height: 60px;
+    width: 40px;
+    cursor: pointer;
+    z-index: 1;
+}
 .input-material~.select2-container--default .select2-selection--single,
 .input-material~.select2-container--default .select2-selection--multiple,
 .input-material~.btn-group .multiselect {
@@ -3320,7 +3332,7 @@ textarea.input-material {
    color: #0072BC;
 }
 
-.input-material~.input-label {
+.input-material~.input-label{
    color: #888888;
    position: absolute;
    left: 0;
@@ -3332,6 +3344,21 @@ textarea.input-material {
    transform-origin: top left;
    line-height: 1.2;
    pointer-events: none;
+}
+.item-input-focused .input-label-float,
+.item-input-with-value .input-label-float{
+   top: 15px;
+   font-size: 13px !important;
+}
+.item-input-focused .input-label-float{
+   color: #0072BC !important;
+}
+
+.input-label-float{
+   color: #888888 !important;
+   position: absolute;
+   left: 0;
+   font-size: 11px !important;
 }
 
 .input-material.input-ic-right~.input-label {
@@ -3861,6 +3888,13 @@ input[type="search"]::-webkit-search-results-decoration {
 .td {
    display: table-cell;
    vertical-align: middle
+}
+
+.fitwidth {
+   width: 1px;
+   white-space: nowrap;
+   padding-left: 5px;
+   padding-right: 5px;
 }
 
 .dates {
@@ -4534,7 +4568,7 @@ td {
 
 .film-vert__poster {
    background-position: center top;
-   background-size: cover;
+   background-size: inherit;
    position: absolute;
    width: 90px;
    height: 100%;
@@ -4662,20 +4696,22 @@ td {
    width: 100%;
    background-repeat: no-repeat;
    background-position: center;
-   background-size: cover;
+   background-size: contain;
    border-radius: 10px;
    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .tags {
-   width: 70px;
+   padding: 0 10px;
+   min-width: 35px;
    height: 20px;
    line-height: 20px;
    border: 1px solid #CCCBCB;
    border-radius: 11px;
    text-align: center;
    display: inline-block;
-   margin-right: 10px;
+   margin-right: 5px;
+    margin-top: 5px;
    color: #231F20;
 }
 
@@ -4969,10 +5005,21 @@ td {
   font-size: 17px;
 }
 
-.film-vert__title {
+.two-line {
    overflow: hidden;
    text-overflow: ellipsis;
-   display: -webkit-box;
+   display: -webkit-box !important;;
    -webkit-line-clamp: 2; /* number of lines to show */
    -webkit-box-orient: vertical;
+   /*height: 3em;*/
+}
+.one-line{
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box !important;
+   -webkit-line-clamp: 1;
+   -webkit-box-orient: vertical;
+}
+.clred{
+   color: red;
 }

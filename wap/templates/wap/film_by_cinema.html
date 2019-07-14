@@ -51,8 +51,8 @@
                             </table>
                         </div>
                     </div>
-                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_showing id="film-showing" %}
-                    {% include "wap/film_list.html" with cinema_id=cinema_id films=film_coming id="film-coming" %}
+                    {% include "wap/film_list.html" with films=film_showing id="film-showing" %}
+                    {% include "wap/film_list.html" with films=film_coming id="film-coming" %}
                 </div>
             </div>
         </div>

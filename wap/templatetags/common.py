@@ -1,5 +1,12 @@
+import json
+
 from django import template
 from datetime import datetime, timedelta
+
+from django.template.defaultfilters import safe
+from django.utils.html import escapejs
+from django.utils.safestring import mark_safe
+
 from wap.constances import DAY_NAME, VERSION_NAME
 register = template.Library()
 
@@ -47,8 +54,9 @@ def get_session_time(session):
 
 @register.filter
 def film_duration(minutes):
-    duration = ''
+    duration = 'Đang cập nhật'
     if minutes:
+        duration = ''
         parsed = str(timedelta(minutes=minutes))[:-3].split(":")
         if int(parsed[0]) > 0:
             duration += parsed[0] + " giờ "
@@ -60,13 +68,14 @@ def film_duration(minutes):
 @register.filter
 def film_time(session_time, duration):
     time = ''
-    if session_time and duration:
+    if session_time:
         date = string_to_datetime(session_time)
         if date:
             time = date.strftime('%I:%M%p').lstrip('0').lower()
-            end_time = date + timedelta(minutes=duration)
-            if end_time:
-                time += ' ~ ' + end_time.strftime('%I:%M%p').lstrip('0').lower()
+            if duration:
+                end_time = date + timedelta(minutes=duration)
+                if end_time:
+                    time += ' ~ ' + end_time.strftime('%I:%M%p').lstrip('0').lower()
     return time
 
 @register.filter
@@ -83,7 +92,11 @@ def get_list_value(list, index):
 
 @register.filter
 def get_version_name(version_id):
-    return VERSION_NAME.get(version_id, "")
+    return VERSION_NAME.get(version_id, 'Đang cập nhật')
+
+@register.filter
+def booked_seat(seats):
+    return mark_safe('<span class="clrgrey"> | </span>'.join('<span class="label-main"><b>' + seat.strip() + '</b></span>' for seat in seats.split(',')))
 
 class SetVarNode(template.Node):
 
@@ -111,7 +124,19 @@ def set_var(parser, token):
 
     return SetVarNode(parts[1], parts[3])
 
+@register.simple_tag
+def define(val=None):
+  return val
+
 @register.filter
 def in_list(value, the_list):
     value = str(value)
     return value in the_list.split(',')
+
+@register.filter
+def to_json_string(value):
+    return mark_safe(json.dumps(value))
+
+@register.filter
+def imdb(value):
+    return "%.1f" % value
