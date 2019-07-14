@@ -11,6 +11,7 @@ var app = new Framework7({
 const api_url = '/api/';
 var $$ = Dom7;
 var current_app_mobile = "";
+var current_token = "";
 app.lazy.create('.page');
 
 window.onbeforeunload = function(){
@@ -72,6 +73,12 @@ function custom_post(path, params) {
     appMobile.name = 'app_mobile';
     appMobile.value = params['app_mobile'];
     form.appendChild(appMobile);
+
+    const tokenInput = document.createElement('input');
+    tokenInput.type = 'hidden';
+    tokenInput.name = 'token';
+    tokenInput.value = params['token'];
+    form.appendChild(tokenInput);
 
     const hiddenField = document.createElement('input');
     hiddenField.type = 'hidden';

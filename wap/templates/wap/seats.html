@@ -461,8 +461,12 @@
                     return
                 }
                 var formData = app.form.convertToData('#order-form');
-                formData['app_mobile'] = {{ app_mobile }};
+                formData['app_mobile'] = '{{ app_mobile }}';
+                formData['token'] = '{{ token }}';
                 formData['queryId'] = {{ seats.queryId }};
+                formData['film_id'] = {{ film_id }};
+                {% if location_id %}formData['location_id'] = {{ location_id }}{% endif %};
+                {% if cinema_id %}formData['cinema_id'] = {{ cinema_id }}{% endif %};
                 var postSeats = [];
                 selectedSeats.forEach(function (r) {
                     r.forEach(function (s) {

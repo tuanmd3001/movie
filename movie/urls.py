@@ -20,7 +20,6 @@ from django.urls import path, include
 from movie import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('wap/', include('wap.urls')),
     path('api/', include('api.urls')),
     path('index/', views.index, name='index_home'),

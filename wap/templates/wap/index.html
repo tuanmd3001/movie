@@ -47,7 +47,8 @@
         var cinema_url = "{% url 'get_film_by_cinema' location_id=0 cinema_id=0 %}".replace('0/0/', '');
         var movie_url = "{% url 'get_film_detail' film_id=0 %}".replace('0/', '');
         var ticket_url = "{% url 'get_ticket_detail' ticket_id=0 %}".replace('0/', '');
-        current_app_mobile = '{{ app_mobile }}'
+        current_app_mobile = '{{ app_mobile }}';
+        current_token = '{{ token_encoded }}';
     </script>
     <script src="{% static 'js/index.js' %}"></script>
     <script>

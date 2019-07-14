@@ -10,10 +10,10 @@
                 <tr>
                     <td class="left">
                         {% if cinema_id %}
-                            <a href="{% url 'get_film_detail_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
+                            <a href="{% url 'get_film_detail_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}&tab=tab-booking"
                                class="link nav-c__button nav-c__button--back external"></a>
                         {% else %}
-                            <a href="{% url 'get_film_detail' film_id=film_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
+                            <a href="{% url 'get_film_detail' film_id=film_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}&tab=tab-booking"
                                class="link nav-c__button nav-c__button--back external"></a>
                         {% endif %}
                     </td>
@@ -245,6 +245,7 @@
         function before_submit() {
             if (total) {
                 add_to_form("#form", "app_mobile", "{{ app_mobile }}");
+                add_to_form("#form", "token", "{{ token }}");
                 add_to_form("#form", "session_id", "{{ session_id }}");
                 add_to_form("#form", "ticket_types", JSON.stringify(types));
                 return true;

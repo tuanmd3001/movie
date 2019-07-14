@@ -1,6 +1,5 @@
 import numbers
 from functools import wraps
-from turtledemo.penrose import f
 
 import json
 from urllib import parse
@@ -81,6 +80,8 @@ def has_app_mobile(function):
                 return HttpResponseRedirect(reverse('index'))
         else:
             for key, val in params.items():
+                if key == 'token':
+                    kwargs['token_encoded'] = parse.quote(val)
                 kwargs[key] = val
         return function(request, *args, **kwargs)
 
@@ -96,9 +97,8 @@ def string_to_datetime(string, date_format="%d/%m/%Y %H:%M:%S"):
 
 
 def custom_redirect(url_name, *args, **kwargs):
-    import urllib
     url = reverse(url_name, args = args)
-    params = urllib.parse.urlencode(kwargs)
+    params = parse.urlencode(kwargs)
     return HttpResponseRedirect(url + "?%s" % params)
 
 
@@ -126,7 +126,7 @@ def index(request, *args, **kwargs):
         'location': request.GET.get('location') if request.GET.get('location') else ""
     })
 
-
+@has_valid_token
 @has_app_mobile
 def get_film_by_cinema(request, *args, **kwargs):
     cinema_name = "Chọn phim"
@@ -148,7 +148,7 @@ def get_film_by_cinema(request, *args, **kwargs):
         'cinema_name': cinema_name
     })
 
-
+@has_valid_token
 @has_app_mobile
 def get_film_detail_by_cinema(request, *args, **kwargs):
     film = None
@@ -179,7 +179,7 @@ def get_film_detail_by_cinema(request, *args, **kwargs):
         'is_booking': request.GET.get('tab') == "tab-booking"
     })
 
-
+@has_valid_token
 @has_app_mobile
 def get_film_detail(request, *args, **kwargs):
     film = None
@@ -232,7 +232,7 @@ def get_film_detail(request, *args, **kwargs):
         'is_booking': request.GET.get('tab') == "tab-booking",
     })
 
-
+@has_valid_token
 @has_app_mobile
 @cache_control(no_cache=True, must_revalidate=True)
 def ticket_type(request, *args, **kwargs):
@@ -241,9 +241,9 @@ def ticket_type(request, *args, **kwargs):
         ticket_types = call_service(request, get_ticket_type, kwargs['app_mobile'], kwargs['session_id'])
         if not ticket_types:
             if 'cinema_id' in kwargs:
-                return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'], app_mobile=kwargs['app_mobile'], tab="tab-booking")
+                return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'], app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab="tab-booking")
             else:
-                return custom_redirect('get_film_detail', kwargs['film_id'], app_mobile=kwargs['app_mobile'], tab="tab-booking")
+                return custom_redirect('get_film_detail', kwargs['film_id'], app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab="tab-booking")
 
     elif request.method == "POST":
         ticket_types = request.POST.get('ticket_types')
@@ -271,7 +271,7 @@ def ticket_type(request, *args, **kwargs):
         'ticket_types_json': json.dumps(ticket_types)
     })
 
-
+@has_valid_token
 @has_app_mobile
 @cache_control(no_cache=True, must_revalidate=True)
 def get_seats(request, *args, **kwargs):
@@ -281,30 +281,30 @@ def get_seats(request, *args, **kwargs):
         seats = call_service(request, get_seats_api, kwargs['app_mobile'], kwargs['session_id'], kwargs['book_service_id'])
         if not seats:
             if 'cinema_id' not in kwargs:
-                return custom_redirect('get_film_detail', kwargs['film_id'], app_mobile=kwargs['app_mobile'], tab="tab-booking")
+                return custom_redirect('get_film_detail', kwargs['film_id'], app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab="tab-booking")
             else:
-                return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'], app_mobile=kwargs['app_mobile'], tab="tab-booking")
+                return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'], app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab="tab-booking")
 
     if resolve(request.path_info).url_name in ["get_ticket_type", "get_ticket_type_by_cinema"]:
-        back_url = request.path + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
+        back_url = request.path + "?app_mobile=" + kwargs['app_mobile'] + '&token=' + kwargs['token_encoded'] + '&tab=tab-booking'
     else:
         if 'cinema_id' in kwargs:
             back_url = reverse('get_film_detail_by_cinema', kwargs={
                 'location_id': kwargs['location_id'],
                 'cinema_id': kwargs['cinema_id'],
                 'film_id': kwargs['film_id']
-            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&token=' + kwargs['token_encoded'] + '&tab=tab-booking'
         else:
             back_url = reverse('get_film_detail', kwargs={
                 'film_id': kwargs['film_id']
-            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&token=' + kwargs['token_encoded'] + '&tab=tab-booking'
     return render(request, 'wap/seats.html', {
         **kwargs,
         "back_url": back_url,
         "seats": seats,
     })
 
-
+@has_valid_token
 @has_app_mobile
 def ticket_detail(request, *args, **kwargs):
     ticket = call_service(request, get_ticket_detail, kwargs['ticket_id'])
@@ -314,9 +314,9 @@ def ticket_detail(request, *args, **kwargs):
             "ticket": ticket
         })
     else:
-        return custom_redirect('index', app_mobile=kwargs['app_mobile'], tab='ticket')
+        return custom_redirect('index', app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab='ticket')
 
-
+@has_valid_token
 @has_app_mobile
 def order(request, *args, **kwargs):
     if request.method == 'POST':
@@ -326,6 +326,11 @@ def order(request, *args, **kwargs):
         if order is not None:
             return redirect('https://google.com.vn')
         else:
-            if request.META.get('HTTP_REFERER'):
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return custom_redirect('index', app_mobile=kwargs['app_mobile'])
+            if 'cinema_id' in kwargs and 'location_id' in kwargs and 'film_id' in kwargs:
+                return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'],
+                                       app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab="tab-booking")
+            elif 'film_id' in kwargs:
+                return custom_redirect('get_film_detail', kwargs['film_id'],
+                                       app_mobile=kwargs['app_mobile'], token=kwargs['token'],
+                                       tab="tab-booking")
+    return custom_redirect('index', app_mobile=kwargs['app_mobile'], token=kwargs['token'])

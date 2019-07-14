@@ -10,10 +10,10 @@
                     <tr>
                         <td class="left">
                             {% if cinema_id %}
-                                <a href="{% url 'get_film_by_cinema' location_id=location_id cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"
+                                <a href="{% url 'get_film_by_cinema' location_id=location_id cinema_id=cinema_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}"
                                    class="link nav-c__button nav-c__button--back external"></a>
                             {% else %}
-                                <a href="{% url 'index' %}?app_mobile={{ app_mobile }}&tab=film"
+                                <a href="{% url 'index' %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}&tab=film"
                                    class="link nav-c__button nav-c__button--back external"></a>
                             {% endif %}
                         </td>
@@ -186,12 +186,12 @@
                                                                                                         {% for session in sessions|get_session_by_date:date|get_dict_value:version %}
                                                                                                             <div class="booking-time__item">
                                                                                                                 {% if session.book_service_id != 4 %}
-                                                                                                                    <a href="{% url 'get_ticket_type_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                    <a href="{% url 'get_ticket_type_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}"
                                                                                                                        class="link external">
                                                                                                                         {{ session|get_session_time }}
                                                                                                                     </a>
                                                                                                                 {% else %}
-                                                                                                                    <a href="{% url 'get_seats_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                    <a href="{% url 'get_seats_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}"
                                                                                                                        class="link external">
                                                                                                                         {{ session|get_session_time }}
                                                                                                                     </a>
@@ -272,12 +272,12 @@
                                                                                                                         {% for session in sessions %}
                                                                                                                             <div class="booking-time__item">
                                                                                                                                 {% if session.book_service_id != 4 %}
-                                                                                                                                    <a href="{% url 'get_ticket_type' film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                                    <a href="{% url 'get_ticket_type' film_id=film_id session_id=session.ss_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}"
                                                                                                                                        class="link external">
                                                                                                                                         {{ session|get_session_time }}
                                                                                                                                     </a>
                                                                                                                                 {% else %}
-                                                                                                                                    <a href="{% url 'get_seats' film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}"
+                                                                                                                                    <a href="{% url 'get_seats' film_id=film_id session_id=session.ss_id book_service_id=session.book_service_id %}?app_mobile={{ app_mobile }}&token={{ token_encoded }}"
                                                                                                                                        class="link external">
                                                                                                                                         {{ session|get_session_time }}
                                                                                                                                     </a>
