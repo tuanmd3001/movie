@@ -11,6 +11,6 @@ def call(post_data):
     post_data['request_date'] = get_request_date()
     post_data['check_sum'] = get_checksum()
     post_data['channel_book'] = 'SCB|' + language
-    r = requests.post(SERVICE_URLS['get_ticket_type'], json=post_data)
+    r = requests.post(SERVICE_URLS['create_order'], json=post_data)
     result = r.json()
     return result['data']
