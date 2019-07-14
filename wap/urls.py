@@ -16,4 +16,5 @@ urlpatterns = [
 
     path('choose_seats/<int:cinema_id>/<int:film_id>/<int:session_id>/<int:book_service_id>', views.get_seats, name='get_seats_by_cinema'),
     path('choose_seats/<int:film_id>/<int:session_id>/<int:book_service_id>', views.get_seats, name='get_seats'),
+
 ]

@@ -26,7 +26,7 @@ def get_current_location_request(request):
     if not app_mobile:
         return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
     if not long:
-        long = 106.69992
+        long = 106
     if not lat:
         lat = 10.779466
     return JsonResponse(get_location.call(long, lat))

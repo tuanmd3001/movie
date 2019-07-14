@@ -1,3 +1,4 @@
+import numbers
 from functools import wraps
 from turtledemo.penrose import f
 
@@ -12,6 +13,50 @@ from django.urls import reverse, resolve
 
 from api.services import get_location, get_film, get_film_by_id, get_ticket_type, get_seats_vista, \
     get_seats as get_seats_api
+from api.services.config import PASSWORD, URL_BACK_TO_APP
+from movie.AESCipher import AESCipher
+
+
+def has_valid_token(function):
+    @wraps(function)
+    def wrap(request, *args, **kwargs):
+        params = None
+        if request.method == 'GET':
+            params = request.GET
+        elif request.method == 'POST':
+            params = request.POST
+        if 'token' not in params or params.get('token') == '':
+                return HttpResponseRedirect(URL_BACK_TO_APP +
+                                            "&code=%s&message=%s" %
+                                            ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+        else:
+            code, message = verify_token(token=params['token'])
+            if code != '00':
+                return HttpResponseRedirect(URL_BACK_TO_APP + "&code=%s&message=%s" % (code, message))
+            else:
+                return function(request, *args, **kwargs)
+    return wrap
+
+
+def verify_token(token):
+    password = PASSWORD
+    aes_cipher = AESCipher(password)
+    raw = aes_cipher.decrypt(token)
+    list_data = raw.split('|')
+    if len(list_data) == 6:
+        bank_code = list_data[0]
+        os_type = list_data[1]
+        version = list_data[2]
+        request_date = list_data[3]
+        app_mobile = list_data[4]
+        timestamp = list_data[5]
+        now = datetime.now().timestamp()
+        if isinstance(timestamp, numbers.Integral) and now < timestamp + 1800:
+            return '00', 'Token hợp lệ.'
+        else:
+            return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+    else:
+        return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
 
 
 def has_app_mobile(function):
@@ -40,6 +85,7 @@ def string_to_datetime(string, date_format="%d/%m/%Y %H:%M:%S"):
     except:
         return None
 
+
 def custom_redirect(url_name, *args, **kwargs):
     import urllib
     url = reverse(url_name, args = args)
@@ -59,6 +105,8 @@ def call_service(request, service, *params):
 
     return None
 
+
+@has_valid_token
 @has_app_mobile
 def index(request, *args, **kwargs):
     location_list = call_service(request, get_location)

@@ -2,8 +2,11 @@
 from datetime import datetime
 
 SERVICE_DOMAIN = "http://10.22.7.187:8688/"
-APP_ID = "123"
+APP_ID = "SCB"
 VERSION = 2
+URL_BACK_TO_APP = "https://filmservice.vnpaytest.vn/backtoapp/?action=backtoapp"
+PASSWORD = "Sacombank_Vnpay"
+
 
 SERVICE_URLS = {
     'get_location': SERVICE_DOMAIN + 'get_location',
@@ -16,7 +19,7 @@ SERVICE_URLS = {
     'get_ticket_type': SERVICE_DOMAIN + 'get_ticket_type',
     'get_seats': SERVICE_DOMAIN + 'get_seats_v2',
     'create_order': SERVICE_DOMAIN + 'create_order',
-
+    'cancel_order': SERVICE_DOMAIN + 'cancel_order',
 }
 
 
