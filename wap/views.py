@@ -123,7 +123,6 @@ def get_film_by_cinema(request, *args, **kwargs):
     cinema_name = "Chọn phim"
     film_showing = []
     film_coming = []
-    location_id = None
     film_list = call_service(request, get_film, kwargs['cinema_id'])
     if film_list:
         for film in film_list:
@@ -133,8 +132,6 @@ def get_film_by_cinema(request, *args, **kwargs):
                 film_coming.append(film)
             elif film['statusId'] == 2:
                 film_showing.append(film)
-            if not location_id and 'locationId' in film and film['locationId']:
-                location_id = film['locationId']
     return render(request, 'wap/film_by_cinema.html', {
         'film_showing': film_showing,
         'film_coming': film_coming,
@@ -278,11 +275,11 @@ def get_seats(request, *args, **kwargs):
             back_url = reverse('get_film_detail_by_cinema', kwargs={
                 'cinema_id': kwargs['cinema_id'],
                 'film_id': kwargs['film_id']
-            })
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
         else:
             back_url = reverse('get_film_detail', kwargs={
                 'film_id': kwargs['film_id']
-            })
+            }) + "?app_mobile=" + kwargs['app_mobile'] + '&tab=tab-booking'
     return render(request, 'wap/seats.html', {
         **kwargs,
         "back_url": back_url,

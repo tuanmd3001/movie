@@ -16,8 +16,7 @@
                         </div>
                     </td>
                     <td class="right">
-                        <a href="/0-8-search/" class="link nav-c__button nav-c__button--search" id="search-film"
-                           style="display: none;"></a>
+                        <a href="#" class="link nav-c__button nav-c__button--search" id="search-film-btn" style="display: none;"></a>
                         <a href="" class="nav-c__button" id="search-blank"></a>
                     </td>
                 </tr>
@@ -38,27 +37,16 @@
                 {% include 'wap/index/tabs_header.html' %}
             </div>
             {% include 'wap/index/location_selector.html' %}
-            {#            <div class="dialog dialog-buttons-1 custom-dialog-phone modal-in" id="phone-dialog">#}
-            {#                <div class="dialog-inner">#}
-            {#                    <div class="dialog-title">Thông báo</div>#}
-            {#                    <div class="dialog-text">Hệ thống đặt vé xem phim cung cấp bởi VNPAY. Thông tin đặt vé vui#}
-            {#                        lòng liên hệ <a onclick="introDialog.close();phoneSupport.open();">1900555520</a></div>#}
-            {#                </div>#}
-            {#                <a>#}
-            {#                    <div class="dialog-buttons">#}
-            {#                        <span class="dialog-button">Đồng ý</span>#}
-            {#                    </div>#}
-            {#                </a>#}
-            {#            </div>#}
+            {% include 'wap/index/film-search.html' %}
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
     <script>
-        var cinema_url = "{% url 'get_film_by_cinema' cinema_id=0 %}".replace('0/', '');
+        var cinema_url = "{% url 'get_film_by_cinema' location_id=0 cinema_id=0 %}".replace('0/0/', '');
         var movie_url = "{% url 'get_film_detail' film_id=0 %}".replace('0/', '');
-        var current_app_mobile = '{{ app_mobile }}'
+        current_app_mobile = '{{ app_mobile }}'
     </script>
     <script src="{% static 'js/index.js' %}"></script>
     <script>
@@ -70,6 +58,8 @@
 
         {% if location %}
             $$('[data-location="{{ location }}"]').trigger("click");
+        {% else %}
+            getPosition();
         {% endif %}
         {% if not request.META.HTTP_REFERER and not messages %}
             phoneSupport = app.dialog.create({

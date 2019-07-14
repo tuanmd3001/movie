@@ -10,9 +10,9 @@
                 <tr>
                     <td class="left">
                         {% if cinema_id %}
-                            <a href="{% url 'get_film_detail_by_cinema' cinema_id=cinema_id film_id=film_id  %}?app_mobile={{ app_mobile }}" class="link nav-c__button nav-c__button--back external"></a>
+                            <a href="{% url 'get_film_detail_by_cinema' cinema_id=cinema_id film_id=film_id  %}?app_mobile={{ app_mobile }}&tab=tab-booking" class="link nav-c__button nav-c__button--back external"></a>
                         {% else %}
-                            <a href="{% url 'get_film_detail' film_id=film_id  %}?app_mobile={{ app_mobile }}" class="link nav-c__button nav-c__button--back external"></a>
+                            <a href="{% url 'get_film_detail' film_id=film_id  %}?app_mobile={{ app_mobile }}&tab=tab-booking" class="link nav-c__button nav-c__button--back external"></a>
                         {% endif %}
                     </td>
                     <td class="center">

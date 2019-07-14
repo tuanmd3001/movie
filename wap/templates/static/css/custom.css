@@ -4969,7 +4969,7 @@ td {
   font-size: 17px;
 }
 
-.film-vert__title b {
+.film-vert__title {
    overflow: hidden;
    text-overflow: ellipsis;
    display: -webkit-box;

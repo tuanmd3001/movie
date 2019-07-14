@@ -9,7 +9,7 @@
                         <form class="searchbar searchbar--custom searchbar-init no-margin-top" data-backdrop="false">
                             <div class="searchbar-inner">
                                 <div class="searchbar-input-wrap">
-                                    <input type="search" placeholder="Tìm kiếm" autofocus>
+                                    <input type="search" placeholder="Tìm kiếm">
                                     <i class="searchbar-icon"></i>
                                     <span class="input-clear-button"></span>
                                 </div>
@@ -32,7 +32,7 @@
                                                         <li>
                                                             <label class="popup-close item-radio item-radio-location item-content">
                                                                 <input type="radio" name="location" data-location="{{ location.location_id }}"
-                                                                       onclick="selectLocation('{{ location.location_id }}', '{{ location.city_name }}')"/>
+                                                                       onclick="onLocationSelect('{{ location.location_id }}', '{{ location.city_name }}')"/>
                                                                 <div class="item-inner item-inner-custom">
                                                                     <div class="item-title">{{ location.city_name }}</div>
                                                                 </div>

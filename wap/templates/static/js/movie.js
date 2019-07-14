@@ -6,30 +6,14 @@ var app = new Framework7({
     lazy: {
         threshold: 50,
         sequential: false,
-    },
+    }
 });
+const api_url = '/api/';
 var $$ = Dom7;
-const api_domain = 'http://192.168.179.69:8000/api/';
-var app_mobile = "";
+var current_app_mobile = "";
 app.lazy.create('.page');
 
-function errorDialog(message) {
-    app.dialog.create({
-        title: 'Thông Báo',
-        text: message,
-        buttons: [
-            {
-                text: '',
-                onClick: function (e) {
-                    e.preventDefault()
-                }
-            }
-        ],
-        cssClass: "custom-dialog"
-    }).open();
-}
-
-function showDialog(message) {
+function showDialog(message, level) {
     app.dialog.create({
         title: 'Thông Báo',
         text: message,
