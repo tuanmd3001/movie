@@ -24,7 +24,9 @@
                             {{ seats.sessionInfo.cinemaName }}
                             <br>
                         </div>
-                        <div><span class="font-sm">{{ seats.sessionInfo.room_name }} - {{ seats.sessionInfo.sessionTime | film_time:seats.sessionInfo.duration }}</span></div>
+                        <div><span
+                                class="font-sm">{{ seats.sessionInfo.room_name }} - {{ seats.sessionInfo.sessionTime | film_time:seats.sessionInfo.duration }}</span>
+                        </div>
                     </td>
                     <td class="right">
                         <div class="nav-c__button"></div>
@@ -41,95 +43,155 @@
                         <div id="zoom-theater">
                             <div class="theater-map">
                                 <div class="theater-map__inner">
+                                    {% define 0 as row_index %}
                                     {% for row in seats.seats %}
-                                        {% set couple_code = '' %}
-                                        {% set couple_id = '' %}
+                                        {% define "" as row_code %}
+                                        {% set couple = '' %}
+                                        {% set couple_pack = '' %}
                                         <div class="theater-row">
+                                            {% define 0 as col_index %}
                                             {% for seat in row %}
                                                 {% if seat.status != 0 %}
-                                                    <div class="theater-row-item">
-                                                        <label class="theater-label">
-                                                            {% if seat.type == 3 and not couple_code %}
-                                                                {% set couple_id = seat.seatId %}
-                                                                {% set couple_code = seat.code %}
-                                                            {% elif seat.type == 3 and couple_code %}
+                                                    {% if seat.type == 2 and not couple %}
+                                                        {% set couple = seat %}
+                                                    {% elif seat.type == 2 and couple_code %}
+                                                        <div class="theater-row-item"
+                                                             data-row="{{ row_index }}"
+                                                             data-col="{{ col_index }}"
+                                                             data-type="{{ seat.type }}"
+                                                             data-available="0">
+                                                            <label class="theater-label">
                                                                 <div class="seats-ic seats-ic-booked"></div>
                                                                 <div class="seats-ic seats-ic-booked"></div>
-                                                                {% set couple_code = '' %}
-                                                            {% else %}
+                                                            </label>
+                                                        </div>
+                                                        {% define col_index|add:1 as col_index %}
+                                                        {% set couple = '' %}
+                                                    {% elif seat.type == 3 and not couple_pack %}
+                                                        {% set couple_pack = seat %}
+                                                    {% elif seat.type == 3 and couple_pack %}
+                                                        <div class="theater-row-item"
+                                                             data-row="{{ row_index }}"
+                                                             data-col="{{ col_index }}"
+                                                             data-type="{{ seat.type }}"
+                                                             data-available="0">
+                                                            <label class="theater-label">
                                                                 <div class="seats-ic seats-ic-booked"></div>
-                                                            {% endif %}
-                                                        </label>
-                                                    </div>
-                                                {% else %}
-                                                    {% if seat.type == 0 %}
-                                                        <div class="theater-row-item">
-                                                            <label class="theater-label">
-                                                                <input type="checkbox" name="theater"
-                                                                       class="hidden theater-checkbox">
-                                                                <div class="seats-ic seats-ic-standard"
-                                                                     data-seatId={{ seat.seatId }}
-                                                                     data-code="{{ seat.code }}"></div>
+                                                                <div class="seats-ic seats-ic-booked"></div>
                                                             </label>
                                                         </div>
-                                                    {% elif seat.type == 1 %}
-                                                        <div class="theater-row-item">
-                                                            <label class="theater-label">
-                                                                <input type="checkbox" name="theater"
-                                                                       class="hidden theater-checkbox">
-                                                                <div class="seats-ic seats-ic-vip"
-                                                                     data-seatId={{ seat.seatId }}
-                                                                     data-code="{{ seat.code }}"></div>
-                                                            </label>
-                                                        </div>
-                                                    {% elif seat.type == 2 %}
-                                                        <div class="theater-row-item">
-                                                            <label class="theater-label">
-                                                                <input type="checkbox" name="theater"
-                                                                       class="hidden theater-checkbox">
-                                                                <div class="seats-ic seats-ic-couple"
-                                                                     data-seatId={{ seat.seatId }}
-                                                                     data-code="{{ seat.code }}"></div>
-                                                            </label>
-                                                        </div>
-                                                    {% elif seat.type == 3 %}
-                                                        {% if couple_code %}
-                                                            <div class="theater-row-item">
+                                                        {% define col_index|add:1 as col_index %}
+                                                        {% set couple_pack = '' %}
+                                                    {% else %}
+                                                        {% if seat.type|in_list:'0,1,5' %}
+                                                            <div class="theater-row-item"
+                                                                 data-row="{{ row_index }}"
+                                                                 data-col="{{ col_index }}"
+                                                                 data-type="{{ seat.type }}"
+                                                                 data-available="0">
                                                                 <label class="theater-label">
-                                                                    <input type="checkbox" name="theater"
-                                                                           class="hidden theater-checkbox">
-                                                                    <div class="seats-ic seats-ic-couple"
-                                                                         data-seatId="{{ couple_id }}"
-                                                                         data-code="{{ couple_code }}"></div>
-                                                                    <div class="seats-ic seats-ic-couple"
-                                                                         data-seatId={{ seat.seatId }}
-                                                                         data-code="{{ seat.code }}"></div>
+                                                                    <div class="seats-ic seats-ic-booked"></div>
                                                                 </label>
                                                             </div>
-                                                            {% set couple_id = '' %}
-                                                            {% set couple_code = '' %}
+                                                            {% define col_index|add:1 as col_index %}
                                                         {% else %}
                                                             <div class="theater-row-item">
                                                                 <label class="theater-label">
+                                                                    <div class="seats-ic seats-ic-blank"></div>
                                                                 </label>
                                                             </div>
-                                                            {% set couple_id = seat.seatId %}
-                                                            {% set couple_code = seat.code %}
                                                         {% endif %}
-                                                    {% elif seat.type == 5 %}
-                                                        <div class="theater-row-item">
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if seat.type|in_list:'0,1,5' %}
+                                                        <div class="theater-row-item"
+                                                             data-row="{{ row_index }}"
+                                                             data-col="{{ col_index }}"
+                                                             data-type="{{ seat.type }}"
+                                                             data-available="1">
                                                             <label class="theater-label">
-                                                                <input type="checkbox" name="theater"
-                                                                       class="hidden theater-checkbox">
-                                                                <div class="seats-ic seats-ic-deluxe"
-                                                                     data-seatId={{ seat.seatId }}
-                                                                     data-code="{{ seat.code }}"></div>
+                                                                {% if seat.type == 0 %}
+                                                                    <input type="checkbox" name="theater"
+                                                                           class="hidden theater-checkbox"
+                                                                           data-seatId="{{ seat.seatId }}"
+                                                                           data-seatAreaId="{{ seat.data.area_id }}"
+                                                                           data-price="{{ seat.data.price }}"
+                                                                           data-code="{{ seat.code }}">
+                                                                    <div class="seats-ic seats-ic-standard"></div>
+                                                                {% elif seat.type == 1 %}
+                                                                    <input type="checkbox" name="theater"
+                                                                           class="hidden theater-checkbox"
+                                                                           data-seatId="{{ seat.seatId }}"
+                                                                           data-seatAreaId="{{ seat.data.area_id }}"
+                                                                           data-price="{{ seat.data.price }}"
+                                                                           data-code="{{ seat.code }}">
+                                                                    <div class="seats-ic seats-ic-vip"></div>
+                                                                {% elif seat.type == 5 %}
+                                                                    <input type="checkbox" name="theater"
+                                                                           class="hidden theater-checkbox"
+                                                                           data-seatId="{{ seat.seatId }}"
+                                                                           data-seatAreaId="{{ seat.data.area_id }}"
+                                                                           data-price="{{ seat.data.price }}"
+                                                                           data-code="{{ seat.code }}">
+                                                                    <div class="seats-ic seats-ic-delux"></div>
+                                                                {% endif %}
                                                             </label>
                                                         </div>
+                                                        {% define col_index|add:1 as col_index %}
+                                                    {% elif seat.type|in_list:'2,3' %}
+                                                        {% if seat.type == 2 %}
+                                                            {% if couple_code %}
+                                                                <div class="theater-row-item"
+                                                                     data-row="{{ row_index }}"
+                                                                     data-col="{{ col_index }}"
+                                                                     data-type="{{ seat.type }}"
+                                                                     data-available="1">
+                                                                    <label class="theater-label">
+                                                                        <input type="checkbox" name="theater"
+                                                                               class="hidden theater-checkbox"
+                                                                               data-seatId="{{ couple.seatId }},{{ seat.seatId }}"
+                                                                               data-seatAreaId="{{ seat.data.area_id }}"
+                                                                               data-price="{{ couple.data.price | add:seat.data.price }}"
+                                                                               data-code="{% if couple.code == seat.code%}{{ seat.code }}{% else %}{{ couple.code }} | {{ seat.code }}{% endif %}">
+                                                                        <div class="seats-ic seats-ic-couple"></div>
+                                                                        <div class="seats-ic seats-ic-couple"></div>
+
+                                                                    </label>
+                                                                </div>
+                                                                {% set couple = '' %}
+                                                            {% else %}
+                                                                {% set couple = seat %}
+                                                            {% endif %}
+                                                        {% elif seat.type == 3 %}
+                                                            {% if couple_pack %}
+                                                                <div class="theater-row-item"
+                                                                     data-row="{{ row_index }}"
+                                                                     data-col="{{ col_index }}"
+                                                                     data-type="{{ seat.type }}"
+                                                                     data-available="1">
+                                                                    <label class="theater-label">
+                                                                        <input type="checkbox" name="theater"
+                                                                               class="hidden theater-checkbox"
+                                                                               data-seatId="{{ couple_pack.seatId }},{{ seat.seatId }}"
+                                                                               data-seatAreaId="{{ seat.data.area_id }}"
+                                                                               data-price="{{ seat.data.price }}"
+                                                                               data-code="{% if couple.code == seat.code%}{{ seat.code }}{% else %}{{ couple_pack.code }} | {{ seat.code }}{% endif %}">
+                                                                        <div class="seats-ic seats-ic-couple"></div>
+                                                                        <div class="seats-ic seats-ic-couple"></div>
+
+                                                                    </label>
+                                                                </div>
+                                                                {% set couple_pack = '' %}
+                                                            {% else %}
+                                                                {% set couple_pack = seat %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        {% define col_index|add:1 as col_index %}
                                                     {% else %}
-                                                        {% if seat.code %}
+                                                        {% if seat.code and seat.code != 'null' and not row_code %}
                                                             <div class="theater-name">{{ seat.code }}</div>
                                                             <div class="theater-name-right">{{ seat.code }}</div>
+                                                            {% define seat.code as row_code %}
                                                         {% else %}
                                                             <div class="theater-row-item">
                                                                 <label class="theater-label">
@@ -141,6 +203,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
+                                        {% define row_index|add:1 as row_index %}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -178,22 +241,24 @@
                     </div>
                 </div>
                 <div class="box-c margin-v-xs">
-                    <div class="block no-margin">{{ seats.sessionInfo.filmNameVi }} - {{ seats.sessionInfo.versionId | get_version_name }}</div>
+                    <div class="block no-margin two-line">{{ seats.sessionInfo.filmNameVi }}
+                        - {{ seats.sessionInfo.versionId | get_version_name }}</div>
                 </div>
                 <div class="box-c tabs-wrap no-margin">
                     <div class="block no-margin height-100">
                         <div class="table table-100 height-100">
                             <div class="td left line-height-1-2">
                                 <div class="label-sub" id="total_seat">0 ghế</div>
-                                <div class="label-main"><b id="total_price">0 VND</b></div>
+                                <div class="label-main"><b class="total_price">0 VND</b></div>
                             </div>
                             <div class="td right">
-                                <a href="" class="link button-c button-c-md">Thanh toán</a>
+                                <a href="" class="link button-c button-c-md" id="create_order_opener">Thanh toán</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {% include 'wap/create_order.html' %}
         </div>
     </div>
 {% endblock %}
@@ -201,6 +266,8 @@
 {% block scripts %}
     <script src="{% static 'js/pinchzoom.min.js' %}"></script>
     <script>
+        var total_price = 0;
+        var total_seat = 0;
         var myElement = document.getElementById("zoom-theater");
         var pz = new PinchZoom.default(myElement, {
             minZoom: 1,
@@ -226,39 +293,279 @@
         });
         pz.handleDoubleTap = function () {
         };
-        var seats = [];
         var selectedSeats = [];
-        {% for row in seats.seats %}{% for seat in row %}{% if seat.status == 0 and seat.type|in_list:'0,1,2,3,5' %}
-        seats.push({{ seat.data | safe }});
-        {% endif %}{% endfor %}{% endfor %}
+        var ticketTypes;
+        {% if seats.ticket_types %}
+            ticketTypes ={{ seats.ticket_types | to_json_string }};
+            ticketTypes.forEach(function (element) {
+                element['booked'] = 0;
+            });
+        {% endif %}
         $$("input[type='checkbox'][name='theater']").on('change', function () {
-            var input = this;
-            $$(this).closest('label').find('.seats-ic').each(function () {
-                var seatId = $$(this).data('seatId');
-                var seatCode = $$(this).data('code');
-                if (input.checked) {
-                    var seatInfo = seats.find(x => x['seatDataId'] === parseInt(seatId));
-                    if (seatInfo){
-                        selectedSeats[seatCode] = seatInfo
+            var checkbox = this;
+            var label = $$(this).closest('.theater-row-item');
+            var row = $$(label).data('row');
+            var col = $$(label).data('col');
+            var type = $$(label).data('type');
+            selectSeat(checkbox, row, col, type);
+        });
+
+        function selectSeat(checkbox, row, col, type) {
+            var seatAreaId = $$(checkbox).data('seatAreaId');
+            var seatId = $$(checkbox).data('seatId');
+            var seatCode = $$(checkbox).data('code');
+            var seatPrice = $$(checkbox).data('price');
+            var typeInfo;
+            if (ticketTypes) {
+                typeInfo = ticketTypes.find(function (x) {
+                    return x['area_id'] === parseInt(seatAreaId)
+                });
+            }
+
+            if (checkbox.checked) {
+                if (ticketTypes) {
+                    if (typeInfo) {
+                        seatPrice = typeInfo['type_price'];
+                        if (!selectedSeats[row]) {
+                            selectedSeats[row] = []
+                        }
+
+                        if (typeInfo['quantity'] > typeInfo['booked']) {
+                            selectedSeats[row][col] = {
+                                price: seatPrice,
+                                id: seatId,
+                                code: seatCode,
+                                type: type
+                            };
+                            typeInfo['booked'] += 1
+                        }
+                        else {
+                            $$(checkbox).prop('checked', false)
+                        }
+                    }
+                    else {
+                        $$(checkbox).prop('checked', false);
+                    }
+                } else {
+                    if (total_seat < 10) {
+                        if (!selectedSeats[row]) {
+                            selectedSeats[row] = []
+                        }
+                        selectedSeats[row][col] = {
+                            price: seatPrice,
+                            id: seatId,
+                            code: seatCode,
+                            type: type
+                        }
+                    }
+                    else {
+                        $$(checkbox).prop('checked', false);
+                        showDialog('Mỗi giao dịch chỉ được chọn tối đa 10 ghế')
                     }
                 }
-                else {
-                    delete selectedSeats[seatCode]
+            } else {
+                delete selectedSeats[row][col];
+                if (ticketTypes && typeInfo) {
+                    typeInfo.booked -= 1;
                 }
-            });
+            }
             totalChecked();
-        });
+        }
+
         function totalChecked() {
-            var total_price = 0;
-            var total_seat = 0;
-            for (var code in selectedSeats){
-                if (selectedSeats.hasOwnProperty(code)){
-                    total_price += selectedSeats[code]['price'];
-                    total_seat ++;
+            total_price = 0;
+            total_seat = 0;
+            var codes = [];
+            for (var row in selectedSeats) {
+                if (selectedSeats.hasOwnProperty(row)) {
+                    for (var col in selectedSeats[row]) {
+                        if (selectedSeats[row].hasOwnProperty(col)) {
+                            total_price += parseInt(selectedSeats[row][col]['price']);
+                            total_seat++;
+                            codes.push(selectedSeats[row][col]['code'])
+                        }
+                    }
                 }
             }
             $$("#total_seat").text(total_seat + " ghế");
-            $$("#total_price").text(total_price + " VND");
+            $$(".total_price").text(formatNumber(total_price) + " VND");
+            $$("#seat_selected").text(codes.sort(function (a, b) {
+                return a.length - b.length || a.localeCompare(b)
+            }).join(' | '));
         }
+
+        function validateSelection() {
+            if (ticketTypes) {
+                for (var k in ticketTypes) {
+                    if (ticketTypes.hasOwnProperty(k) && ticketTypes[k].hasOwnProperty('booked') && ticketTypes[k].hasOwnProperty('quantity') && ticketTypes[k]['booked'] !== ticketTypes[k]['quantity']) {
+                        return 'Số ghế quý khách chọn chưa đúng, Quý khách vui lòng thử lại'
+                    }
+                }
+            }
+            else {
+                if (total_seat < 1){
+                    return 'Quý khách vui lòng chọn ghế'
+                }
+            }
+
+            for (var row in selectedSeats) {
+                if (selectedSeats.hasOwnProperty(row) && selectedSeats[row]) {
+                    var rowMaxIndex = $$('.theater-row-item[data-row="' + row + '"]').length;
+                    if ((selectedSeats[row].hasOwnProperty(1) && !selectedSeats[row].hasOwnProperty(0) && $$('.theater-row-item[data-row="' + row + '"][data-col="0"][data-available="1"]').length && (selectedSeats[row][1]['type'] !== "2" && selectedSeats[row][1]['type'] !== "3") )) {
+                        if ($$('.theater-row-item[data-type="' + selectedSeats[row][1]['type'] + '"] input:not(:checked)').length > 1) {
+                            return "Quý khách không thể bỏ trống ghế ngoài cùng bên trái hoặc bên phải. Vui lòng chọn lại"
+                        }
+                    }
+                    if (selectedSeats[row].hasOwnProperty(rowMaxIndex - 2) && !selectedSeats[row].hasOwnProperty(rowMaxIndex - 1) && $$('.theater-row-item[data-row="' + row + '"][data-col="' + (rowMaxIndex - 1) + '"][data-available="1"]').length && (selectedSeats[row][rowMaxIndex - 2]['type'] !== "2" && selectedSeats[row][rowMaxIndex - 2]['type'] !== "3")) {
+                        if ($$('.theater-row-item[data-type="' + selectedSeats[row][rowMaxIndex - 2]['type'] + '"] input:not(:checked)').length > 1) {
+                            return "Quý khách không thể bỏ trống ghế ngoài cùng bên trái hoặc bên phải. Vui lòng chọn lại"
+                        }
+                    }
+
+                    for (var i = 0; i < rowMaxIndex; i++) {
+                        if (selectedSeats[row].hasOwnProperty(i) && selectedSeats[row][i]['type'] !== "2" && selectedSeats[row][i]['type'] !== "3") {
+                            //check left
+                            if (i > 1 && (!selectedSeats[row].hasOwnProperty(i - 1) && $$('.theater-row-item[data-row="' + row + '"][data-col="' + (i - 1) + '"][data-available="1"]').length) &&
+                                (selectedSeats[row].hasOwnProperty(i - 2))
+                            ) {
+                                {# || $$('.theater-row-item[data-row="' + row + '"][data-col="' + (i - 2) + '"][data-available="0"]').length#}
+                                return "Quý khách không thể bỏ trống ghế ở giữa. Vui lòng chọn lại"
+                            }
+                            //check right
+                            if (i < rowMaxIndex - 1 && (!selectedSeats[row].hasOwnProperty(i + 1) && $$('.theater-row-item[data-row="' + row + '"][data-col="' + (i + 1) + '"][data-available="1"]').length) &&
+                                (selectedSeats[row].hasOwnProperty(i + 2))
+                            ) {
+                                return "Quý khách không thể bỏ trống ghế ở giữa. Vui lòng chọn lại"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $$('input[name="customerName"]').val("");
+        $$('input[name="customerPhone"]').val("");
+        $$('input[name="customeEmail"]').val("");
+        $$('input[name="agree_term"]').prop('checked', false);
+        $$('input.theater-checkbox').forEach(function (e) {
+            $$(e).prop('checked', false)
+        });
+
+        $$('#create-order-btn').on('click', function () {
+            app.input.validate("#customerName");
+            phoneValidate();
+            emailValidate();
+            if (!$$('#order-form input.input-invalid').length) {
+                if (!$$('input[name="agree_term"]')[0].checked) {
+                    showDialog('Vui lòng đồng ý với điều khoản điều lệ quy định')
+                    return
+                }
+                var formData = app.form.convertToData('#order-form');
+                formData['app_mobile'] = {{ app_mobile }};
+                formData['queryId'] = {{ seats.queryId }};
+                var postSeats = [];
+                selectedSeats.forEach(function (r) {
+                    r.forEach(function (s) {
+                        if (s['type'] !== "2" && s['type'] !== "3") {
+                            postSeats.push({seatId: s['id'], code: s['code']})
+                        }
+                        else {
+                            var s_ids = s['id'].split(',');
+                            var s_codes = s['code'].split(' | ');
+                            postSeats.push({seatId: s_ids[0].trim(), code: s_codes[0].trim()});
+                            postSeats.push({seatId: s_ids[1].trim(), code: s_codes[1].trim()})
+                        }
+                    })
+                });
+                formData['seats'] = postSeats;
+                custom_post('{% url "order" %}', formData);
+            }
+        });
+
+        function inputError(input, message) {
+            var error_el = $$(input).siblings('.item-input-error-message');
+            if (error_el.length) {
+                error_el.html(message);
+            }
+            else {
+                $$('<div class="item-input-error-message">' + message + '</div>').insertAfter(input)
+            }
+            $$(input).addClass('input-invalid').closest(".item-input").addClass('item-input-invalid')
+        }
+
+        function inputValid(input) {
+            var error_el = $$(input).siblings('.item-input-error-message');
+            if (error_el.length) {
+                error_el.remove();
+            }
+            $$(input).removeClass('input-invalid').closest(".item-input").removeClass('item-input-invalid')
+        }
+
+        function phoneValidate() {
+            var input = '#customerPhone';
+            var inputValue = $$(input).val().trim();
+            if (!inputValue) {
+                inputError(input, 'Quý khách vui lòng nhập số điện thoại');
+            }
+            else {
+                if (/^(\+84|0)[1-9]{1}[0-9]{8}$/.test(inputValue)){
+                    inputValid(input)
+                }
+                else {
+                    inputError(input, 'Số điện thoại không hợp lệ, vui lòng nhập lại');
+                }
+            }
+        }
+
+        function emailValidate() {
+            var input = '#customeEmail';
+            var inputValue = $$(input).val().trim();
+            if (!inputValue) {
+                inputError(input, 'Quý khách vui lòng nhập email');
+            }
+            else {
+                if (/^[a-z][a-z0-9_\.]{0,32}@[a-z0-9]+(\.){1}[a-z0-9]+$/.test(inputValue)){
+                    inputValid(input)
+                }
+                else {
+                    inputError(input, 'Email không hợp lệ, vui lòng nhập lại');
+                }
+            }
+        }
+
+        $$('#customerPhone').on('keyup change blur', function () {
+            phoneValidate()
+        });
+
+        $$('#customeEmail').on('keyup change blur', function () {
+            emailValidate()
+        });
+
+        $$('#create_order_opener').on("click", function () {
+            var error = validateSelection();
+            if (!error) {
+                app.popup.open($$("#create-order-popup"), true)
+            }
+            else {
+                showDialog(error)
+            }
+        });
+        var term_popup = app.popup.create({
+            el: '#popup-term',
+            on: {
+                open: function () {
+                    $$('#create-order-popup').css('z-index', 10499);
+                },
+                close: function () {
+                    $$('#create-order-popup').css('z-index', 12503);
+                }
+            }
+        });
+        $$('#popup_term_opener').on('click', function () {
+            term_popup.open();
+        });
+        $$('.popup_term_close').on('click', function () {
+            term_popup.close();
+        });
     </script>
 {% endblock %}

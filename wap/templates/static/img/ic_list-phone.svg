@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="17.5" height="17.5" viewBox="0 0 17.5 17.5">
+  <g id="ic_list-phone" transform="translate(-3.25 -3.25)">
+    <g id="Group_4496" data-name="Group 4496" opacity="0.13">
+      <path id="Path_1508" data-name="Path 1508" d="M19,4H5A1,1,0,0,0,4,5V19a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V5A1,1,0,0,0,19,4ZM12,7a2,2,0,1,1-2,2A1.965,1.965,0,0,1,12,7Zm5,10H7v-.783C7,14.909,9.269,14,12,14s5,.909,5,2.217Z" fill="#0058A0"/>
+    </g>
+    <path id="Path_1509" data-name="Path 1509" d="M19,20H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1V19A1,1,0,0,1,19,20Z" fill="none" stroke="#0058A0" stroke-miterlimit="10" stroke-width="1.5"/>
+    <g id="Group_4497" data-name="Group 4497">
+      <circle id="Ellipse_109" data-name="Ellipse 109" cx="2" cy="2" r="2" transform="translate(10 7)" fill="none" stroke="#0058A0" stroke-miterlimit="10" stroke-width="1.5"/>
+      <path id="Path_1510" data-name="Path 1510" d="M17,17v-.783C17,14.909,14.731,14,12,14s-5,.909-5,2.217V17Z" fill="none" stroke="#0058A0" stroke-miterlimit="10" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

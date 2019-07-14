@@ -8,35 +8,45 @@
                         <div class="film-vert__item">
                             <div class="film-vert__poster lazy lazy-fade-in" data-background="{{ film.poster }}"></div>
                             <a class="link box-c-link external"
-                               href="{% url 'get_film_detail_by_cinema' film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"></a>
-                            <div class="film-vert__title label-main">
+                               href="{% url 'get_film_detail_by_cinema' location_id=location_id film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}"></a>
+                            <div class="film-vert__title label-main two-line">
                                 <b>
-                                    {{ film.nameVn }}
+                                    {% if film.nameVn %}
+                                        {{ film.nameVn }}
+                                    {% else %}
+                                        Đang cập nhật
+                                    {% endif %}
                                 </b>
                             </div>
-                            <div class="film-vert__title font-xs clrgrey">
-                                {{ film.category }}
+                            <div class="film-vert__title font-xs clrgrey one-line">
+                                {% if film.category %}
+                                    {{ film.category }}
+                                {% else %}
+                                    Đang cập nhật
+                                {% endif %}
                             </div>
                             <div class="film-vert__time margin-b-xs">
                                 <div class="inline-middle">
                                     <div class="dot dot-blue"></div>
                                 </div>
-                                <div class="inline-middle">{{ film.duration | film_duration }}</div>
+                                <div class="inline-middle">
+                                    {{ film.duration | film_duration }}
+                                </div>
                             </div>
                             <div class="table table-100">
                                 <div class="td">
                                     <div class="pills table">
                                         <div class="pills-left ic-imdb td"></div>
-                                        <div class="pills-right td font-xs">{{ film.imdbPoint }}</div>
+                                        <div class="pills-right td font-xs">{{ film.imdbPoint | imdb }}</div>
                                     </div>
                                 </div>
                                 <div class="td right v-middle">
                                     {% if film.statusId == 1 %}
                                         <a href="" class="link btn-sm btn-border-blue box-c-link-inside upcoming2">
-                                            <div class="color-black">{{ film.publishDate | string_to_datetime | date:"d/m/Y"  }}</div>
+                                            <div class="color-black">{{ film.publishDate | string_to_datetime | date:"d/m/Y" }}</div>
                                         </a>
                                     {% elif film.statusId == 2 %}
-                                        <a href="{% url 'get_film_detail_by_cinema' film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
+                                        <a href="{% url 'get_film_detail_by_cinema' location_id=location_id film_id=film.filmId cinema_id=cinema_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
                                            class="external link button-c-xs box-c-link-inside current2">
                                             Đặt vé
                                         </a>

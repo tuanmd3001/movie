@@ -1,0 +1,208 @@
+{% load static %}
+{% load common %}
+<div class="popup my-popup my-popup--custom" id="create-order-popup">
+    <div class="view">
+        <div class="page">
+            <div class="nav-c">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td class="left">
+                            <a href="#" class="link nav-c__button nav-c__button--back popup-close"></a>
+                        </td>
+                        <td class="center">
+                            <div class="nav-c__Text">
+                                Thông tin mua vé
+                            </div>
+                        </td>
+                        <td class="right">
+                            <a href="" class="link nav-c__button nav-c__button--call"
+                               onclick="phoneSupport.open();"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-content">
+                <div class="content__wrap content__wrap--1">
+                    <div class="box-c no-padding-bottom">
+                        <div class="box-c__header">Thông tin phim</div>
+                        <div class="box-c__content">
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Phim</td>
+                                        <td class="right two-line">{{ seats.sessionInfo.filmNameVi }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Suất chiếu</td>
+                                        <td class="right two-line">{{ seats.sessionInfo.sessionTime | string_to_datetime | date:'d/m/Y - H:i' }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Thời lượng</td>
+                                        <td class="right two-line">{{ seats.sessionInfo.duration }} phút</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Rạp</td>
+                                        <td class="right two-line">{{ seats.sessionInfo.cinemaName }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Địa chỉ</td>
+                                        <td class="right two-line">{{ seats.sessionInfo.cinemaAddress }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey">Số tiền</td>
+                                        <td class="right total_price">0 VND</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-c__item">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="clrgrey fitwidth">Ghế</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left clrblue" id="seat_selected"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-c">
+                        <form id="order-form">
+                            {% csrf_token %}
+                            <div class="box-c__header">Thông tin người nhận vé</div>
+                            <div class="box-c__content">
+                                <div class="box-c__textinfo">
+                                    Chúng tôi sẽ gửi thông tin vé về số điện thoại và email này
+                                </div>
+                                <div class="item-content item-input">
+                                    <div class="item-inner input-group input-group-material">
+                                        <div class="item-title item-floating-label input-label-float">
+                                            Tên khách hàng <span class="clred">*</span>
+                                        </div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" style="width: 100%; padding-top: 20px !important; font-size: 15px !important; border-bottom: none"
+                                                   class="input input-md input-ic-md input-material"
+                                                   required validate data-error-message="Quý khách vui lòng nhập tên khách hàng"
+                                                   autocorrect="off"
+                                                   name="customerName"
+                                                   id="customerName"
+                                                   value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-content item-input">
+                                    <div class="item-inner input-group input-group-material">
+                                        <div class="item-title item-floating-label input-label-float">
+                                            Số điện thoại <span class="clred">*</span>
+                                        </div>
+                                        <a class="input-ic" style="text-align: right">
+                                            <img src="{% static 'img/ic_list-phone.svg' %}" alt="">
+                                        </a>
+                                        <div class="item-input-wrap">
+                                            <input type="tel" style="width: 100%; padding-top: 20px !important; font-size: 15px !important;"
+                                                   class="input input-md input-ic-md input-material"
+                                                   required
+                                                   autocorrect="off"
+                                                   name="customerPhone"
+                                                   id="customerPhone"
+                                                   value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-content item-input">
+                                    <div class="item-inner input-group input-group-material">
+                                        <div class="item-title item-floating-label input-label-float">
+                                            Email <span class="clred">*</span>
+                                        </div>
+                                        <div class="item-input-wrap">
+                                            <input type="email" style="width: 100%; padding-top: 20px !important; font-size: 15px !important;"
+                                                   class="input input-md input-ic-md input-material"
+                                                   required
+                                                   autocorrect="off"
+                                                   name="customeEmail"
+                                                   id="customeEmail"
+                                                   value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="checkbox-term">
+                        <label class="checkbox checkbox--custom checkbox--custom-single">
+                            <input type="checkbox" name="agree_term">
+                            <div class="item-radio__checked"><span class="checkbox-white"></span></div>
+                        </label> <span class="checkbox__text" style="line-height: 21px">Tôi đồng ý với
+                        <span class="underline" id="popup_term_opener"> Điều khoản điều lệ</span> quy định</span>
+                    </div>
+                    <a href="" class="link button-c" id="create-order-btn">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popup my-popup my-popup--custom-2" id="popup-term">
+    <div class="view">
+        <div class="popup2-custom">
+            <div class="popup2-custom__header">
+                <table class="table-100">
+                    <tbody>
+                    <tr>
+                        <td class="ic link popup_term_close">
+                            <img src="{% static 'img/ic_close-dark.svg' %}" alt="">
+                        </td>
+                        <td class="txt">
+                            Điều khoản điều kiện
+                        </td>
+                        <td class="ic link popup_term_close">
+                           <span class="clrblue"><b>Xong</b>
+                        </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="iframe-full-wrap">
+            <iframe class="iframe-dk iframe-dk-full"
+                    src="https://design.vnpay.vn/web/ve-xem-phim/ho-tro/dkdk/dieu-khoan-dieu-le.html">
+            </iframe>
+        </div>
+    </div>
+</div>

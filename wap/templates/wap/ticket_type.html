@@ -10,9 +10,11 @@
                 <tr>
                     <td class="left">
                         {% if cinema_id %}
-                            <a href="{% url 'get_film_detail_by_cinema' cinema_id=cinema_id film_id=film_id  %}?app_mobile={{ app_mobile }}&tab=tab-booking" class="link nav-c__button nav-c__button--back external"></a>
+                            <a href="{% url 'get_film_detail_by_cinema' location_id=location_id cinema_id=cinema_id film_id=film_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
+                               class="link nav-c__button nav-c__button--back external"></a>
                         {% else %}
-                            <a href="{% url 'get_film_detail' film_id=film_id  %}?app_mobile={{ app_mobile }}&tab=tab-booking" class="link nav-c__button nav-c__button--back external"></a>
+                            <a href="{% url 'get_film_detail' film_id=film_id %}?app_mobile={{ app_mobile }}&tab=tab-booking"
+                               class="link nav-c__button nav-c__button--back external"></a>
                         {% endif %}
                     </td>
                     <td class="center">
@@ -28,7 +30,8 @@
         </div>
         <div class="page-content">
             <div class="content__wrap content__wrap--list-fly film-wrap">
-                <form method="post" id="form" onsubmit="return before_submit()" style="display: flex; flex-direction: column; height: 100%">
+                <form method="post" id="form" onsubmit="return before_submit()"
+                      style="display: flex; flex-direction: column; height: 100%">
                     {% csrf_token %}
                     <div class="box-list--int-1 flex-column">
                         <div class="box-c box-c-margin-sm film-vert__item-wrap">
@@ -37,16 +40,14 @@
                                     <div class="film-vert__poster lazy lazy-fade-in"
                                          data-background="{{ ticket_types.poster }}"></div>
                                     <div class="film-vert__title label-main">
-                                        <b>
-                                            {{ ticket_types.filmName }}
-                                        </b>
+                                        <b>{% if ticket_types.filmName %}{{ ticket_types.filmName }}{% else %}Đang cập nhật{% endif %}</b>
                                     </div>
                                     <div class="margin-v-xs">
                                         <div class="film-vert__title clrgrey">
-                                            {{ ticket_types.cinemaName }}
+                                            {% if ticket_types.cinemaName %}{{ ticket_types.cinemaName }}{% else %}Đang cập nhật{% endif %}
                                         </div>
                                         <div class="film-vert__title clrgrey">
-                                            {{ ticket_types.roomName }}
+                                            {% if ticket_types.roomName %}{{ ticket_types.roomName }}{% else %}Đang cập nhật{% endif %}
                                         </div>
                                     </div>
                                     <div class="film-vert__time margin-b-xs">
@@ -57,7 +58,14 @@
                                                         <div class="dot dot-blue"></div>
                                                     </div>
                                                     <div class="inline-middle color-black">
-                                                        <b>{{ ticket_types | get_session_time }}</b></div>
+                                                        <b>
+                                                        {% if ticket_types.sessionTime %}
+                                                            {{ ticket_types | get_session_time }}
+                                                        {% else %}
+                                                            Đang cập nhật
+                                                        {% endif %}
+                                                        </b>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="td">
@@ -66,7 +74,8 @@
                                                         <div class="dot dot-blue"></div>
                                                     </div>
                                                     <div class="inline-middle color-black">
-                                                        <b>{{ ticket_types.duration | film_duration }}</b></div>
+                                                        <b>{{ ticket_types.duration | film_duration }}</b>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,76 +84,80 @@
                             </div>
                         </div>
                         <div class="box-c no-margin">
-                                <div class="box-c__content no-padding">
-                                    <div class="popup2-custom__inner">
-                                        {% for type in ticket_types.lstTicketType %}
-                                            <div class="poupup2-row bordered-full no-padding-right">
-                                                <table class="table-100 person">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="label-sub">
-                                                                {{ type.type_name }}
-                                                            </div>
-                                                            <div class="label-main">
-                                                                <b>{{ type.type_price | intcomma }} VND</b>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right booking-tabs__item--number">
-                                                            <table class="booking-table__number">
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td class="not-hidden">
-                                                                        <a class="orange-ripple link booking-table__dau minus_btn"
-                                                                           data-id="{{ type.ticketTypeId }}">
-                                                                            <img src="{% static 'img/ic_minus.svg' %}" alt="">
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="center booking-table__number__detail booking-table__number__detail--active"
-                                                                             id="type_quantity_{{ type.ticketTypeId }}">
-                                                                            {{ type.quantity }}
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="not-hidden">
-                                                                        <a class="orange-ripple link booking-table__dau plus_btn"
-                                                                           data-id="{{ type.ticketTypeId }}" data-max="{{ type.type_max }}">
-                                                                            <img src="{% static 'img/ic_plus.svg' %}" alt="">
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        {% endfor %}
-                                        <div class="poupup2-row-padding-bg  bordered-full">
-                                            <table class="table-100">
+                            <div class="box-c__content no-padding">
+                                <div class="popup2-custom__inner">
+                                    {% for type in ticket_types.lstTicketType %}
+                                        <div class="poupup2-row bordered-full no-padding-right">
+                                            <table class="table-100 person">
                                                 <tbody>
                                                 <tr>
                                                     <td>
+                                                        <div class="label-sub">
+                                                            {{ type.type_name }}
+                                                        </div>
                                                         <div class="label-main">
-                                                            <div class="clrgrey">
-                                                                Tổng tiền
-                                                            </div>
+                                                            <b>{{ type.type_price | intcomma }} VND</b>
                                                         </div>
                                                     </td>
-                                                    <td class="right">
-                                                        <div class="label-main margin-v-xs"><span class="clrorange"><b id="total">0 VND</b></span>
-                                                        </div>
+                                                    <td class="text-right booking-tabs__item--number">
+                                                        <table class="booking-table__number">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td class="not-hidden">
+                                                                    <a class="orange-ripple link booking-table__dau minus_btn"
+                                                                       data-id="{{ type.ticketTypeId }}">
+                                                                        <img src="{% static 'img/ic_minus.svg' %}"
+                                                                             alt="">
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="center booking-table__number__detail booking-table__number__detail--active"
+                                                                         id="type_quantity_{{ type.ticketTypeId }}">
+                                                                        {{ type.quantity }}
+                                                                    </div>
+                                                                </td>
+                                                                <td class="not-hidden">
+                                                                    <a class="orange-ripple link booking-table__dau plus_btn"
+                                                                       data-id="{{ type.ticketTypeId }}"
+                                                                       data-max="{{ type.type_max }}">
+                                                                        <img src="{% static 'img/ic_plus.svg' %}"
+                                                                             alt="">
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
+                                    {% endfor %}
+                                    <div class="poupup2-row-padding-bg  bordered-full">
+                                        <table class="table-100">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="label-main">
+                                                        <div class="clrgrey">
+                                                            Tổng tiền
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="right">
+                                                    <div class="label-main margin-v-xs"><span class="clrorange"><b
+                                                            id="total">0 VND</b></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="margin-v-md center">
+                    <div class="margin-v-md center" id="submit_btn">
                         <input type="hidden">
                         <button type="submit" class="link button-c" id="choose_seat_btn">Chọn chỗ ngồi</button>
                     </div>
@@ -158,21 +171,36 @@
     <script>
         var types = JSON.parse("{{ ticket_types_json | escapejs  }}");
         var total = 0;
+        var total_seat = 0;
+        var max_seat = 10;
         sumTotal();
+
         function sumTotal() {
             total = 0;
+            total_seat = 0;
             types.lstTicketType.forEach(function (type) {
                 total += type.quantity * type.type_price;
+                total_seat += type.quantity;
             });
             $$('#total').text(total.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " VND")
+            if (total_seat > 0){
+                $$('#submit_btn').show();
+            }
+            else {
+                $$('#submit_btn').hide();
+            }
         }
+
         $$('.minus_btn').on("click", function () {
             var type_id = $$(this).data('id');
             var list_type = types.lstTicketType;
-            var type_index = list_type.findIndex(x => (x.ticketTypeId).toString() === type_id);
-            if (type_index >= 0){
+            var type_index = list_type.findIndex(function (x) {
+                return (x.ticketTypeId).toString() === type_id
+            });
+            if (type_index >= 0) {
                 var type = list_type[type_index];
                 if (type && type['quantity'] > 0) {
+                    total_seat -= 1;
                     type['quantity'] -= 1;
                     $$('#type_quantity_' + type_id).text(type['quantity']);
                     types.lstTicketType[type_index] = type;
@@ -184,25 +212,38 @@
             var type_id = $$(this).data('id');
             var type_max = $$(this).data('max');
             var list_type = types.lstTicketType;
-            var type_index = list_type.findIndex(x => (x.ticketTypeId).toString() === type_id);
-            if (type_index >= 0){
+            var type_index = list_type.findIndex(function (x) {
+                return (x.ticketTypeId).toString() === type_id
+            });
+            if (type_index >= 0) {
                 var type = list_type[type_index];
-                if (type && type['quantity'] >= 0 && type['quantity'] < type_max) {
-                    type['quantity'] += 1;
-                    $$('#type_quantity_' + type_id).text(type['quantity']);
-                    types.lstTicketType[type_index] = type;
-                    sumTotal();
+                if (total_seat < max_seat) {
+                    if (type && type['quantity'] >= 0 && type['quantity'] < type_max) {
+                        total_seat += 1;
+                        type['quantity'] += 1;
+                        $$('#type_quantity_' + type_id).text(type['quantity']);
+                        types.lstTicketType[type_index] = type;
+                        sumTotal();
+                    }
+                    else {
+                        showDialog('Loại ghế chỉ được chọn tối đa ' + type_max + ' ghế')
+                    }
+                }
+                else {
+                    showDialog('Mỗi giao dịch chỉ được chọn tối đa 10 ghế')
                 }
             }
         });
+
         function add_to_form(form, name, value) {
             $$("<input />").attr("type", "hidden")
                 .attr("name", name)
                 .attr("value", value)
                 .appendTo(form);
         }
+
         function before_submit() {
-            if (total){
+            if (total) {
                 add_to_form("#form", "app_mobile", "{{ app_mobile }}");
                 add_to_form("#form", "session_id", "{{ session_id }}");
                 add_to_form("#form", "ticket_types", JSON.stringify(types));

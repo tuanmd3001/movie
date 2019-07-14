@@ -24,6 +24,7 @@ function selectLocation(location_id) {
 }
 
 function getLocation(lat, lon) {
+    app.preloader.show();
     app.request.promise.json(api_url + 'get_current_location', {
         app_mobile: current_app_mobile,
         lat: lat,
@@ -32,7 +33,9 @@ function getLocation(lat, lon) {
         if (response['code'] === "00") {
             selectLocation(response['data']['location_id'])
         }
-    }).catch(selectLocation)
+    }).catch(selectLocation).then(function () {
+        app.preloader.hide();
+    })
 }
 
 function getPosition() {
@@ -47,6 +50,7 @@ function getPosition() {
 }
 
 function onLocationSelect(location_id, name) {
+    app.preloader.show();
     $$('#selected_location').text(name).css('font-weight', 'bold');
     get_cinema(location_id).then(function (response) {
         if (response['code'] && response['code'] === "00") {
@@ -59,6 +63,8 @@ function onLocationSelect(location_id, name) {
     }).catch(function (err) {
         showDialog('Kết nối máy chủ thất bại (00)');
         $$('#cinema_list').empty()
+    }).then(function () {
+        app.preloader.hide();
     })
 }
 
@@ -91,7 +97,7 @@ function renderCinema(data, location_id) {
             }
             groupCinemaArr.push(
                 '<li>\n' +
-                '  <a href="' + cinema_url + cinema['location_id'] + '/' +cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '" class="item-content link external">\n' +
+                '  <a href="' + cinema_url + cinema['location_id'] + '/' + cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '" class="item-content link external">\n' +
                 '      <div class="item-inner item-inner-custom no-padding-left">\n' +
                 '      <div class="item-title color-black">' + cinema['cinema_name'] + '</div>\n' +
                 '      </div>\n' +
@@ -131,15 +137,28 @@ function renderCinema(data, location_id) {
 }
 
 function durationFormat(num) {
-    var hours = (num / 60);
-    var rhours = Math.floor(hours);
-    var minutes = (hours - rhours) * 60;
-    var rminutes = Math.round(minutes);
-    return rhours + " giờ " + (rminutes ? rminutes + " phút" : "");
+    if (num){
+        var hours = (num / 60);
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+        return rhours + " giờ " + (rminutes ? rminutes + " phút" : "");
+    }
+    else {
+        return 'Đang cập nhật'
+    }
 }
 
 function publishDateFormat(string) {
-    return string.toDate("dd/mm/yyyy hh:ii:ss").ddmmyyyy()
+    return string.toDate("dd/mm/yyyy hh:ii:ss").publishDate()
+}
+
+function ticketDateFormat(string) {
+    return string.toDate("dd/mm/yyyy hh:ii:ss").ticketDate()
+}
+
+function imdbFormat(value) {
+    return value.toFixed(1);
 }
 
 function renderFilmListItem(film, is_showing) {
@@ -148,13 +167,13 @@ function renderFilmListItem(film, is_showing) {
         '        <div class="film-vert__item">\n' +
         '            <div class="film-vert__poster lazy lazy-fade-in" data-background="' + film['poster'] + '"></div>\n' +
         '            <a class="link box-c-link external" href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '"></a>\n' +
-        '            <div class="film-vert__title label-main">\n' +
+        '            <div class="film-vert__title label-main two-line">\n' +
         '                <b>\n' +
-        '                    ' + film['nameVn'] + '\n' +
+        '                    ' + (film['nameVn'] ? film['nameVn'] : "Đang cập nhật") + '\n' +
         '                </b>\n' +
         '            </div>\n' +
-        '            <div class="film-vert__title font-xs clrgrey">\n' +
-        '                ' + film['category'] + '\n' +
+        '            <div class="film-vert__title font-xs clrgrey one-line">\n' +
+        '                ' + (film['category'] ? film['category'] : "Đang cập nhật") + '\n' +
         '            </div>\n' +
         '            <div class="film-vert__time margin-b-xs">\n' +
         '                <div class="inline-middle">\n' +
@@ -166,7 +185,7 @@ function renderFilmListItem(film, is_showing) {
         '                <div class="td">\n' +
         '                    <div class="pills table">\n' +
         '                        <div class="pills-left ic-imdb td"></div>\n' +
-        '                        <div class="pills-right td font-xs">' + film['imdbPoint'] + '</div>\n' +
+        '                        <div class="pills-right td font-xs">' + imdbFormat(film['imdbPoint']) + '</div>\n' +
         '                    </div>\n' +
         '                </div>' +
         '                <div class="td right v-middle">\n';
@@ -194,10 +213,10 @@ function renderFilmSlideItem(film, is_showing) {
         '          <div class="film-poster lazy lazy-fade-in" data-background="' + film['poster'] + '"></div>\n' +
         '       </div>\n' +
         '       <div class="film-ìnfo center">\n' +
-        '          <div class="film-title">\n' +
+        '          <div class="film-title two-line">\n' +
         '             ' + film['nameVn'] + '\n' +
         '          </div>\n' +
-        '          <div class="film-gerne font-sm">\n' +
+        '          <div class="film-gerne font-sm one-line">\n' +
         '             ' + film['category'] + '\n' +
         '          </div>\n' +
         '          <div class="film-time font-sm">\n' +
@@ -270,6 +289,7 @@ function getListFilm() {
 }
 
 $$("#tab-film").on('tab:show', function (event, ui) {
+    app.preloader.show();
     $$('#search-film-btn').css('display', '');
     $$('#search-blank').css('display', 'none');
     $$('.film-toggle--list').trigger("click");
@@ -284,6 +304,8 @@ $$("#tab-film").on('tab:show', function (event, ui) {
     }).catch(function (err) {
         showDialog('Kết nối máy chủ thất bại (00)');
         console.log(err)
+    }).then(function () {
+        app.preloader.hide();
     });
 });
 
@@ -421,4 +443,66 @@ $$('#coming_tab_header').on('change', function (e) {
     currentUpcomingChange(e.target.checked, 'film-coming', 'film-showing');
     currentUpcomingChange(e.target.checked, 'film-slide-coming', 'film-slide-showing');
     swiper_comming.update()
+});
+
+function getTicketList() {
+    return app.request.promise.json(api_url + "get_my_ticket", {
+        app_mobile: current_app_mobile
+    })
+}
+
+function renderTicketList(data) {
+    var html = '<div class="margin-b-md">Lịch sử giao dịch hiển thị trong vòng 2 tháng.</div>';
+    if (data) {
+        var listhtml = [];
+        data.forEach(function (ticket) {
+            console.log(ticket)
+            listhtml.push('<a href="' + ticket_url + ticket['query_id'] + '?app_mobile=' + current_app_mobile + '" class="box-c__item external">\n' +
+                '    <div class="table table-100">\n' +
+                '        <div class="td">\n' +
+                '            <div class="label-main two-line"><b>' + (ticket['film_name'] ? ticket['film_name'] : 'Đang cập nhật') + '</b></div>\n' +
+                '            <div class="font-xs clrgrey margin-v-xxs one-line">' + (ticket['cinema_name'] ? ticket['cinema_name'] : 'Đang cập nhật') + '</div>\n' +
+                '            <div class="font-xs clrgrey">' + (ticket['session_time'] ? ticketDateFormat(ticket['session_time']) : 'Đang cập nhật') + '</div>\n' +
+                '        </div>\n' +
+                '        <div class="td fitwidth right">\n' +
+                '            <div class="label-main">\n' +
+                '                <div class="clrorange"><b>' + formatNumber(ticket['amount']) + ' VND</b></div>\n' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '</a>')
+        });
+        html += '<div class="box-c">\n' +
+            '    <div class="box-c__content no-padding-bottom">\n' +
+            listhtml.join('\n') +
+            '    </div>\n' +
+            '</div>'
+    }
+    else {
+        html += '<div class="box-c p-blank p-blank--history">\n' +
+            '    <div class="box-c__content">\n' +
+            '        <div class="box-c__item center">\n' +
+            '            <img src="/static/img/history-blank.svg" alt="">\n' +
+            '            <div class="p-plank__text">Không tìm thấy dữ liệu. Vui lòng thử lại sau</div>\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>'
+    }
+    $$('#ticket-list').empty().html(html);
+}
+
+$$("#tab-ticket").on('tab:show', function (event, ui) {
+    app.preloader.show();
+    getTicketList().then(function (response) {
+        if (response['data'] && response['data'].length) {
+            renderTicketList(response['data'])
+        }
+        else {
+            renderTicketList()
+        }
+    }).catch(function (err) {
+        renderTicketList()
+    }).then(function () {
+        app.preloader.hide();
+    })
 });

@@ -12,4 +12,4 @@ def call(paycode):
     }
     r = requests.post(SERVICE_URLS['get_seats'], data=params)
     result = r.json()
-    return result['data']
+    return result

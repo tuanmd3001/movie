@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% load common %}
+{% load humanize %}
+
+{% block content %}
+    <div data-name="home" class="page">
+        <div class="nav-c">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="left">
+                        <a href="{% url 'index' %}?app_mobile={{ app_mobile }}&tab=ticket" class="link nav-c__button nav-c__button--back external"></a>
+                    </td>
+                    <td class="center">
+                        <div class="nav-c__Text">
+                            Chi tiết vé
+                        </div>
+                    </td>
+                    <td class="right">
+                        <a href="" class="nav-c__button"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Scrollable page content -->
+        <div class="page-content">
+            <div class="content__wrap">
+                <div class="box-c ticket-detail">
+                    <div class="ticket-detail-wrap inverse-bottom round">
+                        <div class="ticket-banner lazy lazy-fade-in" data-background="{{ ticket.poster }}"></div>
+                        <div class="ticket-content">
+                            <div class="margin-v-md">
+                                <div class="ticket-title label-main two-line">
+                                    <div class="clrblue"><b>{% if ticket.name %}{{ ticket.name }}{% else %}Đang cập nhật{% endif %}</b></div>
+                                </div>
+                                <div class="ticket-sub clrgrey one-line">{% if ticket.cinemaName %}{{ ticket.cinemaName }}{% else %}Đang cập nhật{% endif %}</div>
+                            </div>
+                            <div class="margin-v-md">
+                                <div class="table table-100">
+                                    <div class="td">
+                                        <div class="ticket-sub clrgrey">Thời gian</div>
+                                        <div class="label-main"><b>{% if ticket.sessionTime %}{{ ticket.sessionTime | string_to_datetime | date:'d/m/Y H:i' }}{% else %}Đang cập nhật{% endif %}</b></div>
+                                    </div>
+                                    <div class="td right">
+                                        <div class="ticket-sub clrgrey">Thời lượng</div>
+                                        <div class="label-main"><b>{{ ticket.duration | film_duration }}</b></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="margin-v-md">
+                                <div class="table table-100">
+                                    <div class="td">
+                                        <div class="ticket-sub clrgrey">Ghế</div>
+                                        {{ ticket.seatCode | booked_seat }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="margin-v-md">
+                                <div class="table table-100">
+                                    <div class="td">
+                                        <div class="ticket-sub clrgrey">Tổng tiền</div>
+                                        <div class="ticket-title label-main">
+                                            <div class="clrblue"><b>{{ ticket.amount | intcomma }} VND</b></div>
+                                        </div>
+                                    </div>
+                                    <div class="td right">
+                                        <div class="ticket-sub clrgrey">Phòng chiếu</div>
+                                        <div class="ticket-title label-main">
+                                            <div class="clrblue"><b>{{ ticket.roomName }}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ticket-detail-wrap-line"></div>
+                    </div>
+                    <div class="ticket-detail-bottom inverse-full round">
+                        <div class="table table-100">
+                            <div class="td">
+                                <div class="label-main">
+                                    <div class="clrgrey">Mã đặt chỗ</div>
+                                </div>
+                            </div>
+                            <div class="td right">
+                                <div class="font-md color-black"><b>{% if ticket.ticketCode %}{{ ticket.ticketCode }}{% else %}Đang cập nhật{% endif %}</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
