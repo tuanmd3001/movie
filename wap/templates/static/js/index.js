@@ -97,7 +97,7 @@ function renderCinema(data, location_id) {
             }
             groupCinemaArr.push(
                 '<li>\n' +
-                '  <a href="' + cinema_url + cinema['location_id'] + '/' + cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '" class="item-content link external">\n' +
+                '  <a href="' + cinema_url + cinema['location_id'] + '/' + cinema['cinema_id'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '" class="item-content link external">\n' +
                 '      <div class="item-inner item-inner-custom no-padding-left">\n' +
                 '      <div class="item-title color-black">' + cinema['cinema_name'] + '</div>\n' +
                 '      </div>\n' +
@@ -137,7 +137,7 @@ function renderCinema(data, location_id) {
 }
 
 function durationFormat(num) {
-    if (num){
+    if (num) {
         var hours = (num / 60);
         var rhours = Math.floor(hours);
         var minutes = (hours - rhours) * 60;
@@ -166,7 +166,7 @@ function renderFilmListItem(film, is_showing) {
         '    <div class="box-c__content no-padding">\n' +
         '        <div class="film-vert__item">\n' +
         '            <div class="film-vert__poster lazy lazy-fade-in" data-background="' + film['poster'] + '"></div>\n' +
-        '            <a class="link box-c-link external" href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '"></a>\n' +
+        '            <a class="link box-c-link external" href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '"></a>\n' +
         '            <div class="film-vert__title label-main two-line">\n' +
         '                <b>\n' +
         '                    ' + (film['nameVn'] ? film['nameVn'] : "Đang cập nhật") + '\n' +
@@ -190,7 +190,7 @@ function renderFilmListItem(film, is_showing) {
         '                </div>' +
         '                <div class="td right v-middle">\n';
     if (is_showing) {
-        html += '                    <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&tab=tab-booking" class="external link button-c-xs box-c-link-inside current2">Đặt vé</a>\n';
+        html += '                    <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '&tab=tab-booking" class="external link button-c-xs box-c-link-inside current2">Đặt vé</a>\n';
 
 
     } else {
@@ -208,7 +208,7 @@ function renderFilmListItem(film, is_showing) {
 function renderFilmSlideItem(film, is_showing) {
     var html = '<div class="swiper-slide">\n' +
         '    <div class="content__wrap--list-fly flex-column">\n' +
-        '       <a class="link box-c-link external" href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '"></a>\n' +
+        '       <a class="link box-c-link external" href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '"></a>\n' +
         '       <div class="box-list--int-1">\n' +
         '          <div class="film-poster lazy lazy-fade-in" data-background="' + film['poster'] + '"></div>\n' +
         '       </div>\n' +
@@ -225,7 +225,7 @@ function renderFilmSlideItem(film, is_showing) {
         '       </div>\n' +
         '       <div class="margin-b-sm">\n';
     if (is_showing) {
-        html += '           <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&tab=tab-booking" class="link button-c current external">Đặt vé</a>\n';
+        html += '           <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '&tab=tab-booking" class="link button-c current external">Đặt vé</a>\n';
     }
     else {
         html += '           <a href="#" class="link btn-border-white table table-100 upcoming">\n' +
@@ -243,7 +243,7 @@ function renderFilmSlideItem(film, is_showing) {
 
 function renderFilmSearchItem(film) {
     return '<li>\n' +
-        '    <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '" class="link item-radio item-radio-location item-content external">\n' +
+        '    <a href="' + movie_url + film['filmId'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '" class="link item-radio item-radio-location item-content external">\n' +
         '        <div class="item-inner item-inner-custom d-block">\n' +
         '            <div class="item-title color-black">' + film['nameVn'] + '</div>\n' +
         '            <div class="font-xs clrgrey">' + film['category'] + '</div>\n' +
@@ -457,7 +457,7 @@ function renderTicketList(data) {
         var listhtml = [];
         data.forEach(function (ticket) {
             console.log(ticket)
-            listhtml.push('<a href="' + ticket_url + ticket['query_id'] + '?app_mobile=' + current_app_mobile + '" class="box-c__item external">\n' +
+            listhtml.push('<a href="' + ticket_url + ticket['query_id'] + '?app_mobile=' + current_app_mobile + '&token=' + current_token + '" class="box-c__item external">\n' +
                 '    <div class="table table-100">\n' +
                 '        <div class="td">\n' +
                 '            <div class="label-main two-line"><b>' + (ticket['film_name'] ? ticket['film_name'] : 'Đang cập nhật') + '</b></div>\n' +
