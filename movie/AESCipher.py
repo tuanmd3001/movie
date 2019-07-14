@@ -18,16 +18,22 @@ class AESCipher:
         # self.key = self.hash(password)
 
     def encrypt(self, raw):
-        pad_raw = Padding.pad(raw.encode(), self.bs)
-        encrypted = self.cipher.encrypt(pad_raw)
-        # ciphertext, tag = self.cipher.encrypt(raw.encode())
-        encoded = base64.b64encode(encrypted)
-        return str(encoded, 'utf-8')
+        try:
+            pad_raw = Padding.pad(raw.encode(), self.bs)
+            encrypted = self.cipher.encrypt(pad_raw)
+            # ciphertext, tag = self.cipher.encrypt(raw.encode())
+            encoded = base64.b64encode(encrypted)
+            return str(encoded, 'utf-8')
+        except (TypeError, ValueError):
+            raise ValueError('Dữ liệu không hợp lệ')
 
     def decrypt(self, raw):
-        decoded = base64.b64decode(raw)
-        decrypted = self.cipher.decrypt(decoded)
-        return str(Padding.unpad(decrypted, self.bs), 'utf-8')
+        try:
+            decoded = base64.b64decode(raw)
+            decrypted = self.cipher.decrypt(decoded)
+            return str(Padding.unpad(decrypted, self.bs), 'utf-8')
+        except (TypeError, ValueError):
+            raise ValueError('Dữ liệu không hợp lệ')
 
     def hash(self, password):
-        return hashlib.md5(password.encode('utf-8')).hexdigest().encode()
+        return hashlib.md5(password.encode('utf-8')).hexdigest().upper().encode()

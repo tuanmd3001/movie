@@ -1,9 +1,6 @@
 
+from urllib.parse import urlencode
 
-import json
-from urllib.parse import urlencode, quote
-
-from django.contrib import messages
 from django.http import HttpResponseRedirect
 from datetime import datetime
 
@@ -19,9 +16,20 @@ def index(request, *args, **kwargs):
         password = PASSWORD
         aes_cipher = AESCipher(password)
         if 'data' in params:
-            raw_data = aes_cipher.decrypt(params['data'])
-            result = get_data_from_raw(raw_data)
-            return custom_redirect('index', *(), **(result['data']))
+            try:
+                raw_data = aes_cipher.decrypt(params['data'])
+                result = get_data_from_raw(raw_data)
+                if result and result['code'] == '00':
+                    return custom_redirect('index', *(), **(result['data']))
+                else:
+                    return HttpResponseRedirect(URL_BACK_TO_APP +
+                                                "&reason=error&code=%s&message=%s" %
+                                                ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+            except ValueError as e:
+                return HttpResponseRedirect(URL_BACK_TO_APP +
+                                            "&reason=error&code=%s&message=%s" %
+                                            ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+
         else:
             return HttpResponseRedirect(URL_BACK_TO_APP +
                                         "&reason=error&code=%s&message=%s" %
@@ -46,12 +54,22 @@ def get_data_from_raw(raw):
         version = list_data[2]
         request_date = list_data[3]
         app_mobile = list_data[4]
-        code = '00'
         timestamp = datetime.now().timestamp()
         raw_token = "%s|%s" % (raw, timestamp)
         password = PASSWORD
         aes_cipher = AESCipher(password)
-        token = aes_cipher.encrypt(raw_token)
+        try:
+            token = aes_cipher.encrypt(raw_token)
+            code = '00'
+        except ValueError as e:
+            code = '01'
+            return {
+                'code': code,
+                'message': str(e),
+                'data': {
+
+                }
+            }
         return {
             'code': code,
             'data': {

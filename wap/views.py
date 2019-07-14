@@ -42,25 +42,28 @@ def has_valid_token(function):
 
 def verify_token(token):
     password = PASSWORD
-    aes_cipher = AESCipher(password)
-    raw = aes_cipher.decrypt(token)
-    list_data = raw.split('|')
-    if len(list_data) == 6:
-        bank_code = list_data[0]
-        os_type = list_data[1]
-        version = list_data[2]
-        request_date = list_data[3]
-        app_mobile = list_data[4]
-        timestamp = list_data[5]
-        now = datetime.now().timestamp()
-        try:
-            if now < float(timestamp) + 1800:
-                return '00', 'Token hợp lệ.'
-            else:
+    try:
+        aes_cipher = AESCipher(password)
+        raw = aes_cipher.decrypt(token)
+        list_data = raw.split('|')
+        if len(list_data) == 6:
+            bank_code = list_data[0]
+            os_type = list_data[1]
+            version = list_data[2]
+            request_date = list_data[3]
+            app_mobile = list_data[4]
+            timestamp = list_data[5]
+            now = datetime.now().timestamp()
+            try:
+                if now < float(timestamp) + 1800:
+                    return '00', 'Token hợp lệ.'
+                else:
+                    return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+            except:
                 return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
-        except:
+        else:
             return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
-    else:
+    except ValueError as e:
         return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
 
 
