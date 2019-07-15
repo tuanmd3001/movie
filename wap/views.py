@@ -29,7 +29,7 @@ def has_valid_token(function):
         if 'token' not in params or params.get('token') == '':
                 return HttpResponseRedirect(URL_BACK_TO_APP +
                                             "&code=%s&message=%s" %
-                                            ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                                            ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
         else:
             code, message = verify_token(token=params['token'])
             if code != '00':

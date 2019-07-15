@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 
 from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order, get_film, \
-    get_film_by_id, get_location, get_my_ticket, get_ticket_detail
+    get_film_by_id, get_location, get_my_ticket, get_ticket_detail, get_order_detail
 import json
 
 from api.services.error_code import ERROR_MISSING_PARAM, error_message, ERROR_INVALID_PARAM
@@ -234,5 +234,12 @@ def create_order_request(request):
     return JsonResponse(create_order.call(post_data))
 
 
-
+def get_order_detail_request(request):
+    app_mobile = check_param(request.GET, 'app_mobile')
+    paycode = check_param(request.GET, 'paycode')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not paycode:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'paycode')
+    return JsonResponse(get_order_detail.call(paycode))
 
