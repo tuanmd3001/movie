@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-SERVICE_DOMAIN = "http://127.0.0.1:8688/"
+SERVICE_DOMAIN = "http://10.22.7.187:8688/"
 APP_ID = "SCB"
 VERSION = 2
 URL_BACK_TO_APP = "https://filmservice.vnpaytest.vn/backtoapp/?action=backtoapp"

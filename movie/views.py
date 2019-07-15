@@ -24,20 +24,20 @@ def index(request, *args, **kwargs):
                 else:
                     return HttpResponseRedirect(URL_BACK_TO_APP +
                                                 "&reason=error&code=%s&message=%s" %
-                                                ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                                                ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
             except ValueError as e:
                 return HttpResponseRedirect(URL_BACK_TO_APP +
                                             "&reason=error&code=%s&message=%s" %
-                                            ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                                            ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
 
         else:
             return HttpResponseRedirect(URL_BACK_TO_APP +
                                         "&reason=error&code=%s&message=%s" %
-                                        ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                                        ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
     else:
         return HttpResponseRedirect(URL_BACK_TO_APP +
                                     "&reason=error&code=%s&message=%s" %
-                                    ('00', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                                    ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
 
 
 def custom_redirect(url_name, *args, **kwargs):

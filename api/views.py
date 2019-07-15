@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 
 from api.services import get_cinema_by_location, get_ticket_type, get_seats, get_seats_vista, create_order, get_film, \
-    get_film_by_id, get_location, get_my_ticket, get_ticket_detail, get_order_detail
+    get_film_by_id, get_location, get_my_ticket, get_ticket_detail, get_order_detail, create_bill
 import json
 
 from api.services.error_code import ERROR_MISSING_PARAM, error_message, ERROR_INVALID_PARAM
@@ -243,3 +243,47 @@ def get_order_detail_request(request):
         return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'paycode')
     return JsonResponse(get_order_detail.call(paycode))
 
+
+@csrf_exempt
+def create_bill_request(request):
+    post_data = json.loads(request.body)
+    app_mobile = check_param(post_data, 'app_mobile')
+    paymentCode = check_param(post_data, 'paymentCode')
+    compName = check_param(post_data, 'compName')
+    compTaxCode = check_param(post_data, 'compTaxCode')
+    compAddress = check_param(post_data, 'compAddress')
+    billMethod = check_param(post_data, 'billMethod')
+    billAddress = check_param(post_data, 'billAddress')
+    billPhone = check_param(post_data, 'billPhone')
+    billReceiver = check_param(post_data, 'billReceiver')
+    billEmail = check_param(post_data, 'billEmail')
+    language = check_param(post_data, 'language')
+    if not app_mobile:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'app_mobile')
+    if not paymentCode:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'paymentCode')
+    if not compName:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'compName')
+    if not compTaxCode:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'compTaxCode')
+    if not compAddress:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'compAddress')
+    if not billMethod:
+        return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billMethod')
+    if billMethod == 'COD':
+        if not billAddress:
+            return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billAddress')
+        if not billPhone:
+            return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billPhone')
+        if not billReceiver:
+            return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billReceiver')
+        if not billAddress:
+            return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billAddress')
+    elif billMethod == 'EMAIL':
+        if not billEmail:
+            return response_error(ERROR_MISSING_PARAM, error_message.get(ERROR_MISSING_PARAM) + 'billEmail')
+    else:
+        return response_error(ERROR_INVALID_PARAM, error_message.get(ERROR_INVALID_PARAM) + billMethod)
+    if not language:
+        post_data['language'] = 'VN'
+    return JsonResponse(create_bill.call(post_data))

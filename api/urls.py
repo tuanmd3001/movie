@@ -18,4 +18,5 @@ urlpatterns = [
     path('get_seats_vista', views.get_seats_vista_request, name='get_seats_vista_request'),
     path('create_order', views.create_order_request, name='create_order_request'),
     path('get_order_detail', views.get_order_detail_request, name='get_order_detail'),
+    path('create_bill', views.create_bill_request, name='create_bill'),
 ]
