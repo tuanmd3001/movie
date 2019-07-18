@@ -3207,6 +3207,7 @@ input[type='radio']~.checkbox .table .item-radio__checked span,
 
 .input-group-material {
    margin-top: 0;
+   border-bottom: 1px solid #D5DAE0;
 }
 
 .input-md {

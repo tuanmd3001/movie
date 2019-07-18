@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+{% load common %}
+{% load humanize %}
+
+{% block content %}
+    <div data-name="create-bill" class="page">
+        <div class="nav-c">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="left">
+                        <a href="{{ back_url }}" class="link nav-c__button nav-c__button--back back external"></a>
+                    </td>
+                    <td class="center">
+                        <div class="nav-c__Text">
+                            Thông tin xuất hóa đơn
+                        </div>
+                    </td>
+                    <td class="right">
+                        <a href="" class="link nav-c__button nav-c__button--call" onclick="phoneSupport.open();"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-content">
+            <form method="post" id="create-bill-form">
+                {% csrf_token %}
+                <div class="content__wrap content__wrap--1">
+                    <div class="box-c no-padding-bottom">
+                        <div class="box-c__header">Thông tin xuất hoá đơn</div>
+                        <div class="box-c__content">
+                            <div class="item-content item-input">
+                                <div class="item-inner input-group input-group-material">
+                                    <div class="item-title item-floating-label input-label-float">
+                                        Tên công ty
+                                    </div>
+                                    <div class="item-input-wrap">
+                                        <input type="text"
+                                               style="width: 100%; padding-top: 20px !important; font-size: 15px !important; border-bottom: none"
+                                               class="input input-md input-ic-md input-material"
+                                               required validate
+                                               data-error-message="Quý khách vui lòng nhập tên công ty"
+                                               autocorrect="off"
+                                               name="compName"
+                                               id="compName"
+                                               value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-content item-input">
+                                <div class="item-inner input-group input-group-material">
+                                    <div class="item-title item-floating-label input-label-float">
+                                        Mã số thuế
+                                    </div>
+                                    <div class="item-input-wrap">
+                                        <input type="text"
+                                               style="width: 100%; padding-top: 20px !important; font-size: 15px !important; border-bottom: none"
+                                               class="input input-md input-ic-md input-material"
+                                               pattern="^[0-9]{9,}$"
+                                               required validate
+                                               data-error-message="Quý khách vui lòng nhập mã số thuế hợp lệ"
+                                               autocorrect="off"
+                                               name="compTaxCode"
+                                               id="compTaxCode"
+                                               value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-content item-input">
+                                <div class="item-inner input-group input-group-material">
+                                    <div class="item-title item-floating-label input-label-float">
+                                        Địa chỉ công ty
+                                    </div>
+                                    <div class="item-input-wrap">
+                                        <input type="text"
+                                               style="width: 100%; padding-top: 20px !important; font-size: 15px !important; border-bottom: none"
+                                               class="input input-md input-ic-md input-material"
+                                               required validate
+                                               data-error-message="Quý khách vui lòng nhập địa chỉ công ty"
+                                               autocorrect="off"
+                                               name="compAddress"
+                                               id="compAddress"
+                                               value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-c">
+                        <div class="box-c__header">Thông tin nhận hóa đơn</div>
+                        <div class="box-c__content">
+                            <div class="item-content item-input">
+                                <div class="item-inner input-group input-group-material">
+                                    <div class="item-title item-floating-label input-label-float">
+                                        Email
+                                    </div>
+                                    <div class="item-input-wrap">
+                                        <input type="email"
+                                               style="width: 100%; padding-top: 20px !important; font-size: 15px !important;"
+                                               class="input input-md input-ic-md input-material"
+                                               required
+                                               autocorrect="off"
+                                               name="billEmail"
+                                               id="billEmail"
+                                               value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="pd5">Lưu ý: Quý khách vui lòng cung cấp thông tin chính xác để xuất hóa đơn.</p>
+                    </div>
+                    <a href="" class="link button-c" id="create_bill_submit">Gửi thông tin</a>
+                </div>
+            </form>
+        </div>
+
+        {% include 'wap/create_bill_popup.html' %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $$('#create_bill_submit').on('click', function () {
+            app.input.validateInputs("#create-bill-form");
+            emailValidate($$('#billEmail'));
+            if (!$$('#create-bill-form input.input-invalid').length) {
+                $$('#confirm_compName').html($$('#compName').val());
+                $$('#confirm_compTaxCode').html($$('#compTaxCode').val());
+                $$('#confirm_compAddress').html($$('#compAddress').val());
+                $$('#confirm_billEmail').html($$('#billEmail').val());
+                app.popup.open($$("#create-bill-popup"), true)
+            }
+        });
+
+        $$('#create-bill-confirm').on('click', function () {
+            app.input.validateInputs("#create-bill-form");
+            emailValidate($$('#billEmail'));
+            if (!$$('#create-bill-form input.input-invalid').length) {
+                add_to_form("#create-bill-form", "app_mobile", "{{ app_mobile }}");
+                add_to_form("#create-bill-form", "token", "{{ token }}");
+                add_to_form("#create-bill-form", "payCode", "{{ payCode }}");
+                $$('#create-bill-form').submit();
+            }
+        });
+
+        $$('#billEmail').on('keyup change blur', function () {
+            emailValidate(this)
+        });
+    </script>
+{% endblock %}

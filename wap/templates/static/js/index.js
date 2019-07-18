@@ -61,7 +61,7 @@ function onLocationSelect(location_id, name) {
             showDialog(response['message']);
         }
     }).catch(function (err) {
-        showDialog('Kết nối máy chủ thất bại (00)');
+        showDialog('Không lấy được danh sách rạp chiếu, Quý khách vui lòng thử lại sau.)');
         $$('#cinema_list').empty()
     }).then(function () {
         app.preloader.hide();
@@ -150,7 +150,13 @@ function durationFormat(num) {
 }
 
 function publishDateFormat(string) {
-    return string.toDate("dd/mm/yyyy hh:ii:ss").publishDate()
+    if (string){
+        return string.toDate("dd/mm/yyyy hh:ii:ss").publishDate()
+    }
+    else {
+        return 'Đang cập nhật'
+    }
+
 }
 
 function ticketDateFormat(string) {
@@ -302,7 +308,7 @@ $$("#tab-film").on('tab:show', function (event, ui) {
             showDialog(response['message']);
         }
     }).catch(function (err) {
-        showDialog('Kết nối máy chủ thất bại (00)');
+        showDialog('Không lấy được danh sách phim, Quý khách vui lòng thử lại sau.');
         console.log(err)
     }).then(function () {
         app.preloader.hide();

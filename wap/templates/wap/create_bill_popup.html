@@ -1,0 +1,84 @@
+<div class="popup my-popup my-popup--custom" id="create-bill-popup">
+    <div class="nav-c">
+        <table>
+            <tbody>
+            <tr>
+                <td class="left">
+                    <a href="#" class="link nav-c__button nav-c__button--back back popup-close"></a>
+                </td>
+                <td class="center">
+                    <div class="nav-c__Text">
+                        Thông tin xuất hóa đơn
+                    </div>
+                </td>
+                <td class="right">
+                    <a href="" class="link nav-c__button nav-c__button--call" onclick="phoneSupport.open();"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-content">
+        <div class="content__wrap content__wrap--1">
+            <div class="box-c">
+                <div class="box-c__header">Thông tin xuất hóa đơn</div>
+                <div class="box-c__content">
+                    <div class="box-c__item">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="clrgrey">Tên công ty</td>
+                            </tr>
+                            <tr>
+                                <td class="left" id="confirm_compName"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-c__item">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="clrgrey">Mã số thuế</td>
+                            </tr>
+                            <tr>
+                                <td class="left" id="confirm_compTaxCode"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-c__item">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="clrgrey">Địa chỉ công ty</td>
+                            </tr>
+                            <tr>
+                                <td class="left" id="confirm_compAddress"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="box-c">
+                <div class="box-c__header">Thông tin nhận hóa đơn</div>
+                <div class="box-c__content">
+                    <div class="box-c__item">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="clrgrey">Email</td>
+                            </tr>
+                            <tr>
+                                <td class="left" id="confirm_billEmail"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <a href="" class="link button-c" id="create-bill-confirm">Xác nhận</a>
+        </div>
+    </div>
+</div>

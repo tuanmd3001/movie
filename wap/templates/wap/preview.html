@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+{% load common %}
+{% load humanize %}
+
+{% block content %}
+    <div data-name="preview" class="page">
+        <div class="nav-c">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="left">
+                        <a href="{{ back_url }}" class="link nav-c__button nav-c__button--back back external"></a>
+                    </td>
+                    <td class="center">
+                        <div class="nav-c__Text">
+                            Thông tin thanh toán
+                        </div>
+                    </td>
+                    <td class="right">
+                        <a href="" class="link nav-c__button nav-c__button--call" onclick="phoneSupport.open();"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-content">
+            <div class="content__wrap content__wrap--1">
+                <div class="box-c no-padding-bottom">
+                    <div class="box-c__header">Thông tin phim</div>
+                    <div class="box-c__content">
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Phim</td>
+                                    <td class="right">{% if order_detail.filmName %}{{ order_detail.filmName }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Suất chiếu</td>
+                                    <td class="right">{% if order_detail.sessionTime %}{{ order_detail.sessionTime | string_to_datetime | date:'d/m/Y - H:i' }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Thời lượng</td>
+                                    <td class="right">{{ order_detail.duration | film_duration }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Rạp</td>
+                                    <td class="right">{% if order_detail.cinemaName %}{{ order_detail.cinemaName }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Địa chỉ</td>
+                                    <td class="right">{% if order_detail.cinemaAddress %}{{ order_detail.cinemaAddress }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Số tiền</td>
+                                    <td class="right">{{ order_detail.amount | intcomma }} VND</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Tên khách hàng</td>
+                                    <td class="right">{% if order_detail.customerName %}{{ order_detail.customerName }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Số điện thoại nhận vé</td>
+                                    <td class="right">{% if order_detail.customerPhone %}{{ order_detail.customerPhone }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Email nhận vé</td>
+                                    <td class="right">{% if order_detail.customerEmail %}{{ order_detail.customerEmail }}{% else %}Đang cập nhât{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-c__item">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="clrgrey fitwidth">Ghế</td>
+                                </tr>
+                                <tr>
+                                    <td class="left clrblue" style="padding-left: 5px">{% for seat in order_detail.seats %}{{ seat.code }}{% if not forloop.last %} | {% endif %}{% endfor %}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    Lưu ý: Sau khi thanh toán 5 phút, nếu quý khách chưa nhận được thông tin vé, vui lòng liên hệ tới
+                    hot
+                    line <span class="button--call" onclick="phoneSupport.open();"><span class="underline">1900 55 55 20</span></span> để được hỗ trợ
+                </p>
+                <a href="{{ back_url }}" class="link button-c back external">Quay lại</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

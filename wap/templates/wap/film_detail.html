@@ -93,7 +93,7 @@
                                                     </div>
                                                     <div class="margin-v-xs">
                                                         <div class="tags">{% if film.publishDate %}{{ film.publishDate | string_to_datetime | date:"d/m" }}{% else %}Đang cập nhật{% endif %}</div>
-                                                        <div class="tags">{{ film.duration | film_duration }}</div>
+                                                        <div class="tags">{{ film.duration | film_duration:True }}</div>
                                                         <div class="tags">{% if film.version %}{{ film.version }}{% else %}Đang cập nhật{% endif %}</div>
                                                     </div>
                                                     <div class="margin-v-sms">

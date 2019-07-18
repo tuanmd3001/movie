@@ -14,7 +14,7 @@ var current_app_mobile = "";
 var current_token = "";
 app.lazy.create('.page');
 
-window.onbeforeunload = function(){
+window.onbeforeunload = function () {
     app.preloader.show()
 };
 
@@ -45,13 +45,54 @@ function showDialog(message, level) {
         ],
         cssClass: "custom-dialog"
     }).open();
-    if(level === 'error'){
+    if (level === 'error') {
 
     }
 }
 
 function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+function inputError(input, message) {
+    var error_el = $$(input).siblings('.item-input-error-message');
+    if (error_el.length) {
+        error_el.html(message);
+    }
+    else {
+        $$('<div class="item-input-error-message">' + message + '</div>').insertAfter(input)
+    }
+    $$(input).addClass('input-invalid').closest(".item-input").addClass('item-input-invalid')
+}
+
+function inputValid(input) {
+    var error_el = $$(input).siblings('.item-input-error-message');
+    if (error_el.length) {
+        error_el.remove();
+    }
+    $$(input).removeClass('input-invalid').closest(".item-input").removeClass('item-input-invalid')
+}
+
+function emailValidate(input) {
+    var inputValue = $$(input).val().trim();
+    if (!inputValue) {
+        inputError(input, 'Quý khách vui lòng nhập email');
+    }
+    else {
+        if (/^[a-z][a-z0-9_\.]{0,32}@[a-z0-9]+(\.){1}[a-z0-9]+$/.test(inputValue)) {
+            inputValid(input)
+        }
+        else {
+            inputError(input, 'Email không hợp lệ, vui lòng nhập lại');
+        }
+    }
+}
+
+function add_to_form(form, name, value) {
+    $$("<input />").attr("type", "hidden")
+        .attr("name", name)
+        .attr("value", value)
+        .appendTo(form);
 }
 
 function custom_post(path, params) {

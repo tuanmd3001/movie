@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load common %}
+{% load humanize %}
+
+{% block content %}
+    <div data-name="create-bill" class="page">
+        <div class="nav-c">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="left">
+                        <a href="{{ back_url }}" class="link nav-c__button nav-c__button--back back external"></a>
+                    </td>
+                    <td class="center">
+                        <div class="nav-c__Text">
+                            Thông tin xuất hóa đơn
+                        </div>
+                    </td>
+                    <td class="right">
+                         <a href="" class="link nav-c__button nav-c__button--call" onclick="phoneSupport.open();"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-content">
+            <div class="content__wrap content__wrap--1">
+                <div class="box-c">
+                    <div class="box-c__header">Thông báo</div>
+                    <div class="box-c__content">
+                        <div class="box-c__item">
+                            Quý khách đã gửi yêu cầu lấy thông tin hóa đơn thành công. Hóa đơn sẽ được xử lý và gửi tới
+                            Quý khách sau 3 - 5 ngày.<br><span class="clrorange bold"> Hotline hỗ trợ: 1900555520</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ back_url }}" class="link button-c external">Quay về trang chủ</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

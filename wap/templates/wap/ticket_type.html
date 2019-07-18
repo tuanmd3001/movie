@@ -235,13 +235,6 @@
             }
         });
 
-        function add_to_form(form, name, value) {
-            $$("<input />").attr("type", "hidden")
-                .attr("name", name)
-                .attr("value", value)
-                .appendTo(form);
-        }
-
         function before_submit() {
             if (total) {
                 add_to_form("#form", "app_mobile", "{{ app_mobile }}");

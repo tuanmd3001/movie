@@ -9,8 +9,7 @@ from django.urls import reverse
 from api.services.config import PASSWORD, URL_BACK_TO_APP
 from movie.AESCipher import AESCipher
 
-
-def index(request, *args, **kwargs):
+def validate_data(request):
     if request.method == "GET":
         params = request.GET
         password = PASSWORD
@@ -20,24 +19,41 @@ def index(request, *args, **kwargs):
                 raw_data = aes_cipher.decrypt(params['data'])
                 result = get_data_from_raw(raw_data)
                 if result and result['code'] == '00':
-                    return custom_redirect('index', *(), **(result['data']))
+                    return result['data'], ''
                 else:
-                    return HttpResponseRedirect(URL_BACK_TO_APP +
-                                                "&reason=error&code=%s&message=%s" %
-                                                ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                    return None, 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
             except ValueError as e:
-                return HttpResponseRedirect(URL_BACK_TO_APP +
-                                            "&reason=error&code=%s&message=%s" %
-                                            ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+                return None, 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
 
         else:
-            return HttpResponseRedirect(URL_BACK_TO_APP +
-                                        "&reason=error&code=%s&message=%s" %
-                                        ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+            return None, 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
     else:
-        return HttpResponseRedirect(URL_BACK_TO_APP +
-                                    "&reason=error&code=%s&message=%s" %
-                                    ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+        return None, 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+
+def index(request, *args, **kwargs):
+    data, error = validate_data(request)
+    if error == "":
+        return custom_redirect('index', *(), **data)
+    else:
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ('01', error))
+
+def order_preview(request, *args, **kwargs):
+    data, error = validate_data(request)
+    if error == "":
+        if request.GET.get('payCode'):
+            return custom_redirect('preview', *(), **data, payCode=request.GET.get('payCode'))
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ('01', 'Missing parameter (payCode)'))
+    else:
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ('01', error))
+
+def create_bill(request, *args, **kwargs):
+    data, error = validate_data(request)
+    if error == "":
+        if request.GET.get('payCode'):
+            return custom_redirect('bill', *(), **data, payCode=request.GET.get('payCode'))
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ('01', 'Missing parameter (payCode)'))
+    else:
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ('01', error))
 
 
 def custom_redirect(url_name, *args, **kwargs):

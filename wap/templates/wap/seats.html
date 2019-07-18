@@ -21,11 +21,15 @@
                     </td>
                     <td class="center">
                         <div class="nav-c__Text">
-                            {{ seats.sessionInfo.cinemaName }}
+                            {% if seats.sessionInfo.cinemaName %}
+                                {{ seats.sessionInfo.cinemaName }}
+                            {% else %}
+                                Đang cập nhật
+                            {% endif %}
                             <br>
                         </div>
                         <div><span
-                                class="font-sm">{{ seats.sessionInfo.room_name }} - {{ seats.sessionInfo.sessionTime | film_time:seats.sessionInfo.duration }}</span>
+                                class="font-sm">{% if seats.sessionInfo.room_name %}{{ seats.sessionInfo.room_name }}{% else %}Đang cập nhật{% endif %} - {{ seats.sessionInfo.sessionTime | film_time:seats.sessionInfo.duration }}</span>
                         </div>
                     </td>
                     <td class="right">
@@ -398,7 +402,7 @@
             if (ticketTypes) {
                 for (var k in ticketTypes) {
                     if (ticketTypes.hasOwnProperty(k) && ticketTypes[k].hasOwnProperty('booked') && ticketTypes[k].hasOwnProperty('quantity') && ticketTypes[k]['booked'] !== ticketTypes[k]['quantity']) {
-                        return 'Số ghế quý khách chọn chưa đúng, Quý khách vui lòng thử lại'
+                        return 'Số lượng ghế không hợp lệ, vui lòng chọn lại'
                     }
                 }
             }
@@ -486,25 +490,6 @@
             }
         });
 
-        function inputError(input, message) {
-            var error_el = $$(input).siblings('.item-input-error-message');
-            if (error_el.length) {
-                error_el.html(message);
-            }
-            else {
-                $$('<div class="item-input-error-message">' + message + '</div>').insertAfter(input)
-            }
-            $$(input).addClass('input-invalid').closest(".item-input").addClass('item-input-invalid')
-        }
-
-        function inputValid(input) {
-            var error_el = $$(input).siblings('.item-input-error-message');
-            if (error_el.length) {
-                error_el.remove();
-            }
-            $$(input).removeClass('input-invalid').closest(".item-input").removeClass('item-input-invalid')
-        }
-
         function phoneValidate() {
             var input = '#customerPhone';
             var inputValue = $$(input).val().trim();
@@ -521,28 +506,12 @@
             }
         }
 
-        function emailValidate() {
-            var input = '#customeEmail';
-            var inputValue = $$(input).val().trim();
-            if (!inputValue) {
-                inputError(input, 'Quý khách vui lòng nhập email');
-            }
-            else {
-                if (/^[a-z][a-z0-9_\.]{0,32}@[a-z0-9]+(\.){1}[a-z0-9]+$/.test(inputValue)){
-                    inputValid(input)
-                }
-                else {
-                    inputError(input, 'Email không hợp lệ, vui lòng nhập lại');
-                }
-            }
-        }
-
         $$('#customerPhone').on('keyup change blur', function () {
             phoneValidate()
         });
 
         $$('#customeEmail').on('keyup change blur', function () {
-            emailValidate()
+            emailValidate(this)
         });
 
         $$('#create_order_opener').on("click", function () {

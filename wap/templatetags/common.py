@@ -53,9 +53,11 @@ def get_session_time(session):
     return ""
 
 @register.filter
-def film_duration(minutes):
+def film_duration(minutes, is_minute=False):
     duration = 'Đang cập nhật'
     if minutes:
+        if is_minute:
+            return str(minutes) + " phút"
         duration = ''
         parsed = str(timedelta(minutes=minutes))[:-3].split(":")
         if int(parsed[0]) > 0:
@@ -76,6 +78,12 @@ def film_time(session_time, duration):
                 end_time = date + timedelta(minutes=duration)
                 if end_time:
                     time += ' ~ ' + end_time.strftime('%I:%M%p').lstrip('0').lower()
+                else:
+                    time += ' ~ Đang cập nhật'
+            else:
+                time += ' ~ Đang cập nhật'
+        else:
+            time = 'Đang cập nhật'
     return time
 
 @register.filter

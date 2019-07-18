@@ -19,4 +19,7 @@ urlpatterns = [
 
     path('ticket/<int:ticket_id>', views.ticket_detail, name='get_ticket_detail'),
     path('order', views.order, name='order'),
+
+    path('preview', views.preview, name='preview'),
+    path('bill', views.bill, name='bill'),
 ]
