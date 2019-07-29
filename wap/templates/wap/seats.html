@@ -458,7 +458,7 @@
         $$('#create-order-btn').on('click', function () {
             app.input.validate("#customerName");
             phoneValidate();
-            emailValidate();
+            emailValidate("#customeEmail");
             if (!$$('#order-form input.input-invalid').length) {
                 if (!$$('input[name="agree_term"]')[0].checked) {
                     showDialog('Vui lòng đồng ý với điều khoản điều lệ quy định')

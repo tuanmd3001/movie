@@ -22,7 +22,7 @@ from movie import views
 urlpatterns = [
     path('wap/', include('wap.urls')),
     path('api/', include('api.urls')),
-    path('index/', views.index, name='index_home'),
-    path('orderPreview/', views.order_preview, name='order_preview'),
-    path('createBill/', views.create_bill, name='create_bill'),
+    path('way-to-app/', views.index, name='index_home'),
+    path('way-to-detail/', views.order_preview, name='order_preview'),
+    path('way-to-vat/', views.create_bill, name='create_bill'),
 ]

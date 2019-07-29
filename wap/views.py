@@ -14,8 +14,9 @@ from django.views.decorators.cache import cache_control
 
 from api.services import get_location, get_film, get_film_by_id, get_ticket_type, get_seats_vista, \
     get_seats as get_seats_api, get_ticket_detail, create_order, get_order_detail, create_bill as create_bill_api
-from api.services.config import PASSWORD, URL_BACK_TO_APP
+from api.services.config import PASSWORD, URL_BACK_TO_APP, SUCCESS, SESSION_EXPIRED, INTERNAL_ERROR, INVALID_DATA
 from movie.AESCipher import AESCipher
+
 
 def validate_request(function):
     @wraps(function)
@@ -28,13 +29,17 @@ def validate_request(function):
 
         # validate token
         if 'token' not in params or params.get('token') == '':
-                return HttpResponseRedirect(URL_BACK_TO_APP +
-                                            "&code=%s&message=%s" %
-                                            ('01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'))
+            result = {
+                "code": INVALID_DATA,
+                "raw": "",
+                "lang": "EN" if 'language' in params and params['language'] == 'ENG' else 'VI'
+            }
+            return redirect_error(result)
         else:
-            code, message = verify_token(token=params['token'])
-            if code != '00':
-                return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % (code, message))
+            result = verify_token(token=params['token'])
+            if result['code'] != SUCCESS:
+                result['language'] = "EN" if 'language' in params and params['language'] == 'ENG' else 'VI'
+                return redirect_error(result)
             else:
                 # has app_mobile
                 if 'app_mobile' not in params or params.get('app_mobile') == '':
@@ -56,25 +61,83 @@ def verify_token(token):
         aes_cipher = AESCipher(password)
         raw = aes_cipher.decrypt(token)
         list_data = raw.split('|')
-        if len(list_data) == 6:
-            bank_code = list_data[0]
-            os_type = list_data[1]
-            version = list_data[2]
-            request_date = list_data[3]
-            app_mobile = list_data[4]
-            timestamp = list_data[5]
+        if len(list_data) == 7 or len(list_data) == 8:
+            if len(list_data) == 8:
+                paycode = list_data[6]
+            else:
+                paycode = ""
+            timestamp = list_data[len(list_data) - 1]
             now = datetime.now().timestamp()
+            raw = raw.replace("|%s" % timestamp, "")
+            if len(paycode) > 0:
+                raw = raw.replace("|%s" % paycode, "")
             try:
                 if now < float(timestamp) + 1800:
-                    return '00', 'Token hợp lệ.'
+                    code = SUCCESS
                 else:
-                    return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
-            except:
-                return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+                    code = SESSION_EXPIRED
+            except Exception as e:
+                code = INTERNAL_ERROR
         else:
-            return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+            code = INVALID_DATA
+            raw = ""
     except ValueError as e:
-        return '01', 'Dữ liệu không hợp lệ hoặc bạn không có quyền truy cập dịch vụ này.'
+        code = INTERNAL_ERROR
+        raw = ""
+        paycode = ""
+    return {
+        "code": code,
+        "raw": raw,
+        "paycode": paycode
+    }
+
+
+def redirect_error(result):
+    raw_data = result['raw']
+    if len(raw_data) > 0:
+        raw_data = "%s|%s" % (raw_data, result['code'])
+        password = PASSWORD
+        aes_cipher = AESCipher(password)
+        try:
+            return_data = aes_cipher.encrypt(raw_data)
+        except ValueError as e:
+            return_data = ""
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&data=%s&lang=%s" % (return_data, result['lang']))
+    else:
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&lang=%s" % result['lang'])
+
+
+def redirect_success(result):
+    raw_data = result['raw']
+    if len(raw_data) > 0:
+        raw_data = "%s|%s|%s" % (raw_data, result['paycode'], 'PAYNOW')
+        password = PASSWORD
+        aes_cipher = AESCipher(password)
+        try:
+            return_data = aes_cipher.encrypt(raw_data)
+        except ValueError as e:
+            return_data = ""
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&data=%s&lang=%s" % (return_data, result['lang']))
+    else:
+        return HttpResponseRedirect(URL_BACK_TO_APP + "&lang=%s" % result['lang'])
+
+
+def build_back_url(result, isPayment):
+    raw_data = result['raw']
+    if len(raw_data) > 0:
+        if isPayment:
+            raw_data = "%s|%s|%s" % (raw_data, result['paycode'], 'PAYNOW')
+        else:
+            raw_data = "%s|%s" %(raw_data, SUCCESS)
+        password = PASSWORD
+        aes_cipher = AESCipher(password)
+        try:
+            return_data = aes_cipher.encrypt(raw_data)
+        except ValueError as e:
+            return_data = ""
+        return URL_BACK_TO_APP + "&data=%s&lang=%s" % (return_data, result['lang'])
+    else:
+        return URL_BACK_TO_APP + "&lang=%s" % result['lang']
 
 
 def has_app_mobile(function):
@@ -139,6 +202,7 @@ def index(request, *args, **kwargs):
         'location': request.GET.get('location') if request.GET.get('location') else ""
     })
 
+
 @validate_request
 def get_film_by_cinema(request, *args, **kwargs):
     cinema_name = "Chọn phim"
@@ -159,6 +223,7 @@ def get_film_by_cinema(request, *args, **kwargs):
         'film_coming': film_coming,
         'cinema_name': cinema_name
     })
+
 
 @validate_request
 def get_film_detail_by_cinema(request, *args, **kwargs):
@@ -189,6 +254,7 @@ def get_film_detail_by_cinema(request, *args, **kwargs):
         'dates': dates,
         'is_booking': request.GET.get('tab') == "tab-booking"
     })
+
 
 @validate_request
 def get_film_detail(request, *args, **kwargs):
@@ -242,6 +308,7 @@ def get_film_detail(request, *args, **kwargs):
         'is_booking': request.GET.get('tab') == "tab-booking",
     })
 
+
 @validate_request
 @cache_control(no_cache=True, must_revalidate=True)
 def ticket_type(request, *args, **kwargs):
@@ -280,6 +347,7 @@ def ticket_type(request, *args, **kwargs):
         'ticket_types_json': json.dumps(ticket_types)
     })
 
+
 @validate_request
 @cache_control(no_cache=True, must_revalidate=True)
 def get_seats(request, *args, **kwargs):
@@ -312,6 +380,7 @@ def get_seats(request, *args, **kwargs):
         "seats": seats,
     })
 
+
 @validate_request
 def ticket_detail(request, *args, **kwargs):
     ticket, mess = call_service(request, get_ticket_detail, kwargs['ticket_id'])
@@ -323,6 +392,7 @@ def ticket_detail(request, *args, **kwargs):
     else:
         return custom_redirect('index', app_mobile=kwargs['app_mobile'], token=kwargs['token'], tab='ticket')
 
+
 @validate_request
 def order(request, *args, **kwargs):
     if request.method == 'POST':
@@ -330,7 +400,13 @@ def order(request, *args, **kwargs):
         kwargs['language'] = 'VN'
         order, mess = call_service(request, create_order, kwargs)
         if order is not None:
-            return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=payment&paycode=%s&queryid=%s" % (order['payCode'], order['queryId']))
+            result = verify_token(request.POST.get("token"))
+            if result['code'] == SUCCESS:
+                result['paycode'] = order['payCode']
+                result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+                return redirect_success(result)
+            else:
+                redirect_error(result)
         else:
             if 'cinema_id' in kwargs and 'location_id' in kwargs and 'film_id' in kwargs:
                 return custom_redirect('get_film_detail_by_cinema', kwargs['location_id'], kwargs['cinema_id'], kwargs['film_id'],
@@ -347,15 +423,30 @@ def preview(request, *args, **kwargs):
     if 'payCode' in kwargs:
         order_detail, mess = call_service(request, get_order_detail, kwargs['payCode'])
         if order_detail is None:
-            return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ("01", mess))
-        back_url = URL_BACK_TO_APP + "&reason=payment&paycode=%s&queryid=%s" % (order_detail['payCode'], order_detail['queryId'])
+            result = {
+                "code": INVALID_DATA,
+                "raw": "",
+                "lang": "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+            }
+            return redirect_error(result)
+        result = verify_token(request.POST.get("token"))
+        if result['code'] == SUCCESS:
+            result['paycode'] = order['paycode']
+            result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+        back_url = build_back_url(result, True)
         return render(request, 'wap/preview.html', {
             **kwargs,
             "order_detail": order_detail,
             "back_url": back_url
         })
     else:
-        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ("01", "Missing parameter (payCode)"))
+        result = {
+            "code": INVALID_DATA,
+            "raw": "",
+            "lang": "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+        }
+        return redirect_error(result)
+
 
 @validate_request
 def bill(request, *args, **kwargs):
@@ -366,7 +457,11 @@ def bill(request, *args, **kwargs):
             data['billMethod'] = 'EMAIL'
             data['language'] = 'VN'
             create_bill, mess = call_service(request, create_bill_api, data)
-            back_url = URL_BACK_TO_APP + "&reason=bill&paycode=%s" % (data['payCode'])
+            result = verify_token(request.POST.get("token"))
+            if result['code'] == SUCCESS:
+                result['paycode'] = order['paycode']
+                result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+            back_url = build_back_url(result, False)
             if create_bill is not None:
                 return render(request, 'wap/create_bill_success.html', {
                     **kwargs,
@@ -376,4 +471,9 @@ def bill(request, *args, **kwargs):
             **kwargs
         })
     else:
-        return HttpResponseRedirect(URL_BACK_TO_APP + "&reason=error&code=%s&message=%s" % ("01", "Missing parameter (payCode)"))
+        result = {
+            "code": INVALID_DATA,
+            "raw": "",
+            "lang": "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
+        }
+        return redirect_error(result)
