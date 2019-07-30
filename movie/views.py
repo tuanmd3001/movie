@@ -100,7 +100,7 @@ def index(request, *args, **kwargs):
 def order_preview(request, *args, **kwargs):
     result = validate_data(request, 7)
     if result['code'] == SUCCESS:
-        return custom_redirect('bill', *(), **result['data'], payCode=result['data']['paycode'])
+        return custom_redirect('preview', *(), **result['data'])
     else:
         return redirect_error(result)
 
@@ -108,7 +108,7 @@ def order_preview(request, *args, **kwargs):
 def create_bill(request, *args, **kwargs):
     result = validate_data(request, 7)
     if result['code'] == SUCCESS:
-        return custom_redirect('bill', *(), **result['data'], payCode=result['data']['paycode'])
+        return custom_redirect('bill', *(), **result['data'])
     else:
         return redirect_error(result)
 
@@ -165,7 +165,7 @@ def get_data_from_raw(raw, language, number_param):
                 'language': language
             }
             if paycode:
-                data['paycode'] = paycode
+                data['payCode'] = paycode
         except ValueError as e:
             code = INTERNAL_ERROR
             data = {}

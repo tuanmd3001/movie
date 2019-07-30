@@ -429,16 +429,18 @@ def preview(request, *args, **kwargs):
                 "lang": "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
             }
             return redirect_error(result)
-        result = verify_token(request.POST.get("token"))
+        result = verify_token(request.GET.get("token"))
+        result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
         if result['code'] == SUCCESS:
-            result['paycode'] = order['paycode']
-            result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
-        back_url = build_back_url(result, True)
-        return render(request, 'wap/preview.html', {
-            **kwargs,
-            "order_detail": order_detail,
-            "back_url": back_url
-        })
+            result['paycode'] = kwargs['payCode']
+            back_url = build_back_url(result, True)
+            return render(request, 'wap/preview.html', {
+                **kwargs,
+                "order_detail": order_detail,
+                "back_url": back_url
+            })
+        else:
+            redirect_error(result)
     else:
         result = {
             "code": INVALID_DATA,
@@ -457,16 +459,16 @@ def bill(request, *args, **kwargs):
             data['billMethod'] = 'EMAIL'
             data['language'] = 'VN'
             create_bill, mess = call_service(request, create_bill_api, data)
-            result = verify_token(request.POST.get("token"))
+            result = verify_token(request.GET.get("token"))
             if result['code'] == SUCCESS:
-                result['paycode'] = order['paycode']
+                result['paycode'] = data['payCode']
                 result["lang"] = "EN" if 'language' in kwargs and kwargs['language'] == 'ENG' else 'VI'
-            back_url = build_back_url(result, False)
-            if create_bill is not None:
-                return render(request, 'wap/create_bill_success.html', {
-                    **kwargs,
-                    'back_url': back_url
-                })
+                back_url = build_back_url(result, False)
+                if create_bill is not None:
+                    return render(request, 'wap/create_bill_success.html', {
+                        **kwargs,
+                        'back_url': back_url
+                    })
         return render(request, 'wap/create_bill.html', {
             **kwargs
         })
